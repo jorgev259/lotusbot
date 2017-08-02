@@ -27,25 +27,6 @@ var methods = {
         out.type = "default";
         return out;
     },
-    
-    correct:function(message){
-        var change = false;
-        var words = JSON.parse(fs.readFileSync('words.json', 'utf8'));
-        var keys = Object.keys(words);
-        
-        var evaluate = message.content.split(" ");
-        
-        for(var wordi=0;wordi<evaluate.length;wordi++){
-            for(var wordi2=0;wordi2<keys.length;wordi2++){
-                if(evaluate[wordi].includes(keys[wordi2])){
-                    change = true;
-                    evaluate[wordi]= evaluate[wordi].replace(keys[wordi2],words[keys[wordi2]]);
-                }
-            }
-        }
-        if(change){message.edit(evaluate.join(" "));}
-        
-    }
 };
 
 module.exports = methods;

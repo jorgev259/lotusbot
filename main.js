@@ -2,19 +2,18 @@ const Discord = require('discord.js');
 var fs = require("fs");
 const client = new Discord.Client();
 var util = require('./utilities.js');
-let prefix = "!";
 
 var commands = JSON.parse(fs.readFileSync('commands.json', 'utf8'));
-var words =JSON.parse(fs.readFileSync('words.json', 'utf8'));
+var config =JSON.parse(fs.readFileSync('config.json', 'utf8'));
+var prefix = config.prefix;
 
+
+//setting web server so Heroku doesnt complain, just ignore it
 var express = require('express');
 var app = express();
-
-// set the port of our application
-// process.env.PORT lets the port be set by Heroku
 var port = process.env.PORT || 8080;
-
 app.listen(port, function() {});
+//stop ignoring from here on
 
 client.on('ready', () => {
   console.log('I am ready!');
@@ -65,14 +64,7 @@ client.on('message', message => {
             case "show":
                 console.log(JSON.parse(fs.readFileSync(param[1] + ".json", 'utf8')));
                 break;
-                
-            case "word":
-                var name = param[1];
-                param.shift();
-                param.shift();
-                words[name] = param.join(" ");
-                fs.writeFileSync('words.json',JSON.stringify(words), 'utf8')
-                break;
+
                     
             case "remove":
                 delete commands[param[1]];
@@ -89,4 +81,4 @@ client.on('message', message => {
     }
 });
 
-client.login("MzM5NDQ3MjMxOTM1Njc2NDE2.DGOR2A.mrxigkCDPyuKPC1mQ6C13_BWB_c");
+client.login(config.token);
