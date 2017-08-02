@@ -41,7 +41,7 @@ client.on('message', message => {
                     break;*/
                     
                 case "simple":
-                    message.edit(command.content);
+                    message.channel.send(command.content);
                     break;
                     
                 case "embed":
