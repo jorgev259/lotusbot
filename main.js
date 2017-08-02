@@ -2,7 +2,6 @@ const Discord = require('discord.js');
 var fs = require("fs");
 const client = new Discord.Client();
 var util = require('./utilities.js');
-var id=194614248511504385;
 let prefix = ">";
 
 var commands = JSON.parse(fs.readFileSync('commands.json', 'utf8'));
@@ -22,7 +21,6 @@ client.on('ready', () => {
 });
 
 client.on('message', message => {
-    if(message.author.id == id){
         if(message.content.startsWith(prefix)){
             var param = message.content.split(" ");
             param[0] = param[0].split(prefix)[1];
@@ -41,11 +39,6 @@ client.on('message', message => {
                     })
                     
                     break;*/
-                    
-                case "play":
-                    param.shift();
-                    message.client.user.setGame(param.join(" "));
-                    break;
                     
                 case "simple":
                     message.edit(command.content);
@@ -106,10 +99,7 @@ client.on('message', message => {
                     message.reply('This command is not on our realm');
                     break;
             }
-        }else{
-            util.correct(message);
         }
-    }
 });
 
-client.login("MTk0NjE0MjQ4NTExNTA0Mzg1.Cl2j8Q.cjF6x4ggFAODL_2xX-bkEZi_T0k");
+client.login("MzM5NDQ3MjMxOTM1Njc2NDE2.DGOR2A.mrxigkCDPyuKPC1mQ6C13_BWB_c");
