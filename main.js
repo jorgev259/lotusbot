@@ -17,6 +17,8 @@ app.listen(port, function() {});
 
 client.on('ready', () => {
   console.log('I am ready!');
+    client.setInterval(util.wakeup,1200000,client);
+    util.wakeup(client);
 });
 
 client.on('message', message => {

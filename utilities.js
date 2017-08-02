@@ -27,6 +27,10 @@ var methods = {
         out.type = "default";
         return out;
     },
+    
+    wakeup:function(client){
+        client.user.sendMessage("342372824654151690","Morgana wont keep me up");
+    }
 };
 
 module.exports = methods;
