@@ -30,7 +30,7 @@ var methods = {
     },
     
     wakeup:function(client){
-        client.channels.get("342491026465882122").send("Morgana wont let me sleep");
+        client.channels.get("342491026465882122").send(">morgy");
         console.log(client.channels);
     }
 };
