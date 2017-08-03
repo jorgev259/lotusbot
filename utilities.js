@@ -29,7 +29,7 @@ var methods = {
     },
     
     wakeup:function(client){
-        client.user.sendMessage("342372824654151690","Morgana wont keep me up");
+        client.guild.channels.find("342372824654151690").send("Morgana wont keep me up");
     }
 };
 
