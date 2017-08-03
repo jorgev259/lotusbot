@@ -1,3 +1,4 @@
+
 var fs = require("fs");
 
 var methods = {
@@ -29,7 +30,7 @@ var methods = {
     },
     
     wakeup:function(client){
-        client.guild.channels.find("342372824654151690").send("Morgana wont keep me up");
+        client.channels.get("342491026465882122").send("Morgana wont let me sleep");
     }
 };
 
