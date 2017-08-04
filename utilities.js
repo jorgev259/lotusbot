@@ -28,11 +28,6 @@ var methods = {
         out.type = "default";
         return out;
     },
-    
-    wakeup:function(client){
-        client.channels.get("342491026465882122").send(">morgy");
-        console.log(client.channels);
-    }
 };
 
 module.exports = methods;
