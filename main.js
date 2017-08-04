@@ -66,11 +66,15 @@ client.on('message', message => {
                     
             case "show":
                 var messageOut = "";
-                Object.keys(commands,function(key){
-                    if(commands[key].type == param[1]){
+                var keys = Object.keys(commands);
+                var i = 0;
+                var out = {};
+                for(i=0;i<keys.length;i++){
+                    console.log(commands[keys[i]].type);
+                    if(commands[keys[i]].type === param[1]){
                         messageOut += key + ", ";
                     }
-                });
+                }
                 message.reply(messageOut);
                 break;
 
