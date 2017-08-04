@@ -65,7 +65,13 @@ client.on('message', message => {
                 break;
                     
             case "show":
-                console.log(JSON.parse(fs.readFileSync(param[1] + ".json", 'utf8')));
+                var messageOut = "";
+                Object.keys(commands,function(key){
+                    if(commands[key].type == param[1]){
+                        messageOut += key + ", ";
+                    }
+                });
+                message.reply(messageOut);
                 break;
 
                     
