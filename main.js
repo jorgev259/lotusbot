@@ -96,14 +96,24 @@ client.on('message', message => {
                     switch(param[1]){
                         case "add":
                             message.mentions.roles.forEach(function(role){
-                                commands[param[2]].perms.push( role.id );
+                                command.perms.push( role.id );
                             });
+                            commands.findAndModify({
+                            query: { "name": command.name},
+                            update: { $set: { "perms": command.perms } }
+                            });
+
                             break;
 
                         case "remove":
                             message.mentions.roles.forEach(function(role){
-                                commands[param[2]] = commands[param[2]].filter(e => e !== role.id);
+                                command.perms = command.perms.filter(e => e !== role.id);
                             });
+                            commands.findAndModify({
+                            query: { "name": command.name},
+                            update: { $set: { "perms": command.perms } }
+                            });
+
                             break;
                     }
                     break;
