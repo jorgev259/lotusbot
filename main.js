@@ -7,14 +7,6 @@ var commands = JSON.parse(fs.readFileSync('commands.json', 'utf8'));
 var config =JSON.parse(fs.readFileSync('config.json', 'utf8'));
 var prefix = config.prefix;
 
-
-//setting web server so Heroku doesnt complain, just ignore it
-var express = require('express');
-var app = express();
-var port = process.env.PORT || 8080;
-app.listen(port, function() {});
-//stop ignoring from here on
-
 client.on('ready', () => {
   console.log('I am ready!');
 });
@@ -94,4 +86,4 @@ client.on('message', message => {
     }
 });
 
-client.login(config.token);
+client.login(process.env.discord_token);
