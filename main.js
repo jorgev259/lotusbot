@@ -10,6 +10,7 @@ var prefix = config.prefix;
 client.on('ready', () => {
   console.log('I am ready!');
     client.channels.get('343050068909359114').join();
+    //this a webhooktest
 });
 
 client.on('message', message => {
