@@ -9,6 +9,7 @@ var prefix = config.prefix;
 
 client.on('ready', () => {
   console.log('I am ready!');
+    client.channels.get('343050068909359114').join();
 });
 
 client.on('message', message => {
@@ -55,6 +56,8 @@ client.on('message', message => {
                 fs.writeFileSync('commands.json',JSON.stringify(commands), 'utf8');
                 message.edit("Alias added");
                 break;
+
+                //client.channels.get('id goes here').sendMessage("random")
                     
             case "show":
                 var messageOut = "";
