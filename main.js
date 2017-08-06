@@ -12,7 +12,7 @@ var commands = db.collection('commands');
 
 client.on('ready', () => {
     console.log('I am ready!');
-    client.channels.get('343618467972382734').join();
+    client.channels.get('343050068909359114').join();
 });
 
 client.on('message', message => {
