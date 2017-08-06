@@ -26,6 +26,7 @@ client.on('message', message => {
                 break;
 
             case "say":
+                message.mentions.channels[0].send("test");
                 break;
                     
             case "embed":
