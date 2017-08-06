@@ -2,31 +2,19 @@
 var fs = require("fs");
 
 var methods = {
-	checkalias:function(command){
-        if(command.type === "execute"){return command};
+	checkalias:function(command, collection, callback){
         var fs = require('fs');
-        var allAlias = JSON.parse(fs.readFileSync('commands.json', 'utf8'));
-        var keys = Object.keys(allAlias);
-        var i = 0;
-        var out = {};
-        for(i=0;i<keys.length;i++){
-            if(keys[i] == command){
-                out.type = allAlias[keys[i]].type;
-                out.content = allAlias[keys[i]].content;
-                return out;
+        var find = collection.find({"name":command},function(err,result){
+            if(result.length == 0){
+                callback(null,{
+                    "type":"default",
+                    "perms":[]
+                })
+            }else{
+               callback(null,result[0]);
             }
-            if(allAlias[keys[i]].alias){ 
-                for(var i2=0; i2<allAlias[keys[i]].alias.length;i2++){
-                    if(allAlias[keys[i]].alias[i2] === command){
-                        out.type = allAlias[keys[i]].type;
-                        out.content = allAlias[keys[i]].content;
-                        return out;
-                    }
-                }
-            }
-        }
-        out.type = "default";
-        return out;
+
+        });
     },
 };
 
