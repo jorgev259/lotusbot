@@ -136,7 +136,7 @@ client.on('message', message => {
                                 "avatar": quote.author.avatarURL
                             })
 
-                            client.channels.get('344014495137398784').send({embed});
+                            client.channels.get('344238216624341002').send({embed});
 
                             message.reply(" has recorded your message in the books of history <@" + quote.author.id + ">");
                         });
