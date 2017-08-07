@@ -4,7 +4,7 @@ var fs = require("fs");
 var methods = {
 	checkalias:function(command, collection, callback){
         var fs = require('fs');
-        var find = collection.find({"name":command},function(err,result){
+        collection.find({"name":command},function(err,result){
             if(result.length == 0){
                 callback(null,{
                     "type":"default",

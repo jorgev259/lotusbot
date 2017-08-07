@@ -7,8 +7,9 @@ var config =JSON.parse(fs.readFileSync('config.json', 'utf8'));
 var prefix = config.prefix;
 
 var mongojs = require('mongojs');
-var db = mongojs(process.env.mongourl || "mongodb://akira:akira@ds111882.mlab.com:11882/akira");
+var db = mongojs(process.env.mongourl);
 var commands = db.collection('commands');
+var quotes = db.collection('quotes');
 
 client.on('ready', () => {
     console.log('I am ready!');
@@ -49,7 +50,7 @@ client.on('message', message => {
 
                 case "embed":
                     var embed = new Discord.RichEmbed()
-                    .setColor(0x00AE86)
+                    .setColor(0x7C00B9)
                     .setImage(command.content);
                      message.channel.send({embed});
                     break;
@@ -71,17 +72,17 @@ client.on('message', message => {
 
 
                 case "show":
-                    var messageOut = "";
-                    var keys = Object.keys(commands);
-                    var i = 0;
-                    var out = {};
-                    for(i=0;i<keys.length;i++){
-                        console.log(commands[keys[i]].type);
-                        if(commands[keys[i]].type === param[1]){
-                            messageOut += key + ", ";
+                    commands.find({"type":param[1]},function(err,result){
+                        if(result.length>0){
+                            var final = "```" + result[0].name;
+                            for(var i=1;i<result.length;i++){
+                                final += ", " + result[i].name;
+                            };
+                            message.reply(final + "```");
+                        }else{
+                            message.reply("no matching results");
                         }
-                    }
-                    message.reply(messageOut);
+                    });
                     break;
 
 
@@ -117,6 +118,47 @@ client.on('message', message => {
                     }
                     break;
 
+                case "addquote":
+                    message.channel.fetchMessage(param[1]).then(function(quote){
+                        quotes.count(function(err,count){
+                            var embed = new Discord.RichEmbed()
+                            .setColor(0x7C00B9)
+                            .setDescription(quote.content + "\nQuote id: " + count)
+                            .setTitle("#" + quote.channel.name)
+                            .setThumbnail("https://gamefaqs.akamaized.net/faqs/25/74625-32.png")
+                            .setAuthor(quote.author.username, quote.author.avatarURL);
+
+                            quotes.save({
+                                "id":count,
+                                "realid":quote.id
+                            })
+
+                            client.channels.get('344014495137398784').send({embed});
+
+                            message.reply(" has recorded your message in the books of history <@" + quote.author.id + ">");
+                        });
+                    });
+                    break;
+
+                case "quote":
+                    quotes.find({"id":parseInt(param[1])},function(err,result){
+                        if(result.length>0){
+                            var quote = result[0]
+
+                            var embed = new Discord.RichEmbed()
+                            .setColor(0x7C00B9)
+                            .setDescription(quote.content + "\nQuote id: " + param[1])
+                            .setTitle("#" + quote.channel.name)
+                            .setThumbnail("https://gamefaqs.akamaized.net/faqs/25/74625-32.png")
+                            .setAuthor(quote.author.username, quote.author.avatarURL);
+
+                            message.channel.send({embed});
+                        }else{
+                            message.reply("invalid Quote id");
+                        }
+                    })
+                    break;
+
                 case "default":
                 default:
                     message.reply('This command is not on our realm');
@@ -126,4 +168,4 @@ client.on('message', message => {
     }
 });
 
-client.login(process.env.discord_token || "MzQzMDI1NjY1MTUyNTE2MDk3.DGlA9Q.Z_A9cHTMBFFYNZURdD3WEur85to");
+client.login(process.env.discord_token);
