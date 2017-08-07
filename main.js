@@ -7,12 +7,11 @@ var config =JSON.parse(fs.readFileSync('config.json', 'utf8'));
 var prefix = config.prefix;
 
 var mongojs = require('mongojs');
-var db = mongojs(process.env.mongourl);
+var db = mongojs(process.env.mongourl || "mongodb://akira:akira@ds111882.mlab.com:11882/akira");
 var commands = db.collection('commands');
 
 client.on('ready', () => {
     console.log('I am ready!');
-    client.channels.get('343050068909359114').join();
 });
 
 client.on('message', message => {
@@ -127,4 +126,4 @@ client.on('message', message => {
     }
 });
 
-client.login(process.env.discord_token);
+client.login(process.env.discord_token || "MzQzMDI1NjY1MTUyNTE2MDk3.DGlA9Q.Z_A9cHTMBFFYNZURdD3WEur85to");
