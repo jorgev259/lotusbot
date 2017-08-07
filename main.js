@@ -130,7 +130,10 @@ client.on('message', message => {
 
                             quotes.save({
                                 "id":count,
-                                "realid":quote.id
+                                "desc":quote.content + "\nQuote id: " + count,
+                                "title":"#" + quote.channel.name,
+                                "author":quote.author.username,
+                                "avatar": quote.author.avatarURL
                             })
 
                             client.channels.get('344014495137398784').send({embed});
@@ -143,14 +146,14 @@ client.on('message', message => {
                 case "quote":
                     quotes.find({"id":parseInt(param[1])},function(err,result){
                         if(result.length>0){
-                            var quote = result[0]
+                            var quote = result[0];
 
                             var embed = new Discord.RichEmbed()
                             .setColor(0x7C00B9)
-                            .setDescription(quote.content + "\nQuote id: " + param[1])
-                            .setTitle("#" + quote.channel.name)
+                            .setDescription(quote.desc)
+                            .setTitle(quote.title)
                             .setThumbnail("https://gamefaqs.akamaized.net/faqs/25/74625-32.png")
-                            .setAuthor(quote.author.username, quote.author.avatarURL);
+                            .setAuthor(quote.author, quote.avatar);
 
                             message.channel.send({embed});
                         }else{
