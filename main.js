@@ -19,7 +19,7 @@ client.on('message', message => {
     if(message.content.startsWith(prefix)){
         var param = message.content.split(" ");
         param[0] = param[0].split(prefix)[1];
-        util.checkalias(param[0], commands,function(err,command){
+        util.checkalias(param[0].toLowerCase(), commands,function(err,command){
             if(command.perms.length>0){
                 var allowed = false;
                 for(var i=0;i<command.perms.length;i++){
@@ -99,22 +99,14 @@ client.on('message', message => {
                             message.mentions.roles.forEach(function(role){
                                 command.perms.push( role.id );
                             });
-                            commands.findAndModify({
-                            query: { "name": command.name},
-                            update: { $set: { "perms": command.perms } }
-                            });
-
+                            commands.save(command);
                             break;
 
                         case "remove":
                             message.mentions.roles.forEach(function(role){
                                 command.perms = command.perms.filter(e => e !== role.id);
                             });
-                            commands.findAndModify({
-                            query: { "name": command.name},
-                            update: { $set: { "perms": command.perms } }
-                            });
-
+                            commands.save(command);
                             break;
                     }
                     break;
