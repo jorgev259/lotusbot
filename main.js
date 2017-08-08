@@ -37,6 +37,7 @@ client.on('message', message => {
             if(command.type == "execute"){command.type = param[0]};
             switch(command.type){
                 case "simple":
+                    message.delete();
                     message.channel.send(command.content);
                     break;
 
@@ -137,7 +138,7 @@ client.on('message', message => {
                             })
 
                             client.channels.get('344238216624341002').send({embed});
-
+                            message.delete();
                             message.reply(" has recorded your message in the books of history <@" + quote.author.id + ">");
                         });
                     });
