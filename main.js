@@ -16,7 +16,7 @@ client.on('ready', () => {
 });
 
 client.on("guildMemberAdd", (member) => {
-    ((client.guilds.get('289758148175200257')).channels.get('289758148175200257')).send("");
+    ((client.guilds.get('289758148175200257')).channels.get('289758148175200257')).send("Welcome to Fandom Circle, <@" + member.id + ">! Have Fun");
 });
 
 client.on('message', message => {
