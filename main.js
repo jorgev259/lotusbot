@@ -15,6 +15,10 @@ client.on('ready', () => {
     console.log('I am ready!');
 });
 
+client.on("guildMemberAdd", (member) => {
+    ((client.guilds.get()).channels.get()).send("");
+});
+
 client.on('message', message => {
     if(message.content.startsWith(prefix)){
         var param = message.content.split(" ");
@@ -57,8 +61,8 @@ client.on('message', message => {
                     break;
 
                 case "add":
-                    var name = param[2];
-                    var type = param[1];
+                    var name = param[2].toLowerCase();
+                    var type = param[1].toLowerCase();
                     param.shift();
                     param.shift();
                     param.shift();
