@@ -16,7 +16,7 @@ client.on('ready', () => {
 });
 
 client.on("guildMemberAdd", (member) => {
-    ((client.guilds.get()).channels.get()).send("");
+    ((client.guilds.get('289758148175200257')).channels.get('289758148175200257')).send("");
 });
 
 client.on('message', message => {
