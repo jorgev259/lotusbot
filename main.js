@@ -162,10 +162,6 @@ client.on('message', message => {
                     })
                     break;
 
-                case "sudo":
-                    eval((param.join(" ")).split("\\n").join("\n"));
-                    break;
-
                 case "default":
                 default:
                     message.reply('This command is not on our realm');
