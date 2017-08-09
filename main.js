@@ -23,6 +23,7 @@ client.on('message', message => {
     if(message.content.startsWith(prefix)){
         var param = message.content.split(" ");
         param[0] = param[0].split(prefix)[1];
+
         util.checkalias(param[0].toLowerCase(), commands,function(err,command){
             if(command.perms.length>0){
                 var allowed = false;
@@ -98,24 +99,32 @@ client.on('message', message => {
                     break;
 
                 case "perms":
-                    var type = param[1];
-                    param.shift();
-                    param.hift();
-                    switch(type){
-                        case "add":
-                            param.forEach(function(role){
-                                command.perms.push( role.id );
-                            });
-                            commands.save(command);
-                            break;
+                    commands.find({"name":param[1]},function(err,result{
+                        if(result.length > 0){
+                            var type = param[2];
+                            param.shift();
+                            param.shift();
+                            param.shift();
 
-                        case "remove":
-                            param.forEach(function(role){
-                                command.perms = command.perms.filter(e => e !== role.id);
-                            });
-                            commands.save(command);
-                            break;
-                    }
+                            switch(type){
+                                case "add":
+                                    param.forEach(function(role){
+                                        result[0].perms.push( role.id );
+                                    });
+                                    result[0].save(command);
+                                    break;
+
+                                case "remove":
+                                    param.forEach(function(role){
+                                        result[0].perms = command.perms.filter(e => e !== role.id);
+                                    });
+                                    result[0].save(command);
+                                    break;
+                            }
+                        }else{
+                            message.reply("Couldnt find " + param[1]);
+                        }
+                    }));
                     break;
 
                 case "addquote":
