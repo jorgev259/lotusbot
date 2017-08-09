@@ -92,22 +92,25 @@ client.on('message', message => {
 
 
                 case "remove":
-                    var query = {"name":param[1]};
+                    var query = {"name":param[1].toLowerCase()};
                     commands.remove(query);
                     message.reply("Command removed");
                     break;
 
                 case "perms":
-                    switch(param[1]){
+                    var type = param[1];
+                    param.shift();
+                    param.hift();
+                    switch(type){
                         case "add":
-                            message.mentions.roles.forEach(function(role){
+                            param.forEach(function(role){
                                 command.perms.push( role.id );
                             });
                             commands.save(command);
                             break;
 
                         case "remove":
-                            message.mentions.roles.forEach(function(role){
+                            param.forEach(function(role){
                                 command.perms = command.perms.filter(e => e !== role.id);
                             });
                             commands.save(command);
