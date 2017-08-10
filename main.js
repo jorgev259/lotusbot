@@ -99,32 +99,25 @@ client.on('message', message => {
                     break;
 
                 case "perms":
-                    commands.find({"name":param[1]},function(err,result{
+                    commands.find({"name":param[1]},function(err,result){
                         if(result.length > 0){
                             var type = param[2];
-                            param.shift();
-                            param.shift();
-                            param.shift();
 
                             switch(type){
                                 case "add":
-                                    param.forEach(function(role){
-                                        result[0].perms.push( role.id );
-                                    });
-                                    result[0].save(command);
+                                        result[0].perms.push( param[3] );
+                                    commands.save(result[0]);
                                     break;
 
                                 case "remove":
-                                    param.forEach(function(role){
-                                        result[0].perms = command.perms.filter(e => e !== role.id);
-                                    });
-                                    result[0].save(command);
+                                        result[0].perms = command.perms.filter(e => e !== param[3]);
+                                    commands.save(result[0]);
                                     break;
                             }
                         }else{
                             message.reply("Couldnt find " + param[1]);
                         }
-                    }));
+                    });
                     break;
 
                 case "addquote":
