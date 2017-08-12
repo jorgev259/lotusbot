@@ -17,6 +17,7 @@ client.on('ready', () => {
 
 client.on("guildMemberAdd", (member) => {
     ((client.guilds.get('289758148175200257')).channels.get('289758148175200257')).send("Welcome to Fandom Circle, <@" + member.id + ">! Have Fun");
+    member.addRole(345903441299767326);
 });
 
 client.on('message', message => {
@@ -123,6 +124,10 @@ client.on('message', message => {
                 case "addquote":
                     message.channel.fetchMessage(param[1]).then(function(quote){
                         quotes.count(function(err,count){
+                            if(param.length){
+
+                            }
+
                             var embed = new Discord.RichEmbed()
                             .setColor(0x7C00B9)
                             .setDescription(quote.content + "\nQuote id: " + count)
