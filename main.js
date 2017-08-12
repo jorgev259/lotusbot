@@ -106,12 +106,12 @@ client.on('message', message => {
 
                             switch(type){
                                 case "add":
-                                        result[0].perms.push( param[3] );
+                                    result[0].perms.push( param[3] );
                                     commands.save(result[0]);
                                     break;
 
                                 case "remove":
-                                        result[0].perms = command.perms.filter(e => e !== param[3]);
+                                    result[0].perms = command.perms.filter(e => e !== param[3]);
                                     commands.save(result[0]);
                                     break;
                             }
@@ -124,15 +124,22 @@ client.on('message', message => {
                 case "addquote":
                     message.channel.fetchMessage(param[1]).then(function(quote){
                         quotes.count(function(err,count){
-                            if(param.length){
+                            var color;
+                            var thumb;
 
+                            if(param.length == 3 && param[1].toLowerCase() === "deep"){
+                                color = 0x08457E;
+                                thumb = "https://raw.githubusercontent.com/rikumax25/akirabot/master/resources/74625-32.png"
+                            }else{
+                                color = 0x7C00B9;
+                                thumb = "https://gamefaqs.akamaized.net/faqs/25/74625-32.png";
                             }
 
                             var embed = new Discord.RichEmbed()
-                            .setColor(0x7C00B9)
+                            .setColor(color)
                             .setDescription(quote.content + "\nQuote id: " + count)
                             .setTitle("#" + quote.channel.name)
-                            .setThumbnail("https://gamefaqs.akamaized.net/faqs/25/74625-32.png")
+                            .setThumbnail(thumb)
                             .setAuthor(quote.author.username, quote.author.avatarURL);
 
                             quotes.save({
@@ -140,6 +147,8 @@ client.on('message', message => {
                                 "desc":quote.content + "\nQuote id: " + count,
                                 "title":"#" + quote.channel.name,
                                 "author":quote.author.username,
+                                "thumb":thumb,
+                                "color":color,
                                 "avatar": quote.author.avatarURL
                             })
 
@@ -156,10 +165,10 @@ client.on('message', message => {
                             var quote = result[0];
 
                             var embed = new Discord.RichEmbed()
-                            .setColor(0x7C00B9)
+                            .setColor(quote.color)
                             .setDescription(quote.desc)
                             .setTitle(quote.title)
-                            .setThumbnail("https://gamefaqs.akamaized.net/faqs/25/74625-32.png")
+                            .setThumbnail(quote.thumb)
                             .setAuthor(quote.author, quote.avatar);
 
                             message.channel.send({embed});
