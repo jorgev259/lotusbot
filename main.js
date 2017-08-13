@@ -186,4 +186,4 @@ client.on('message', message => {
     }
 });
 
-client.login(process.env.discord_token  || "MzQzMDI1NjY1MTUyNTE2MDk3.DHEzcg.YDaZr9krB_micZ5bYzDz20NSAcg");
+client.login(process.env.discord_token);
