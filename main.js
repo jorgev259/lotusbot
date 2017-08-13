@@ -1,3 +1,6 @@
+var dotenv = require('dotenv');
+dotenv.load();
+
 const Discord = require('discord.js');
 var fs = require("fs");
 const client = new Discord.Client();
@@ -29,7 +32,7 @@ client.on('message', message => {
             if(command.perms.length>0){
                 var allowed = false;
                 for(var i=0;i<command.perms.length;i++){
-                    if(message.member.roles.has(command.perms[i])) {
+                    if(message.member.roles.has(message.member.guild.roles.find("name", command.perms[i]).id)) {
                         allowed = true;
                     }
                 }
