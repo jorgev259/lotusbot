@@ -125,19 +125,21 @@ client.on('message', message => {
                     break;
 
                 case "addquote":
-                    message.channel.fetchMessage(param[1]).then(function(quote){
+                    var color;
+                    var thumb;
+                    var snowflake;
+                    if(param.length == 3 && param[1].toLowerCase() === "deep"){
+                        color = 0x08457E;
+                        thumb = "https://raw.githubusercontent.com/rikumax25/akirabot/master/resources/74625-32.png";
+                        snowflake = param[2];
+                    }else{
+                        color = 0x7C00B9;
+                        thumb = "https://gamefaqs.akamaized.net/faqs/25/74625-32.png";
+                        snowflake = param[1];
+                    }
+
+                    message.channel.fetchMessage(snowflake).then(function(quote){
                         quotes.count(function(err,count){
-                            var color;
-                            var thumb;
-
-                            if(param.length == 3 && param[1].toLowerCase() === "deep"){
-                                color = 0x08457E;
-                                thumb = "https://raw.githubusercontent.com/rikumax25/akirabot/master/resources/74625-32.png"
-                            }else{
-                                color = 0x7C00B9;
-                                thumb = "https://gamefaqs.akamaized.net/faqs/25/74625-32.png";
-                            }
-
                             var embed = new Discord.RichEmbed()
                             .setColor(color)
                             .setDescription(quote.content + "\nQuote id: " + count)
