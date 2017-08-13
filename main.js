@@ -17,7 +17,7 @@ client.on('ready', () => {
 
 client.on("guildMemberAdd", (member) => {
     member.guild.defaultChannel.send("Welcome to Fandom Circle, <@" + member.id + ">! Have Fun");
-    member.addRole(client.guilds.get('289758148175200257').roles.find("name", "Nation"));
+    member.addRole(member.guild.roles.find("name", "Nation"));
 });
 
 client.on('message', message => {
