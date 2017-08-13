@@ -16,7 +16,7 @@ client.on('ready', () => {
 
 client.on("guildMemberAdd", (member) => {
     ((client.guilds.get('289758148175200257')).channels.get('289758148175200257')).send("Welcome to Fandom Circle, <@" + member.id + ">! Have Fun");
-    member.addRole("345903441299767326");
+    member.addRole(client.guilds.get('289758148175200257').roles.find("name", "Nation"));
 });
 
 client.on('message', message => {
@@ -186,4 +186,4 @@ client.on('message', message => {
     }
 });
 
-client.login(process.env.discord_token);
+client.login(process.env.discord_token  || "MzQzMDI1NjY1MTUyNTE2MDk3.DHEzcg.YDaZr9krB_micZ5bYzDz20NSAcg");
