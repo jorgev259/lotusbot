@@ -5,8 +5,7 @@ var util = require('./utilities.js');
 
 var config =JSON.parse(fs.readFileSync('config.json', 'utf8'));
 var prefix = config.prefix;
-
-var mongojs = require('mongojs');
+    var mongojs = require('mongojs');
 var db = mongojs(process.env.mongourl);
 var commands = db.collection('commands');
 var quotes = db.collection('quotes');
@@ -17,7 +16,7 @@ client.on('ready', () => {
 
 client.on("guildMemberAdd", (member) => {
     ((client.guilds.get('289758148175200257')).channels.get('289758148175200257')).send("Welcome to Fandom Circle, <@" + member.id + ">! Have Fun");
-    member.addRole(345903441299767326);
+    member.addRole("345903441299767326");
 });
 
 client.on('message', message => {
