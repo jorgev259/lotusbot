@@ -189,6 +189,22 @@ client.on('message', message => {
                     break;
             }
         })
+    }else{
+        switch(message.channel.name){
+            case "music_bot":
+                if(validUrl.isUri(message.content)){
+                    message.guild.channels.find("name","hidden-music").send("!play " + message.content);
+                }else if(message.content.startsWith("!")){
+                    message.guild.channels.find("name","hidden-music").send(message.content);
+                }
+                break;
+
+            case "hidden-music":
+                if(message.author.name === "Rythm"){
+                    message.guild.channels.find("name","music_bot").send(message.content);
+                }
+                break;
+        }
     }
 });
 
