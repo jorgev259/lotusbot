@@ -1,4 +1,5 @@
 var dotenv = require('dotenv');
+var validUrl = require('valid-url');
 dotenv.load();
 
 const Discord = require('discord.js');
