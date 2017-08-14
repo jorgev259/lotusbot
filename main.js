@@ -17,11 +17,11 @@ var quotes = db.collection('quotes');
 
 client.on('ready', () => {
     console.log('I am ready!');
+        member.guild.channels.find("name","Music 24/7").join();
 });
 
 client.on("guildMemberAdd", (member) => {
     member.guild.channels.find("name","general").send("Welcome to Fandom Circle, <@" + member.id + ">! Have Fun");
-    member.guild.channels.find("name","Music 24/7").join()
     member.addRole(member.guild.roles.find("name", "Nation"));
 });
 
