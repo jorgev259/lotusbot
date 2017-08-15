@@ -113,15 +113,17 @@ client.on('message', message => {
                     commands.find({"name":param[1]},function(err,result){
                         if(result.length > 0){
                             var type = param[2];
-
+                            param.shift();
+                            param.shift();
+                            param.shift();
                             switch(type){
                                 case "add":
-                                    result[0].perms.push( param[3] );
+                                    result[0].perms.push( param.join(" ") );
                                     commands.save(result[0]);
                                     break;
 
                                 case "remove":
-                                    result[0].perms = command.perms.filter(e => e !== param[3]);
+                                    result[0].perms = command.perms.filter(e => e !== param.join(" ") );
                                     commands.save(result[0]);
                                     break;
                             }
