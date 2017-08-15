@@ -17,7 +17,7 @@ var quotes = db.collection('quotes');
 
 client.on('ready', () => {
     console.log('I am ready!');
-    client.channels.find("name","Music 24/7").join();
+    //client.channels.find("name","Music 24/7").join();
 });
 
 client.on("guildMemberAdd", (member) => {
