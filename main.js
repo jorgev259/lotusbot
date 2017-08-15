@@ -64,7 +64,7 @@ client.on('message', message => {
                 case "embed":
                     var embed = new Discord.RichEmbed()
                     .setColor(0x7C00B9)
-                    .setImage(command.content[0]);
+                    .setImage(command.content[Math.floor(Math.random() * command.content.length)]);
                      message.channel.send({embed});
                     break;
 
@@ -75,11 +75,17 @@ client.on('message', message => {
                     param.shift();
                     param.shift();
                     commands.find({"name":name},function(err,result){
-                        if(result.length == 0){
+                        if(type === "embed" && result.length>0){
+
+                            result[0].content.push(param.join(" "));
+                            commands.save(result[0]);
+                            message.reply("Command udpated");
+
+                        }else if(result.length==0){
                             commands.save({
                                 "name":name,
                                 "type":type,
-                                "content": (param.join(" ")).split("\\n").join("\n"),
+                                "content": param.join(" ").split("\\n").join("\n"),
                                 "perms":[]
                             });
                             message.reply("Command added");
