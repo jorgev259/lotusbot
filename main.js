@@ -62,6 +62,7 @@ client.on('message', message => {
                     break;
 
                 case "embed":
+                    if()
                     var embed = new Discord.RichEmbed()
                     .setColor(0x7C00B9)
                     .setImage(command.content[Math.floor(Math.random() * command.content.length)]);
@@ -82,10 +83,18 @@ client.on('message', message => {
                             message.reply("Command udpated");
 
                         }else if(result.length==0){
+                            var output;
+                            if(type === "embed"){
+                                content = [param.join(" ").split("\\n").join("\n")];
+                            }else{
+                                content = param.join(" ").split("\\n").join("\n");
+                            }
+
+
                             commands.save({
                                 "name":name,
                                 "type":type,
-                                "content": param.join(" ").split("\\n").join("\n"),
+                                "content": content,
                                 "perms":[]
                             });
                             message.reply("Command added");
@@ -214,6 +223,15 @@ client.on('message', message => {
                             message.reply("invalid Quote id");
                         }
                     })
+                    break;
+
+                case "promote":
+                    message.mentions.users.forEach(function(user){
+
+                    })
+                    break;
+
+                case "demote":
                     break;
 
                 case "default":
