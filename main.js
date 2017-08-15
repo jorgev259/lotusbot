@@ -128,7 +128,15 @@ client.on('message', message => {
                             param.shift();
                             switch(type){
                                 case "add":
-                                    result[0].perms.push( param.join(" ") );
+                                    var add = false;
+                                    roleLadder.forEach(function(role){
+                                        if(role === param.join(" ")){
+                                            add = true;
+                                        }
+                                        if(add){
+                                            result[0].perms.push(role);
+                                        }
+                                    })
                                     commands.save(result[0]);
                                     break;
 
