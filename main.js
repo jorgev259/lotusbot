@@ -64,7 +64,7 @@ client.on('message', message => {
                 case "embed":
                     var embed = new Discord.RichEmbed()
                     .setColor(0x7C00B9)
-                    .setImage(command.content);
+                    .setImage(command.content[0]);
                      message.channel.send({embed});
                     break;
 
