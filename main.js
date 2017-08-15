@@ -72,13 +72,19 @@ client.on('message', message => {
                     param.shift();
                     param.shift();
                     param.shift();
-                    commands.save({
-                        "name":name,
-                        "type":type,
-                        "content": (param.join(" ")).split("\\n").join("\n"),
-                        "perms":[]
+                    commands.find({"name":name},function(err,result){
+                        if(result.length == 0){
+                            commands.save({
+                                "name":name,
+                                "type":type,
+                                "content": (param.join(" ")).split("\\n").join("\n"),
+                                "perms":[]
+                            });
+                            message.reply("Command added");
+                        }else{
+                            message.reply("That command already exists, choose another name");
+                        }
                     });
-                    message.reply("Command added");
                     break;
 
 
