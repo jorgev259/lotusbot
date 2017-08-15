@@ -104,9 +104,16 @@ client.on('message', message => {
 
 
                 case "remove":
-                    var query = {"name":param[1].toLowerCase()};
-                    commands.remove(query);
-                    message.reply("Command removed");
+                    commands.find({"name":param[1].toLowerCase()},function(err,result){
+                        if(result.length>0 && result.type != "execute"){
+                            commands.remove(result);
+                            message.reply("Command removed");
+                        }else if(result.type === "execute"){
+                            message.reply("Command cant be removed, contact a Staff member");
+                        }else{
+                            message.reply("Command doesnt exist");
+                        }
+                    });
                     break;
 
                 case "perms":
