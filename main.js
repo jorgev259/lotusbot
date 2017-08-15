@@ -17,7 +17,6 @@ var quotes = db.collection('quotes');
 
 client.on('ready', () => {
     console.log('I am ready!');
-    //client.channels.find("name","Music 24/7").join();
 });
 
 client.on("guildMemberAdd", (member) => {
@@ -34,7 +33,7 @@ client.on('message', message => {
             if(command.perms.length>0){
                 var allowed = false;
                 for(var i=0;i<command.perms.length;i++){
-                    if(message.member.roles.has(message.member.guild.roles.find("name", command.perms[i]).id)) {
+                    if(message.member.roles.has((message.member.guild.roles.find("name", command.perms[i])).id)) {
                         allowed = true;
                     }
                 }
@@ -157,9 +156,9 @@ client.on('message', message => {
                                 "thumb":thumb,
                                 "color":color,
                                 "avatar": quote.author.avatarURL
-                            })
+                            });
 
-                            client.channels.get('344238216624341002').send({embed});
+                            message.guild.channels.find("name","featured-quotes").send({embed});
                             message.delete();
                             message.reply(" has recorded your message in the books of history <@" + quote.author.id + ">");
                         });
@@ -193,19 +192,7 @@ client.on('message', message => {
         })
     }else{
         switch(message.channel.name){
-            case "music_bot":
-                if(validUrl.isUri(message.content)){
-                    message.guild.channels.find("name","hidden-music").send("!play " + message.content);
-                }else if(message.content.startsWith("!")){
-                    message.guild.channels.find("name","hidden-music").send(message.content);
-                }
-                break;
 
-            case "hidden-music":
-                if(message.author.name === "Rythm"){
-                    message.guild.channels.find("name","music_bot").send(message.content);
-                }
-                break;
         }
     }
 });
