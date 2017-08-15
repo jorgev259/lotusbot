@@ -8,6 +8,7 @@ const client = new Discord.Client();
 var util = require('./utilities.js');
 
 var config =JSON.parse(fs.readFileSync('config.json', 'utf8'));
+var roleLadder = JSON.parse(fs.readFileSync('ladder.json', 'utf8'));
 var prefix = config.prefix;
 
 var mongojs = require('mongojs');
@@ -35,6 +36,7 @@ client.on('message', message => {
                 for(var i=0;i<command.perms.length;i++){
                     if(message.member.roles.has((message.member.guild.roles.find("name", command.perms[i])).id)) {
                         allowed = true;
+                        i=command.perms.length;
                     }
                 }
 
@@ -105,10 +107,11 @@ client.on('message', message => {
 
                 case "remove":
                     commands.find({"name":param[1].toLowerCase()},function(err,result){
-                        if(result.length>0 && result.type != "execute"){
-                            commands.remove(result);
+                        if(result.length>0 && result[0].type !== "execute"){
+                            var query = {"name":param[1]};
+                            commands.remove(query);
                             message.reply("Command removed");
-                        }else if(result.type === "execute"){
+                        }else if(result.length>0 && result[0].type === "execute"){
                             message.reply("Command cant be removed, contact a Staff member");
                         }else{
                             message.reply("Command doesnt exist");
