@@ -21,8 +21,10 @@ client.on('ready', () => {
 });
 
 client.on("guildMemberAdd", (member) => {
-    member.guild.channels.find("name","general").send("Welcome to Fandom Circle, <@" + member.id + ">! Have Fun");
-    member.addRole(member.guild.roles.find("name", "Nation"));
+    if(member.guild.id == 289758148175200257){
+        member.guild.channels.find("name","general").send("Welcome to Fandom Circle, <@" + member.id + ">! Have Fun");
+        member.addRole(member.guild.roles.find("name", "Nation"));
+    }
 });
 
 client.on('message', message => {
