@@ -73,8 +73,18 @@ client.on('message', message => {
                     case "embed":
                         var embed = new Discord.RichEmbed()
                         .setColor(0x7C00B9)
-                        .setImage(command.content[Math.floor(Math.random() * command.content.length)]);
+                        .setImage(command.content[0]);
                          message.channel.send({embed});
+
+                        if(command.content.length>1){
+                            var first = command.content[0];
+                            for(var i=1;i<command.content.length;i++){
+                                command.content[i-1] = command.content[i];
+                            };
+                            command.content[command.content.length - 1] = first;
+
+                            commands.save(command);
+                        }
                         break;
 
                     case "add":
