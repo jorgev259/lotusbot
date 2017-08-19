@@ -12,17 +12,21 @@ var prefix = config.prefix;
 
 var mongojs = require('mongojs');
 var db = mongojs(process.env.mongourl);
+var quildConfig =db.collection('config');
 var commands = db.collection('commands');
 var perms = db.collection('perms');
 var quotes = db.collection('quotes');
 
 client.on('ready', () => {
     console.log('I am ready!');
+
 });
 
 client.on("guildMemberAdd", (member) => {
-    member.guild.channels.find("name","general").send("Welcome to Fandom Circle, <@" + member.id + ">! Have Fun");
-    member.addRole(member.guild.roles.find("name", "Nation"));
+    if(member.guild.id == 289758148175200257){
+        member.guild.channels.find("name","general").send("Welcome to Fandom Circle, <@" + member.id + ">! Have Fun");
+        member.addRole(member.guild.roles.find("name", "Nation"));
+    }
 });
 
 client.on('message', message => {
@@ -32,10 +36,11 @@ client.on('message', message => {
 
         util.checkalias(param[0].toLowerCase(), commands,function(err,command){
             perms.find({"guild":message.guild.id,"name":command.name},function(err,result){
+                debugger;
                 if(result.length>0){
                     var allowed = false;
                     for(var i=0;i<result[0].perms.length;i++){
-                        if(message.member.roles.has(message.member.guild.roles.find("name", result[0].perms[i]))) {
+                        if(message.member.roles.has((message.member.guild.roles.find("name", result[0].perms[i])).id)){
                             allowed = true;
                             i=result[0].perms.length;
                         }
@@ -148,24 +153,25 @@ client.on('message', message => {
                                     case "add":
                                         result[0].perms.push(param.join(" "));
                                         perms.save(result[0]);
-                                        message.reply("Added " + param.join(" ") + " to the command " + result[0].name);
+                                        message.reply("Added " + param.join(" ") + " to the command " + param[1]);
                                         break;
 
                                     case "remove":
                                         result[0].perms = result[0].perms.filter(e => e !== param.join(" ") );
                                         perms.save(result[0]);
-                                        message.reply("Temoved " + param.join(" ") + " from the command " + result[0].name);
+                                        message.reply("Removed " + param.join(" ") + " from the command " + param[1]);
                                         break;
                                 }
                             }else{
                                 var type = param[2];
+                                var name = param[1];
                                 param.shift();
                                 param.shift();
                                 param.shift();
                                 switch(type){
                                     case "add":
-                                        perms.save({"guild":message.guild.id,"name":command.name,"perms":[param.join(" ")]});
-                                        message.reply("Added " + param.join(" ") + " to the command " + command.name);
+                                        perms.save({"guild":message.guild.id,"name":name,"perms":[param.join(" ")]});
+                                        message.reply("Added " + param.join(" ") + " to the command " + param[1]);
                                         break;
                                 }
                             }
