@@ -146,6 +146,7 @@ client.on('message', message => {
                         perms.find({"guild":message.guild.id,"name":param[1]},function(err,result){
                             if(result.length > 0){
                                 var type = param[2];
+                                var name = param[1];
                                 param.shift();
                                 param.shift();
                                 param.shift();
@@ -153,13 +154,13 @@ client.on('message', message => {
                                     case "add":
                                         result[0].perms.push(param.join(" "));
                                         perms.save(result[0]);
-                                        message.reply("Added " + param.join(" ") + " to the command " + param[1]);
+                                        message.reply("Added " + param.join(" ") + " to the command " + name);
                                         break;
 
                                     case "remove":
                                         result[0].perms = result[0].perms.filter(e => e !== param.join(" ") );
                                         perms.save(result[0]);
-                                        message.reply("Removed " + param.join(" ") + " from the command " + param[1]);
+                                        message.reply("Removed " + param.join(" ") + " from the command " + name);
                                         break;
                                 }
                             }else{
