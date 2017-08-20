@@ -39,7 +39,9 @@ client.on('message', message => {
                     if(result.length>0){
                         var allowed = false;
                         for(var i=0;i<result[0].perms.length;i++){
-                            if(message.member.roles.has((message.member.guild.roles.find("name", result[0].perms[i])).id)){
+                            var role = message.member.guild.roles.find("name", result[0].perms[i]);
+
+                            if(role != null && message.member.roles.has(role.id)){
                                 allowed = true;
                                 i=result[0].perms.length;
                             }
@@ -51,6 +53,7 @@ client.on('message', message => {
                     }
 
                     if(command.type == "execute"){command.type = param[0]};
+                    debugger;
                     switch(command.type){
                         case "not allowed":
                             message.reply("you are not allowed to use this command");
@@ -264,7 +267,8 @@ client.on('message', message => {
 
                         case "default":
                         default:
-                            message.reply('This command is not on our realm');
+                            setTimeout(function(){message.delete()},parseInt(serverConfig[0].deleteTimeout));
+                            message.reply('This command is not on our realm').then(reply =>  setTimeout(function(){reply.delete()},parseInt(serverConfig[0].deleteTimeout)));
                             break;
                     }
                 })
