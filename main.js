@@ -267,8 +267,10 @@ client.on('message', message => {
 
                         case "default":
                         default:
+                            if(serverConfig[0].404 === "true"){
                             setTimeout(function(){message.delete()},parseInt(serverConfig[0].deleteTimeout));
                             message.reply('This command is not on our realm').then(reply =>  setTimeout(function(){reply.delete()},parseInt(serverConfig[0].deleteTimeout)));
+                            }
                             break;
                     }
                 })
