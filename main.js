@@ -248,7 +248,7 @@ client.on('message', message => {
                     default:
                         if(config["404"] === "true"){
                             setTimeout(function(){message.delete()},parseInt(config.deleteTimeout));
-                            message.reply('This command is not on our realm').then(reply =>  setTimeout(function()reply.delete()},parseInt(config.deleteTimeout)));
+                            message.reply('This command is not on our realm').then(reply =>  setTimeout(function(){reply.delete()},parseInt(config.deleteTimeout)));
                         }
                         break;
                 }
