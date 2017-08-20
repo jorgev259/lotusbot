@@ -172,7 +172,7 @@ client.on('message', message => {
                                 switch(type){
                                     case "add":
                                         perms.save({"name":name,"perms":[param.join(" ")]});
-                                        message.reply("Added " + param.join(" ") + " to the command " + param[1]);
+                                        message.reply("Added " + param.join(" ") + " to the command " + name);
                                         break;
                                 }
                             }
