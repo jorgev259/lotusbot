@@ -240,8 +240,24 @@ client.on('message', message => {
                         break;
 
                     case "role":
+                        param.splice(0,(Array.from(message.mentions.users.values())).length + 1);
+                        var roles = param.join(" ").split("|");
                         message.mentions.users.forEach(function(user){
+                            var member = message.guild.member(user);
+                            var roleList = [];
+
+                            roles.forEach(function(rolename){
+                                var role = message.guild.roles.find("name",rolename);
+                                if(role === null){
+                                    message.reply("Couldnt find role " + rolename);
+                                }else{
+                                    roleList.push(role);
+                                }
                             })
+
+                            member.setRoles(roleList);
+                        })
+                        message.reply("Roles completed!");
                         break;
 
                     case "default":
