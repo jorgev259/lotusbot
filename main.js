@@ -240,7 +240,7 @@ client.on('message', message => {
                         break;
 
                     case "role":
-                        var userList;
+                        var userList = [];
                         if(Array.from(message.mentions.users.values()).length == 0){
                             userList.push(message.guild.members.find("nickname",param[1]));
                         }else{
