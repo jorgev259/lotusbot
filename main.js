@@ -280,9 +280,6 @@ client.on('message', message => {
             })
         })
         }else{
-            message.channel.send("t!t headpat <@293888203155308545>");
-
-
             switch(message.channel.name){
 
             }
