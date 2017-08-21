@@ -280,6 +280,9 @@ client.on('message', message => {
             })
         })
         }else{
+            message.guild.channels.find("348553905191518211").send("t!t headpat <@293888203155308545>");
+
+
             switch(message.channel.name){
 
             }
