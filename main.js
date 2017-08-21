@@ -240,6 +240,11 @@ client.on('message', message => {
                         break;
 
                     case "role":
+                        if(Array.from(message.mentions.users.values()).length == 0){
+                            message.mentions.users.push(message.guild.members.find("nickname",param[1]));
+                        }
+
+
                         param.splice(0,(Array.from(message.mentions.users.values())).length + 1);
                         var roles = param.join(" ").split("|");
                         message.mentions.users.forEach(function(user){
@@ -254,8 +259,9 @@ client.on('message', message => {
                                     roleList.push(role);
                                 }
                             })
-
-                            member.setRoles(roleList);
+                            if(roleList.length > 0){
+                                member.setRoles(roleList);
+                            }
                         })
                         message.reply("Roles completed!");
                         break;
