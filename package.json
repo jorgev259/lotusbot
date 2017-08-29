@@ -7,15 +7,15 @@
     "test": "node inspect main.js",
     "start": "node main.js"
   },
-   "engines": {
-    "node":">8.0.0"
-   },
+  "engines": {
+    "node": ">8.0.0"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.17.2",
     "bufferutil": "^3.0.2",
-    "discord.js": "^11.1.0",
+    "discord.js": "github:hydrabolt/discord.js",
     "dotenv": "^4.0.0",
     "ejs": "~1.0.0",
     "express": "^4.15.4",
