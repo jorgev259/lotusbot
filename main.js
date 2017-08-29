@@ -55,7 +55,7 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
-app.listen((process.env.OPENSHIFT_NODEJS_PORT||8080), process.env.OPENSHIFT_NODEJS_IP, function() {console.log(process.env.OPENSHIFT_NODEJS_IP + ":" + process.env.OPENSHIFT_NODEJS_PORT)});
+//app.listen((process.env.OPENSHIFT_NODEJS_PORT||8080), process.env.OPENSHIFT_NODEJS_IP, function() {console.log(process.env.OPENSHIFT_NODEJS_IP + ":" + process.env.OPENSHIFT_NODEJS_PORT)});
 
 
 client.on('ready', () => {
@@ -108,7 +108,7 @@ client.on('message', message => {
                         break
 
                     case "embed":
-                        var embed = new Discord.RichEmbed()
+                        var embed = new Discord.MessageEmbed()
                         .setColor(0x7C00B9)
                         .setImage(command.content[0]);
                          message.channel.send({embed});
@@ -235,7 +235,7 @@ client.on('message', message => {
                         }
                             message.channel.fetchMessage(snowflake).then(function(quote){
                             quotes.count(function(err,count){
-                                var embed = new Discord.RichEmbed()
+                                var embed = new Discord.MessageEmbed()
                                 .setColor(color)
                                 .setDescription(quote.content + "\nQuote id: " + count)
                                 .setTitle("#" + quote.channel.name)
