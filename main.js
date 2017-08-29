@@ -233,7 +233,7 @@ client.on('message', message => {
                             thumb = "https://gamefaqs.akamaized.net/faqs/25/74625-32.png";
                             snowflake = param[1];
                         }
-                            message.channel.fetchMessage(snowflake).then(function(quote){
+                            message.channel.messages.fetch(snowflake).then(function(quote){
                             quotes.count(function(err,count){
                                 var embed = new Discord.MessageEmbed()
                                 .setColor(color)
@@ -250,7 +250,7 @@ client.on('message', message => {
                                     "color":color,
                                     "avatar": quote.author.avatarURL
                                 });
-                                    message.guild.channels.find("name","featured-quotes").send({embed});
+                                message.guild.channels.find("name","featured-quotes").send({embed});
                                 message.delete();
                                 message.reply(" has recorded your message in the books of history <@" + quote.author.id + ">");
                             });
