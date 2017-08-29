@@ -261,7 +261,7 @@ client.on('message', message => {
                         quotes.find({"id":parseInt(param[1])},function(err,result){
                             if(result.length>0){
                                 var quote = result[0];
-                                    var embed = new Discord.RichEmbed()
+                                    var embed = new Discord.MessageEmbed()
                                 .setColor(quote.color)
                                 .setDescription(quote.desc)
                                 .setTitle(quote.title)
