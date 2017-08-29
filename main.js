@@ -60,7 +60,7 @@ app.use(function(req, res, next) {
 
 client.on('ready', () => {
     console.log('I am ready!');
-    client.channels.find('name','Music 24/7').join();
+    client.channels.find('id','350968254975574026').join();
 });
 
 client.on("guildMemberAdd", (member) => {
