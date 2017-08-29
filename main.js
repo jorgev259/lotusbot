@@ -2,6 +2,11 @@ var dotenv = require('dotenv');
 var validUrl = require('valid-url');
 dotenv.load();
 
+var express = require('express');
+var app = express();
+var port = process.env.PORT || 8080;
+app.listen(port, function() {});
+
 const Discord = require('discord.js');
 var fs = require("fs");
 const client = new Discord.Client();
@@ -316,10 +321,13 @@ client.on('message', message => {
                             reactionNumbers.forEach(function(reaction){
                                 reply.react(reaction);
                             });
-                            var collector = reply.createReactionCollector((reaction, user) => user.id != client.user.id);
-                            collector.on('collect',reaction => {
+                            var collector = reply.createReactionCollector((reaction, user) => (user.id != client.user.id));
+                            collector.on('collect',function(test,reaction,user){
+                                console.log(test);
+                                console.log(user);
+                                console.log(reaction);
                                 reaction.message.reactions.forEach(function(react){
-                                    if(react.users.exists("id",reactions)){}
+                                    if(react.users.exists("id",user.id)){console.log("este cabron ya eligió")}
                                 })
                             });
                         });
