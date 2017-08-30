@@ -21,6 +21,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(methodOverride());
 
+var music = require('akira-js-music');
+music(client,{"prefix":">"});
+
 
 var db = require('mongojs')(process.env.mongourl);
 var config;
@@ -306,9 +309,6 @@ client.on('message', message => {
                         message.reply("Roles completed!");
                         break;
 
-                    case "boi":
-                        voice.playFile('./myfile.mp3');
-                        break;
 
                     case "default":
                     default:
