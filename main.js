@@ -1,5 +1,6 @@
 var dotenv = require('dotenv');
 var validUrl = require('valid-url');
+var voice;
 dotenv.load();
 
 var express = require('express');
@@ -60,9 +61,11 @@ app.use(function(req, res, next) {
 
 client.on('ready', () => {
     console.log('I am ready!');
-    client.channels.find('id','350968254975574026').join();
+    client.channels.find('name','🎵 Music 24/7').join().then(connection => {
+        voice = connection;
+    })
 });
-
+'
 client.on("guildMemberAdd", (member) => {
     member.guild.channels.find("name","general").send("Welcome to Fandom Circle, <@" + member.id + ">! Have Fun");
     member.addRole(member.guild.roles.find("name", "Nation"));
@@ -301,6 +304,8 @@ client.on('message', message => {
                             }
                         })
                         message.reply("Roles completed!");
+                        break;
+                    case "boi":
                         break;
 
                     case "default":
