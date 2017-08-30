@@ -305,7 +305,9 @@ client.on('message', message => {
                         })
                         message.reply("Roles completed!");
                         break;
+
                     case "boi":
+                        voice.playFile('./myfile.mp3');
                         break;
 
                     case "default":
