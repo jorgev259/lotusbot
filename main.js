@@ -22,7 +22,6 @@ app.use(bodyParser.json());
 app.use(methodOverride());
 
 var music = require('akira-js-music');
-music.set(client);
 
 
 var db = require('mongojs')(process.env.mongourl);
