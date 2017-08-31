@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 app.use(methodOverride());
 
 var music = require('akira-js-music');
-music(client,{"prefix":">"});
+music.set(client);
 
 
 var db = require('mongojs')(process.env.mongourl);
@@ -64,9 +64,7 @@ app.use(function(req, res, next) {
 
 client.on('ready', () => {
     console.log('I am ready!');
-    client.channels.find('name','🎵 Music 24/7').join().then(connection => {
-        voice = connection;
-    })
+    client.channels.find('name','🎵 Music 24/7').join();
 });
 
 client.on("guildMemberAdd", (member) => {
@@ -76,6 +74,9 @@ client.on("guildMemberAdd", (member) => {
 
 client.on('message', message => {
     var prefix = config.prefix;
+    const command = message.content.substring(prefix.length).split(/[ \n]/)[0].toLowerCase().trim();
+    const suffix = message.content.substring(prefix.length + command.length).trim();
+
     if(message.content.startsWith(prefix)){
         var param = message.content.split(" ");
         param[0] = param[0].split(prefix)[1];
@@ -309,6 +310,31 @@ client.on('message', message => {
                         message.reply("Roles completed!");
                         break;
 
+                    case 'play':
+                        music.play(message, suffix, client);
+                        break;
+
+                    case 'skip':
+                         music.skip(message, suffix, client);
+                        break;
+                    case 'queue':
+                         music.queue(message, suffix, client);
+                        break;
+                    case 'pause':
+                         music.pause(message, suffix, client);
+                        break;
+                    case 'resume':
+                         music.resume(message, suffix, client);
+                        break;
+                    case 'volume':
+                         music.volume(message, suffix, client);
+                        break;
+                    case 'join':
+                         music.join(message, suffix, client);
+                        break;
+                    case 'clearqueue':
+                         music.clearqueue(message, suffix, client);
+                        break;8
 
                     case "default":
                     default:
