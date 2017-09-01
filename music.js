@@ -77,7 +77,7 @@ module.exports = {
 				response.edit(wrap('Queued: ' + info.title)).then(() => {
 					queue.push(info);
 					// Play if only one element in the queue.
-					if (queue.length === 1) module.exports.executeQueue(msg, queue);
+					if (queue.length === 1) module.exports.executeQueue(msg, client);
 				}).catch(console.log);
 			});
 		}).catch(console.log);
@@ -245,7 +245,7 @@ module.exports = {
 	 * @param {object} queue - The song queue for this server.
 	 * @returns {<promise>} - The voice channel.
 	 */
-	executeQueue:function(msg) {
+	executeQueue:function(msg,client) {
 		// If the queue is empty, finish.
 		if (queue.length === 0) {
 			return;
@@ -282,14 +282,14 @@ module.exports = {
 					// Skip to the next song.
 					console.log(error);
 					queue.shift();
-					module.exports.executeQueue(msg, queue);
+					module.exports.executeQueue(msg, client);
 				});
 
 				dispatcher.on('error', (error) => {
 					// Skip to the next song.
 					console.log(error);
 					queue.shift();
-					module.exports.executeQueue(msg, queue);
+					module.exports.executeQueue(msg, client);
 				});
 
 				dispatcher.on('end', () => {
@@ -299,7 +299,7 @@ module.exports = {
 							// Remove the song from the queue.
 							queue.shift();
 							// Play the next song in the queue.
-							module.exports.executeQueue(msg, queue);
+							module.exports.executeQueue(msg, client);
 						}
 					}, 1000);
 				});
