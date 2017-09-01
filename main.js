@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(methodOverride());
 
-var music = require('akira-js-music');
+var music = require('./music.js');
 
 
 var db = require('mongojs')(process.env.mongourl);
