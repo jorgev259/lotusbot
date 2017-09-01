@@ -316,21 +316,27 @@ client.on('message', message => {
                     case 'skip':
                          music.skip(message, suffix, client);
                         break;
+
                     case 'queue':
                          music.queue(message, suffix, client);
-                        break;
+                        break
+
                     case 'pause':
                          music.pause(message, suffix, client);
                         break;
+
                     case 'resume':
                          music.resume(message, suffix, client);
                         break;
+
                     case 'volume':
                          music.volume(message, suffix, client);
                         break;
+
                     case 'join':
                          music.join(message, suffix, client);
                         break;
+
                     case 'clearqueue':
                          music.clearqueue(message, suffix, client);
                         break;8

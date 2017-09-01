@@ -38,10 +38,8 @@ module.exports = {
     },
 
 	canSkip:function(member, queue) {
-		if (ALLOW_ALL_SKIP) return true;
-		else if (queue[0].requester === member.id) return true;
-		else if (isAdmin(member)) return true;
-		else return false;
+		if (queue[0].requester === member.id) return true;
+        else return false;
     },
 
 	/**
@@ -154,9 +152,6 @@ module.exports = {
 		const voiceConnection = client.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
 		if (voiceConnection === null) return msg.channel.send(wrap('No music being played.'));
 
-		if (!isAdmin(msg.member))
-			return msg.channel.send(wrap('You are not authorized to use this.'));
-
 		// Pause.
 		msg.channel.send(wrap('Playback paused.'));
 		const dispatcher = voiceConnection.player.dispatcher;
@@ -181,14 +176,8 @@ module.exports = {
 	 * @param {string} suffix - Command suffix.
 	 */
 	clearqueue:function(msg, suffix, client) {
-		if (isAdmin(msg.member)) {
-
-
 			queue.splice(0, queue.length);
 			msg.channel.send(wrap('Queue cleared!'));
-		} else {
-			msg.channel.send(wrap('You don\'t have permission to use that command!'));
-		}
     },
 
 	/**
