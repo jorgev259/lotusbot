@@ -115,10 +115,7 @@ client.on('message', message => {
                         break
 
                     case "embed":
-                        var embed = new Discord.MessageEmbed()
-                        .setColor(0x7C00B9)
-                        .setImage(command.content[0]);
-                         message.channel.send({embed});
+                         message.channel.send("",{files: [command.content[0]]});
                             if(command.content.length>1){
                             var first = command.content[0];
                             for(var i=1;i<command.content.length;i++){
