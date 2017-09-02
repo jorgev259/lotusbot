@@ -353,26 +353,7 @@ client.on('message', message => {
         })
         }else{
             switch(message.channel.name){
-                case "rate-music":
-                    if(validUrl.isUri(message.content)){
-                        var star = message.guild.emojis.find("name","r1");
-                        message.channel.send("Rating 1 out of 10 " + star.toString() + ". Shared by " + message.author.toString() + "\n" + message.content).then(reply => {
-                            reactionNumbers.forEach(function(reaction){
-                                reply.react(reaction);
-                            });
-                            var collector = reply.createReactionCollector((reaction, user) => (user.id != client.user.id));
-                            collector.on('collect',function(test,reaction,user){
-                                console.log(test);
-                                console.log(user);
-                                console.log(reaction);
-                                reaction.message.reactions.forEach(function(react){
-                                    if(react.users.exists("id",user.id)){console.log("este cabron ya eligió")}
-                                })
-                            });
-                        });
-                        message.delete();
-                    }
-                    break;
+
             }
     }
 });
