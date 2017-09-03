@@ -63,7 +63,7 @@ app.use(function(req, res, next) {
 
 client.on('ready', () => {
     console.log('I am ready!');
-    client.channels.find('name','🎵 Music 24/7').join();
+    client.channels.find('name','🎵 Music 24/7 🎵').join();
 });
 
 client.on("guildMemberAdd", (member) => {
@@ -188,13 +188,29 @@ client.on('message', message => {
                         break;
 
                     case "perms":
+                        //perms command add/remove role/user/channel
+
                         perms.find({"name":param[1]},function(err,result){
                             if(result.length > 0){
-                                var type = param[2];
                                 var name = param[1];
+                                var type = param[2];
                                 param.shift();
                                 param.shift();
                                 param.shift();
+
+                                var permObject = {};
+
+                                if((Array.from(message.mentions.users.values())).length > 0){
+                                    permObject.type = "user";
+                                    permObject.value = message.mentions.users[0].id;
+                                }else if((Array.from(message.mentions.channels.values())).length > 0){
+                                     permObject.type = "channel";
+                                    permObject.value = message.mentions.channels[0].name;
+                                }else{
+                                    permObject.type = "role";
+                                    permObject.value = param.join(" ");
+                                }
+
                                 switch(type){
                                     case "add":
                                         result[0].perms.push(param.join(" "));
