@@ -331,23 +331,6 @@ client.on('message', message => {
                         message.reply("Roles completed!");
                         break;
 
-                    case "toggle":
-                        var validRoles = {"animenight":"Anime Night"};
-                        Object.keys(validRoles).forEach(function(role){
-                            if(role === param[1]){
-                                var roleFind = message.member.guild.roles.find("name", validRoles[role]);
-                                if(message.member.roles.has(roleFind.id)){
-                                    message.member.removeRole(roleFind);
-                                    message.reply("Not like i wanted you to have it, baka");
-                                }else{
-                                    message.member.addRole(roleFind);
-                                    message.reply("We hereby welcome you");
-                                }
-                            }
-                        })
-                        break;
-
-
                     case 'play':
                         music.play(message, suffix, client);
                         break;
