@@ -92,14 +92,16 @@ client.on('message', message => {
                     }
                     if(allowedChannel){
                         var allowed = false;
-                        for(var i=0;i<result[0].role.length;i++){
-                            var role = message.member.guild.roles.find("name", result[0].role[i]);
-                            if(role != null && message.member.roles.has(role.id)){
-                                allowed = true;
-                                i=result[0].perms.length;
+                        if(result[0].role.length>0){
+                            for(var i=0;i<result[0].role.length;i++){
+                                var role = message.member.guild.roles.find("name", result[0].role[i]);
+                                if(role != null && message.member.roles.has(role.id)){
+                                    allowed = true;
+                                    i=result[0].perms.length;
+                                }
                             }
                         }
-                        if(!allowed){
+                        if(!allowed && result[0].user.length>0){
                             for(var i=0;i<result[0].user.length;i++){
                                 if(result[0].user[i] == message.author.id){
                                     allowed = true;
