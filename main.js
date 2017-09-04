@@ -83,16 +83,25 @@ client.on('message', message => {
         util.checkalias(param[0].toLowerCase(), commands,function(err,command){
             perms.find({"name":command.name},function(err,result){
                 if(result.length>0){
-                    var allowed = false;
-                    for(var i=0;i<result[0].perms.length;i++){
-                        var role = message.member.guild.roles.find("name", result[0].perms[i]);
-                            if(role != null && message.member.roles.has(role.id)){
-                            allowed = true;
-                            i=result[0].perms.length;
-                        }
+                    var allowedChannel = true;
+                    if(result[0].channel.length>0){
+                        allowedChannel = false;
+                        result.channel.forEach(function(channel){
+                            if(channel == message.channel.id){allowedChannel = true;}
+                        })
                     }
-                        if(!allowed){
-                        command.type = "not allowed";
+                    if(allowedChannel){
+                        var allowed = false;
+                        for(var i=0;i<result[0].perms.length;i++){
+                            var role = message.member.guild.roles.find("name", result[0].perms[i]);
+                            if(role != null && message.member.roles.has(role.id)){
+                                allowed = true;
+                                i=result[0].perms.length;
+                            }
+                        }
+                            if(!allowed){
+                            command.type = "not allowed";
+                        }
                     }
                 }
                 if(command.type == "execute"){command.type = param[0]};
@@ -189,52 +198,52 @@ client.on('message', message => {
 
                     case "perms":
                         //perms command add/remove role/user/channel
+                        var name = param[1];
+                        var type = param[2];
+                        param.shift();
+                        param.shift();
+                        param.shift();
 
-                        perms.find({"name":param[1]},function(err,result){
+                        perms.find({"name":name},function(err,result){
                             if(result.length > 0){
-                                var name = param[1];
-                                var type = param[2];
-                                param.shift();
-                                param.shift();
-                                param.shift();
-
-                                var permObject = {};
-
-                                if((Array.from(message.mentions.users.values())).length > 0){
-                                    permObject.type = "user";
-                                    permObject.value = message.mentions.users[0].id;
-                                }else if((Array.from(message.mentions.channels.values())).length > 0){
-                                     permObject.type = "channel";
-                                    permObject.value = message.mentions.channels[0].name;
-                                }else{
-                                    permObject.type = "role";
-                                    permObject.value = param.join(" ");
-                                }
-
                                 switch(type){
                                     case "add":
-                                        result[0].perms.push(param.join(" "));
+                                        if((Array.from(message.mentions.users.values())).length > 0){
+                                            result[0].user.push((Array.from(message.mentions.users.values()))[0].id);
+                                        }else if((Array.from(message.mentions.channels.values())).length > 0){
+                                             result[0].channel.push(Array.from(message.mentions.channels.values()))[0].id);
+                                        }else{
+                                            result[0].role.push(param.join(" "));
+                                        }
                                         perms.save(result[0]);
-                                        message.reply("Added " + param.join(" ") + " to the command " + name);
+                                        message.reply(param.join(" ") + " is now allowed to use " + name);
                                         break;
 
-                                    case "remove":
+                                    /*case "remove":
                                         result[0].perms = result[0].perms.filter(e => e !== param.join(" ") );
                                         perms.save(result[0]);
                                         message.reply("Removed " + param.join(" ") + " from the command " + name);
-                                        break;
+                                        break;*/
                                 }
                             }else{
-                                var type = param[2];
-                                var name = param[1];
-                                param.shift();
-                                param.shift();
-                                param.shift();
                                 switch(type){
                                     case "add":
-                                        perms.save({"name":name,"perms":[param.join(" ")]});
-                                        message.reply("Added " + param.join(" ") + " to the command " + name);
+                                        var newPerm = {"name":name, "user":[], "role":[], "channel":[]};
+
+                                        if((Array.from(message.mentions.users.values())).length > 0){
+                                            newPerm.user.push((Array.from(message.mentions.users.values()))[0].id);
+                                        }else if((Array.from(message.mentions.channels.values())).length > 0){
+                                             newPerm.channel.push((Array.from(message.mentions.channels.values()))[0].id);
+                                        }else{
+                                            newPerm.role.push(param.join(" "));
+                                        }
+
+                                        perms.save(newPerm);
+                                        message.reply(param.join(" ") + " is now allowed to use " + name);
                                         break;
+
+                                    case "delete":
+                                        message.reply("This command has no permissions set");
                                 }
                             }
                         });
@@ -322,6 +331,23 @@ client.on('message', message => {
                         message.reply("Roles completed!");
                         break;
 
+                    case "toggle":
+                        var validRoles = {"animenight":"Anime Night"};
+                        Object.keys(validRoles).forEach(function(role){
+                            if(role === param[1]){
+                                var roleFind = message.member.guild.roles.find("name", validRoles[role]);
+                                if(message.member.roles.has(roleFind.id)){
+                                    message.member.removeRole(roleFind);
+                                    message.reply("Not like i wanted you to have it, baka");
+                                }else{
+                                    message.member.addRole(roleFind);
+                                    message.reply("We hereby welcome you");
+                                }
+                            }
+                        })
+                        break;
+
+
                     case 'play':
                         music.play(message, suffix, client);
                         break;
@@ -352,7 +378,7 @@ client.on('message', message => {
 
                     case 'clearqueue':
                          music.clearqueue(message, suffix, client);
-                        break;8
+                        break;
 
                     case "default":
                     default:
