@@ -92,9 +92,11 @@ module.exports = {
 	skip:function(msg, suffix, client) {
 		// Get the voice connection.
 		const voiceConnection = client.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
+        const staff = message.member.guild.roles.find("name", "Staff");
+
 		if (voiceConnection === null) return msg.channel.send(wrap('No music being played.'));
 
-		if (!module.exports.canSkip(msg.member, queue)) return msg.channel.send(wrap('You cannot skip this as you didn\'t queue it.')).then((response) => {
+		if ((!module.exports.canSkip(msg.member, queue)) || (message.member.roles.has(staff.id))) return msg.channel.send(wrap('You cannot skip this as you didn\'t queue it. Ask a staff member to skip it if needed')).then((response) => {
 			response.delete(5000);
 		});
 
