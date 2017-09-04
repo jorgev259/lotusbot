@@ -92,26 +92,30 @@ client.on('message', message => {
                     }
                     if(allowedChannel){
                         var allowed = false;
-                        for(var i=0;i<result[0].perms.length;i++){
-                            var role = message.member.guild.roles.find("name", result[0].perms[i]);
+                        for(var i=0;i<result[0].role.length;i++){
+                            var role = message.member.guild.roles.find("name", result[0].role[i]);
                             if(role != null && message.member.roles.has(role.id)){
                                 allowed = true;
                                 i=result[0].perms.length;
                             }
                         }
-                            if(!allowed){
-                            command.type = "not allowed";
+                        if(!allowed){
+                            for(var i=0;i<result[0].user.length;i++){
+                                if(result[0].user[i] == message.author.id){
+                                    allowed = true;
+                                    i=result[0].user.length;
+                                }
+                            }
+                        }
+                        if(!allowed){
+                            command.type = "simple";
+                            command.content = "you are not allowed to use this command";
                         }
                     }
                 }
                 if(command.type == "execute"){command.type = param[0]};
                 switch(command.type){
-                    case "not allowed":
-                        message.reply("you are not allowed to use this command");
-                        break;
-
                     case "simple":
-                        message.delete();
                         message.channel.send(command.content);
                         break;
 
