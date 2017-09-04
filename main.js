@@ -97,7 +97,7 @@ client.on('message', message => {
                                 var role = message.member.guild.roles.find("name", result[0].role[i]);
                                 if(role != null && message.member.roles.has(role.id)){
                                     allowed = true;
-                                    i=result[0].perms.length;
+                                    i=result[0].role.length;
                                 }
                             }
                         }
