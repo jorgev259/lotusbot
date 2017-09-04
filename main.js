@@ -86,7 +86,7 @@ client.on('message', message => {
                     var allowedChannel = true;
                     if(result[0].channel.length>0){
                         allowedChannel = false;
-                        result.channel.forEach(function(channel){
+                        result[0].channel.forEach(function(channel){
                             if(channel == message.channel.id){allowedChannel = true;}
                         })
                     }
