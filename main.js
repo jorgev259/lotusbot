@@ -211,7 +211,7 @@ client.on('message', message => {
                                         if((Array.from(message.mentions.users.values())).length > 0){
                                             result[0].user.push((Array.from(message.mentions.users.values()))[0].id);
                                         }else if((Array.from(message.mentions.channels.values())).length > 0){
-                                             result[0].channel.push(Array.from(message.mentions.channels.values()))[0].id);
+                                             result[0].channel.push((Array.from(message.mentions.channels.values()))[0].id);
                                         }else{
                                             result[0].role.push(param.join(" "));
                                         }
