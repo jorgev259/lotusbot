@@ -92,7 +92,7 @@ module.exports = {
 	skip:function(msg, suffix, client) {
 		// Get the voice connection.
 		const voiceConnection = client.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
-        const staff = message.member.guild.roles.find("name", "Staff");
+        const staff = msg.member.guild.roles.find("name", "Staff");
 
 		if (voiceConnection === null) return msg.channel.send(wrap('No music being played.'));
 
