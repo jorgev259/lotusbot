@@ -84,14 +84,17 @@ client.on('message', message => {
             perms.find({"name":command.name},function(err,result){
                 if(result.length>0){
                     var allowedChannel = true;
+                    var allowed = false;
+
                     if(result[0].channel.length>0){
                         allowedChannel = false;
                         result[0].channel.forEach(function(channel){
-                            if(channel == message.channel.id){allowedChannel = true;}
+                            if(channel == message.channel.id){allowedChannel = true;allowed=true;}
                         })
                     }
                     if(allowedChannel){
-                        var allowed = false;
+                        if(result[0].role.length>0 || result[0].user.length>0){allowed = false};
+
                         if(result[0].role.length>0){
                             for(var i=0;i<result[0].role.length;i++){
                                 var role = message.member.guild.roles.find("name", result[0].role[i]);
@@ -109,10 +112,12 @@ client.on('message', message => {
                                 }
                             }
                         }
-                        if(!allowed){
-                            command.type = "simple";
-                            command.content = "You are not allowed to use this command";
-                        }
+
+                    }
+
+                    if(!allowed){
+                        command.type = "simple";
+                        command.content = "You are not allowed to use this command";
                     }
                 }
                 if(command.type == "execute"){command.type = param[0]};
