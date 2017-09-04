@@ -111,7 +111,7 @@ client.on('message', message => {
                         }
                         if(!allowed){
                             command.type = "simple";
-                            command.content = "you are not allowed to use this command";
+                            command.content = "You are not allowed to use this command";
                         }
                     }
                 }
