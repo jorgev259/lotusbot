@@ -229,7 +229,7 @@ module.exports = {
 	executeQueue:function(msg,client) {
 		// If the queue is empty, finish.
 		if (queue.length === 0) {
-            client.channels.find('name','music-bot').send(">play https://www.youtube.com/watch?v=" + defaultPlaylist[0].resourceId.videoId);
+            client.channels.find('name','music-bot').send(">play https://www.youtube.com/watch?v=" + defaultPlaylist[(Math.floor((Math.random() * defaultPlaylist.length) + 1))].resourceId.videoId);
 			return;
 		}
 
