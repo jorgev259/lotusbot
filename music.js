@@ -30,8 +30,9 @@ module.exports = {
     },
 
 	canSkip:function(member, queue) {
-		if (queue[0].requester === member.id) return true;
-        else return false;
+        var staff = member.guild.roles.find("name", "Staff");
+		if (queue[0].requester === member.id || member.roles.has(staff.id)) {return true}
+        else {return false};
     },
 
 	/**
@@ -82,11 +83,11 @@ module.exports = {
 	 */
 	skip:function(msg, suffix, client) {
 		// Get the voice connection.
-        const staff = msg.member.guild.roles.find("name", "Staff");
+
 
 		if (voiceConnection === null) return msg.channel.send(wrap('No music being played.'));
 
-		if ((!module.exports.canSkip(msg.member, queue)) || (message.member.roles.has(staff.id))) return msg.channel.send(wrap('You cannot skip this as you didn\'t queue it. Ask a staff member to skip it if needed'));
+		if (module.exports.canSkip(msg.member, queue)) return msg.channel.send(wrap('You cannot skip this as you didn\'t queue it. Ask a staff member to skip it if needed'));
 		// Get the number to skip.
 		let toSkip = 1; // Default 1.
 		if (!isNaN(suffix) && parseInt(suffix) > 0) {
