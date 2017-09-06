@@ -181,9 +181,6 @@ module.exports = {
 		const voiceConnection = client.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
 		if (voiceConnection === null) return msg.channel.send(wrap('No music being played.'));
 
-		if (!isAdmin(msg.member))
-			return msg.channel.send(wrap('You are not authorized to use this.'));
-
 		// Resume.
 		msg.channel.send(wrap('Playback resumed.'));
 		const dispatcher = voiceConnection.player.dispatcher;
@@ -201,9 +198,6 @@ module.exports = {
 		// Get the voice connection.
 		const voiceConnection = client.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
 		if (voiceConnection === null) return msg.channel.send(wrap('No music being played.'));
-
-		if (!isAdmin(msg.member))
-			return msg.channel.send(wrap('You are not authorized to use this.'));
 
 		// Get the dispatcher
 		const dispatcher = voiceConnection.player.dispatcher;
@@ -296,12 +290,4 @@ module.exports = {
  */
 function wrap(text) {
 	return '```\n' + text.replace(/`/g, '`' + String.fromCharCode(8203)) + '\n```';
-}
-
-function isAdmin(member){
-    if(member.roles.find("name","Staff") || queue[0].requester == member.id){
-        return true;
-    }else{
-        return false;
-    }
 }
