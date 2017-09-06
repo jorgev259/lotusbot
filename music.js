@@ -29,13 +29,6 @@ module.exports = {
         });
     },
 
-	canSkip:function(member, queue) {
-        var staff = member.guild.roles.find("name", "Staff");
-        console.log(member.roles.has(staff.id));
-		if (queue[0].requester === member.id || member.roles.has(staff.id)) {return true}
-        else {return false};
-    },
-
 	/**
 	 * The command for adding a song to the queue.
 	 *
@@ -83,10 +76,12 @@ module.exports = {
 	 * @returns {<promise>} - The response message.
 	 */
 	skip:function(msg, suffix, client) {
-		// Get the voice connection.
+		// Get the voice connection
+        var staff = msg.member.guild.roles.find("name", "Staff");
+
 		if (voiceConnection === null) return msg.channel.send(wrap('No music being played.'));
 
-		if (module.exports.canSkip(msg.member, queue)) return msg.channel.send(wrap('You cannot skip this as you didn\'t queue it. Ask a staff member to skip it if needed'));
+		if (queue[0].requester === msg.member.id || msg.member.roles.has(staff.id)) return msg.channel.send(wrap('You cannot skip this as you didn\'t queue it. Ask a staff member to skip it if needed'));
 		// Get the number to skip.
 		let toSkip = 1; // Default 1.
 		if (!isNaN(suffix) && parseInt(suffix) > 0) {
