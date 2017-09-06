@@ -31,6 +31,7 @@ module.exports = {
 
 	canSkip:function(member, queue) {
         var staff = member.guild.roles.find("name", "Staff");
+        console.log(member.roles.has(staff.id));
 		if (queue[0].requester === member.id || member.roles.has(staff.id)) {return true}
         else {return false};
     },
@@ -83,8 +84,6 @@ module.exports = {
 	 */
 	skip:function(msg, suffix, client) {
 		// Get the voice connection.
-
-
 		if (voiceConnection === null) return msg.channel.send(wrap('No music being played.'));
 
 		if (module.exports.canSkip(msg.member, queue)) return msg.channel.send(wrap('You cannot skip this as you didn\'t queue it. Ask a staff member to skip it if needed'));
