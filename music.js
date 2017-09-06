@@ -1,8 +1,11 @@
 const YoutubeDL = require('youtube-dl');
 const ytdl = require('ytdl-core');
+var ypi = require('youtube-playlist-info');
 var client;
 let queue = [];
 let DEFAULT_VOLUME = 50;
+var defaultPlaylist;
+
 
 /**
  * Takes a discord.js client and turns it into a music bot.
@@ -18,23 +21,11 @@ let DEFAULT_VOLUME = 50;
  * 							volume: The default volume of the player.
  */
 module.exports = {
-    /*function (client, options) {
-	// Get all options.
-	let PREFIX = (options && options.prefix) || '!';
-	let MAX_QUEUE_SIZE = (options && options.maxQueueSize) || 20;
-	let DEFAULT_VOLUME = (options && options.volume) || 50;
-	let ALLOW_ALL_SKIP = (options && options.anyoneCanSkip) || false;
-	let CLEAR_INVOKER = (options && options.clearInvoker) || false;
-
-	/**
-	 * Checks if the user can skip the song.
-	 *
-	 * @param {GuildMember} member - The guild member
-	 * @param {array} queue - The current queue
-	 * @returns {boolean} - If the user can skip
-	 */
-    set:function(current){
-        client = current;
+    startAuto:function(client){
+        ypi.playlistInfo("AIzaSyAHrzLTPSeOF_7YNct3DoYzmjxkKyCHiCY", "PL1fIU72-EgAwOobFV7WgxjSpRBgm4QcVF", function(playlistItems) {
+            defaultPlaylist=playlistItems;
+            module.exports.executeQueue("",client);
+        });
     },
 
 	canSkip:function(member, queue) {
@@ -80,7 +71,6 @@ module.exports = {
 			});
 		}).catch(console.log);
 	},
-
 
 	/**
 	 * The command for skipping a song.
@@ -239,6 +229,7 @@ module.exports = {
 	executeQueue:function(msg,client) {
 		// If the queue is empty, finish.
 		if (queue.length === 0) {
+            client.channels.find('name','music-bot').send(">play https://www.youtube.com/watch?v=" + defaultPlaylist[0].resourceId.videoId);
 			return;
 		}
 

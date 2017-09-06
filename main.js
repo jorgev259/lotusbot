@@ -24,7 +24,7 @@ var reactionNumbers = ["1⃣","2⃣","3⃣","4⃣","5⃣","6⃣","7⃣","8⃣","
 
 client.on('ready', () => {
     console.log('I am ready!');
-    client.channels.find('name','🎵 Music 24/7 🎵').join();
+    client.channels.find('name','🎵 Music 24/7 🎵').join().then(function(){music.startAuto(client)});
 });
 
 client.on("guildMemberAdd", (member) => {
