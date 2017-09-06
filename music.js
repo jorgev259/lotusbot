@@ -86,10 +86,7 @@ module.exports = {
 
 		if (voiceConnection === null) return msg.channel.send(wrap('No music being played.'));
 
-		if ((!module.exports.canSkip(msg.member, queue)) || (message.member.roles.has(staff.id))) return msg.channel.send(wrap('You cannot skip this as you didn\'t queue it. Ask a staff member to skip it if needed')).then((response) => {
-			response.delete(5000);
-		});
-
+		if ((!module.exports.canSkip(msg.member, queue)) || (message.member.roles.has(staff.id))) return msg.channel.send(wrap('You cannot skip this as you didn\'t queue it. Ask a staff member to skip it if needed'));
 		// Get the number to skip.
 		let toSkip = 1; // Default 1.
 		if (!isNaN(suffix) && parseInt(suffix) > 0) {
@@ -211,10 +208,7 @@ module.exports = {
 		// Get the dispatcher
 		const dispatcher = voiceConnection.player.dispatcher;
 
-		if (suffix > 200 || suffix < 0) return msg.channel.send(wrap('Volume out of range!')).then((response) => {
-			response.delete(5000);
-		});
-
+		if (suffix > 200 || suffix < 0) return msg.channel.send(wrap('Volume out of range!'));
 		msg.channel.send(wrap("Volume set to " + suffix));
 		dispatcher.setVolume((suffix/100));
     },
