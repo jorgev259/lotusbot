@@ -27,6 +27,7 @@
     "uws": "^8.14.0",
     "valid-url": "^1.0.9",
     "youtube-dl": "^1.11.1",
+    "youtube-playlist-info": "^0.1.0",
     "ytdl-core": "^0.9.2"
   }
 }

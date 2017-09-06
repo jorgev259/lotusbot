@@ -1,28 +1,13 @@
 var dotenv = require('dotenv');
 var validUrl = require('valid-url');
-var voice;
 dotenv.load();
-
-var express = require('express');
-var app = express();
-var port = process.env.PORT || 8080;
-app.listen(port, function() {});
 
 const Discord = require('discord.js');
 var fs = require("fs");
 const client = new Discord.Client();
 var util = require('./utilities.js');
-var express = require("express"),
-    app = express(),
-    bodyParser  = require("body-parser"),
-    methodOverride = require("method-override");
-
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-app.use(methodOverride());
 
 var music = require('./music.js');
-
 
 var db = require('mongojs')(process.env.mongourl);
 var config;
@@ -34,31 +19,6 @@ var perms = db.collection('perms');
 var quotes = db.collection('quotes');
 
 var reactionNumbers = ["1⃣","2⃣","3⃣","4⃣","5⃣","6⃣","7⃣","8⃣","9⃣", "🔟"];
-
-var router = express.Router();
-router.get('/embed', function(req, res) {
-   commands.find({"type":"embed"},function(err,result){
-       var response = [];
-        result.forEach(function(embed){
-            if(typeof embed.content === 'string'){
-                response.push(embed.content);
-            }else{
-                embed.content.forEach(function(embed2){
-                    response.push(embed2);
-                })
-            }
-        })
-        res.send(response);
-    })
-});
-
-app.use(router);
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
-//app.listen((process.env.OPENSHIFT_NODEJS_PORT||8080), process.env.OPENSHIFT_NODEJS_IP, function() {console.log(process.env.OPENSHIFT_NODEJS_IP + ":" + process.env.OPENSHIFT_NODEJS_PORT)});
 
 
 client.on('ready', () => {
