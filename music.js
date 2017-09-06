@@ -1,7 +1,7 @@
 const YoutubeDL = require('youtube-dl');
 const ytdl = require('ytdl-core');
 var ypi = require('youtube-playlist-info');
-var client;
+var voiceConnection;
 let queue = [];
 let DEFAULT_VOLUME = 50;
 var defaultPlaylist;
@@ -21,9 +21,10 @@ var defaultPlaylist;
  * 							volume: The default volume of the player.
  */
 module.exports = {
-    startAuto:function(client){
+    startAuto:function(client,connection){
         ypi.playlistInfo("AIzaSyAHrzLTPSeOF_7YNct3DoYzmjxkKyCHiCY", "PL1fIU72-EgAwOobFV7WgxjSpRBgm4QcVF", function(playlistItems) {
             defaultPlaylist=playlistItems;
+            voiceConnection = connection;
             module.exports.executeQueue("",client);
         });
     },
@@ -81,7 +82,6 @@ module.exports = {
 	 */
 	skip:function(msg, suffix, client) {
 		// Get the voice connection.
-		const voiceConnection = client.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
         const staff = msg.member.guild.roles.find("name", "Staff");
 
 		if (voiceConnection === null) return msg.channel.send(wrap('No music being played.'));
@@ -178,7 +178,6 @@ module.exports = {
 	 */
 	resume:function(msg, suffix, client) {
 		// Get the voice connection.
-		const voiceConnection = client.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
 		if (voiceConnection === null) return msg.channel.send(wrap('No music being played.'));
 
 		// Resume.
@@ -196,7 +195,6 @@ module.exports = {
 	 */
 	volume:function(msg, suffix, client) {
 		// Get the voice connection.
-		const voiceConnection = client.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
 		if (voiceConnection === null) return msg.channel.send(wrap('No music being played.'));
 
 		// Get the dispatcher
@@ -223,7 +221,6 @@ module.exports = {
 
 		new Promise((resolve, reject) => {
 			// Join the voice channel if not already in one.
-			const voiceConnection = client.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
 			if (voiceConnection === null) {
 				// Check if the user is in a voice channel.
 				if (msg.member.voiceChannel) {
