@@ -5,8 +5,9 @@ dotenv.load();
 const Discord = require('discord.js');
 var fs = require("fs");
 const client = new Discord.Client();
-var util = require('./utilities.js');
 
+var util = require('./utilities.js');
+var restAPI = require('./web.js');
 var music = require('./music.js');
 
 var db = require('mongojs')(process.env.mongourl);
