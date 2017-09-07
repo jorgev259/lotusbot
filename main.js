@@ -413,7 +413,7 @@ client.on('message', message => {
                             param.shift();
                             param.shift();
                             param.shift();
-                            switch(param[1]){
+                            switch(type){
                                 case "add":
                                     blacklist.save({"id":id,"reason":param.join(" ")});
                                     response = id + " has been blacklisted. Reason: " + param.join(" ");
