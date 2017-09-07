@@ -19,8 +19,6 @@ var commands = db.collection('commands');
 var perms = db.collection('perms');
 var quotes = db.collection('quotes');
 
-var reactionNumbers = ["1⃣","2⃣","3⃣","4⃣","5⃣","6⃣","7⃣","8⃣","9⃣", "🔟"];
-
 
 client.on('ready', () => {
     console.log('I am ready!');
@@ -322,9 +320,7 @@ client.on('message', message => {
                                     count++;
                                 })
                                 message.channel.send(text).then(poll => {
-                                    for(var i=0;i<count;i++){
-                                        poll.react(reactionNumbers[i]);
-                                    }
+                                    util.react(0,count,poll);
                                 });
                             });
                             /*

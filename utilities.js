@@ -1,7 +1,7 @@
-
+var reactionNumbers = ["1⃣","2⃣","3⃣","4⃣","5⃣","6⃣","7⃣","8⃣","9⃣", "🔟"];
 var fs = require("fs");
 
-var methods = {
+module.exports = {
 	checkalias:function(command, collection, callback){
         var fs = require('fs');
         collection.find({"name":command},function(err,result){
@@ -15,7 +15,14 @@ var methods = {
             }
 
         });
+    },
+
+    react:function(number,limit,poll){
+        if(number<limit){
+            poll.react(reactionNumbers[number]).then(function(){
+                module.exports.react(number+1,limit,poll);
+            })
+        };
     }
 };
 
-module.exports = methods;
