@@ -347,7 +347,7 @@ client.on('message', message => {
                                             }
 
                                             if(winners.length == 1){
-                                                message.channel.send("Poll has finished. *drumrolls*\n" + param.join(" ") + " " + winners[0].name " is the winner!");
+                                                message.channel.send("Poll has finished. *drumrolls*\n" + param.join(" ") + " " + winners[0].name+ " is the winner!");
                                             }else{
                                                 var response = "Poll has finished. " + param.join(" ") + "\n*drumrolls*\n There was a tie between " + winners[0].name;
                                                 for(var i=1;i<winners.length;i++){
