@@ -304,6 +304,40 @@ client.on('message', message => {
                             message.reply("Roles completed!");
                             break;
 
+                        case "poll":
+                            message.delete();
+                            message.channel.send("Type the options for you poll. Example: `option 1|Option 2|Non numbered option`");
+                            const collector = message.channel.createMessageCollector(
+                              m => m.author.id == message.author.id,
+                              { max: 1 }
+                            );
+                            collector.on('collect', m => {
+                                m.delete();
+                                param.shift();
+                                var text = param.join(" ") + ": ";
+                                var count = 0;
+                                var options = m.content.split("|");
+                                options.forEach(function(option){
+                                    text += (count+1) + ") `"  + option + "`:white_small_square:";
+                                    count++;
+                                })
+                                message.channel.send(text).then(poll => {
+                                    for(var i=0;i<count;i++){
+                                        poll.react(reactionNumbers[i]);
+                                    }
+                                });
+                            });
+                            /*
+                            var count = 0;
+                            options.forEach(function(option){
+                                text += reactionNumbers[count] + option + " ";
+                            })
+                            message.channel.send(text);
+                            message.delete();
+                            */
+
+                            break;
+
                         case 'play':
                             music.play(message, suffix, client);
                             break;
