@@ -15,10 +15,11 @@ var config;
 db.collection('config').find({},function(err,result){
     config = result[0]
 });
+
 var commands = db.collection('commands');
 var perms = db.collection('perms');
 var quotes = db.collection('quotes');
-
+var blacklist = db.collection('blacklist');
 
 client.on('ready', () => {
     console.log('I am ready!');
@@ -26,8 +27,16 @@ client.on('ready', () => {
 });
 
 client.on("guildMemberAdd", (member) => {
-    member.guild.channels.find("name","general").send("Welcome to Fandom Circle, <@" + member.id + ">! Have Fun");
-    member.addRole(member.guild.roles.find("name", "Nation"));
+    blacklist.find({"id":member.id},function(err,result){
+        if(result.length>0){
+            member.guild.channels.find("name","higher-staff-talk").send(member.user.username + " tried to join. He couldnt get pass the first minion")
+            member.ban({"reason":"Automatic blacklist ban"});
+
+        }else{
+            member.guild.channels.find("name","general").send("Welcome to Fandom Circle, <@" + member.id + ">! Have Fun");
+            member.addRole(member.guild.roles.find("name", "Nation"));
+        }
+    })
 });
 
 client.on('message', message => {
@@ -395,6 +404,27 @@ client.on('message', message => {
 
                         case 'clearqueue':
                              music.clearqueue(message, suffix, client);
+                            break;
+
+                        case "blacklist":
+                            var type = param[1];
+                            var id = param[2];
+                            var response;
+                            param.shift();
+                            param.shift();
+                            param.shift();
+                            switch(param[1]){
+                                case "add":
+                                    blacklist.save({"id":id,"reason":param.join(" ")});
+                                    response = id + " has been blacklisted. Reason: " + param.join(" ");
+                                    break;
+
+                                case "remove":
+                                    blacklist.remove({"id":id});
+                                    response = id + " has been removed from the blacklist."
+                                    break;
+                            }
+                            message.reply(response);
                             break;
 
                         case "default":
