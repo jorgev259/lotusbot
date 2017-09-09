@@ -6,36 +6,15 @@ let queue = [];
 let DEFAULT_VOLUME = 50;
 var defaultPlaylist;
 
-
-/**
- * Takes a discord.js client and turns it into a music bot.
- * Thanks to 'derekmartinez18' for helping.
- *
- * @param {Client} client - The discord.js client.
- * @param {object} options - (Optional) Options to configure the music bot. Acceptable options are:
- * 							prefix: The prefix to use for the commands (default '!').
- * 							global: Whether to use a global queue instead of a server-specific queue (default false).
- * 							maxQueueSize: The maximum queue size (default 20).
- * 							anyoneCanSkip: Allow anybody to skip the song.
- * 							clearInvoker: Clear the command message.
- * 							volume: The default volume of the player.
- */
 module.exports = {
     startAuto:function(client,connection,playlist){
         ypi.playlistInfo(process.env.youtubeapi, playlist, function(playlistItems) {
             defaultPlaylist=playlistItems;
             voiceConnection = connection;
-            module.exports.executeQueue("",client);
+            module.exports.playSong());
         });
     },
 
-	/**
-	 * The command for adding a song to the queue.
-	 *
-	 * @param {Message} msg - Original message.
-	 * @param {string} suffix - Command suffix.
-	 * @returns {<promise>} - The response edit.
-	 */
 	play:function(msg, suffix, client) {
 		// Make sure the user is in a voice channel.
 		if (msg.member.voiceChannel === undefined) return msg.channel.send(wrap('You\'re not in a voice channel.'));
@@ -62,19 +41,13 @@ module.exports = {
 				response.edit(wrap('Queued: ' + info.title)).then(() => {
 					queue.push(info);
 					// Play if only one element in the queue.
-					if (queue.length === 1) module.exports.executeQueue(msg, client);
+					if (queue.length === 1) module.exports.playSong();
 				}).catch(console.log);
 			});
 		}).catch(console.log);
 	},
 
-	/**
-	 * The command for skipping a song.
-	 *
-	 * @param {Message} msg - Original message.
-	 * @param {string} suffix - Command suffix.
-	 * @returns {<promise>} - The response message.
-	 */
+
 	skip:function(msg, suffix, client) {
 		// Get the voice connection
         var staff = msg.member.guild.roles.find("name", "Staff");
@@ -100,12 +73,6 @@ module.exports = {
 		msg.channel.send(wrap('Skipped ' + toSkip + '!'));
 	},
 
-	/**
-	 * The command for listing the queue.
-	 *
-	 * @param {Message} msg - Original message.
-	 * @param {string} suffix - Command suffix.
-	 */
 	queue:function(msg, suffix, client) {
 		// Get the queue text.
 		const text = queue.map((video, index) => (
@@ -114,7 +81,6 @@ module.exports = {
 
 		// Get the status of the queue.
 		let queueStatus = 'Stopped';
-		const voiceConnection = client.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
 		if (voiceConnection !== null) {
 			const dispatcher = voiceConnection.player.dispatcher;
 			queueStatus = dispatcher.paused ? 'Paused' : 'Playing';
@@ -124,16 +90,8 @@ module.exports = {
 		msg.channel.send(wrap('Queue (' + queueStatus + '):\n' + text));
 	},
 
-	/**
-	 * The command for pausing the current song.
-	 *
-	 * @param {Message} msg - Original message.
-	 * @param {string} suffix - Command suffix.
-	 * @returns {<promise>} - The response message.
-	 */
 	pause:function(msg, suffix, client) {
 		// Get the voice connection.
-		const voiceConnection = client.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
 		if (voiceConnection === null) return msg.channel.send(wrap('No music being played.'));
 
 		// Pause.
@@ -142,35 +100,15 @@ module.exports = {
 		if (!dispatcher.paused) dispatcher.pause();
     },
 
-	/**
-	 * The command for leaving the channel and clearing the queue.
-	 *
-	 * @param {Message} msg - Original message.
-	 * @param {string} suffix - Command suffix.
-	 * @returns {<promise>} - The response message.
-	 */
 	join:function(msg,client) {
         msg.member.voiceChannel.join();
 	},
 
-	/**
-	 * The command for clearing the song queue.
-	 *
-	 * @param {Message} msg - Original message.
-	 * @param {string} suffix - Command suffix.
-	 */
 	clearqueue:function(msg, suffix, client) {
-			queue.splice(0, queue.length);
-			msg.channel.send(wrap('Queue cleared!'));
+        queue.splice(0, queue.length);
+        msg.channel.send(wrap('Queue cleared!'));
     },
 
-	/**
-	 * The command for resuming the current song.
-	 *
-	 * @param {Message} msg - Original message.
-	 * @param {string} suffix - Command suffix.
-	 * @returns {<promise>} - The response message.
-	 */
 	resume:function(msg, suffix, client) {
 		// Get the voice connection.
 		if (voiceConnection === null) return msg.channel.send(wrap('No music being played.'));
@@ -181,13 +119,6 @@ module.exports = {
 		if (dispatcher.paused) dispatcher.resume();
 	},
 
-	/**
-	 * The command for changing the song volume.
-	 *
-	 * @param {Message} msg - Original message.
-	 * @param {string} suffix - Command suffix.
-	 * @returns {<promise>} - The response message.
-	 */
 	volume:function(msg, suffix, client) {
 		// Get the voice connection.
 		if (voiceConnection === null) return msg.channel.send(wrap('No music being played.'));
@@ -200,86 +131,47 @@ module.exports = {
 		dispatcher.setVolume((suffix/100));
     },
 
-	/**
-	 * Executes the next song in the queue.
-	 *
-	 * @param {Message} msg - Original message.
-	 * @param {object} queue - The song queue for this server.
-	 * @returns {<promise>} - The voice channel.
-	 */
-	executeQueue:function(msg,client) {
+	playSong:function() {
 		// If the queue is empty, finish.
 		if (queue.length === 0) {
-            client.channels.find('name','music-bot').send(">play https://www.youtube.com/watch?v=" + defaultPlaylist[(Math.floor((Math.random() * defaultPlaylist.length) + 1))].resourceId.videoId);
-			return;
+            var song = defaultPlaylist[(Math.floor((Math.random() * defaultPlaylist.length) + 1))];
+            queue[0] = {};
+            queue[0].title = song.title;
+            queue[0].webpage_url = "https://www.youtube.com/watch?v=" + song.resourceId.videoId;
 		}
 
-		new Promise((resolve, reject) => {
-			// Join the voice channel if not already in one.
-			if (voiceConnection === null) {
-				// Check if the user is in a voice channel.
-				if (msg.member.voiceChannel) {
-					msg.member.voiceChannel.join().then(connection => {
-						resolve(connection);
-					}).catch((error) => {
-						console.log(error);
-					});
-				} else {
-					// Otherwise, clear the queue and do nothing.
-					queue.splice(0, queue.length);
-					reject();
-				}
-			} else {
-				resolve(voiceConnection);
-			}
-		}).then(connection => {
-			// Get the first item in the queue.
-			const video = queue[0];
+        const video = queue[0];
 
-			// Play the video.
-			msg.channel.send(wrap('Now Playing: ' + video.title)).then(() => {
-				let dispatcher = connection.playStream(ytdl(video.webpage_url, {filter: 'audioonly'}), {seek: 0, volume: (DEFAULT_VOLUME/100)});
+        let dispatcher = voiceConnection.playStream(ytdl(video.webpage_url, {filter: 'audioonly'}), {seek: 0, volume: (DEFAULT_VOLUME/100)});
 
-				connection.on('error', (error) => {
-					// Skip to the next song.
-					console.log(error);
-					queue.shift();
-					module.exports.executeQueue(msg, client);
-				});
-
-				dispatcher.on('error', (error) => {
-					// Skip to the next song.
-					console.log(error);
-					queue.shift();
-					module.exports.executeQueue(msg, client);
-				});
-
-				dispatcher.on('end', () => {
-					// Wait a second.
-					setTimeout(() => {
-						if (queue.length > 0) {
-							// Remove the song from the queue.
-							queue.shift();
-							// Play the next song in the queue.
-							module.exports.executeQueue(msg, client);
-						}
-					}, 1000);
-				});
-			}).catch((error) => {
-				console.log(error);
-			});
-		}).catch((error) => {
+        voiceConnection.on('error', (error) => {
+		// Skip to the next song.
 			console.log(error);
+			queue.shift();
+			module.exports.playSong();
+		});
+
+		dispatcher.on('error', (error) => {
+			// Skip to the next song.
+			console.log(error);
+			queue.shift();
+			module.exports.playSong();
+		});
+
+		dispatcher.on('end', () => {
+			// Wait a second.
+			setTimeout(() => {
+				if (queue.length > 0) {
+					// Remove the song from the queue.
+					queue.shift();
+					// Play the next song in the queue.
+					module.exports.playSong();
+				}
+			}, 1000);
 		});
 	}
 }
 
-/**
- * Wrap text in a code block and escape grave characters.
- *
- * @param {string} text - The input text.
- * @returns {string} - The wrapped text.
- */
 function wrap(text) {
 	return '```\n' + text.replace(/`/g, '`' + String.fromCharCode(8203)) + '\n```';
 }

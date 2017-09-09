@@ -8,7 +8,7 @@ const client = new Discord.Client();
 
 var util = require('./utilities.js');
 var restAPI = require('./web.js')();
-//var music = require('./music.js');
+var music = require('./music.js');
 
 var db = require('mongojs')(process.env.mongourl);
 var config;
@@ -23,7 +23,7 @@ var blacklist = db.collection('blacklist');
 
 client.on('ready', () => {
     console.log('I am ready!');
-    //client.channels.find('name','🎵 Music 24/7 🎵').join().then(connection => music.startAuto(client,connection,config.autolist.split("playlist?list=")[1]));
+    client.channels.find('name','🎵 Music 24/7 🎵').join().then(connection => music.startAuto(client,connection,config.autolist.split("playlist?list=")[1]));
 });
 
 client.on("guildMemberAdd", (member) => {
@@ -58,7 +58,7 @@ client.on('message', message => {
                         if(result[0].channel.length>0){
                             allowedChannel = false;
                             result[0].channel.forEach(function(channel){
-                                if(channel == message.channel.id){allowedChannel = true;allowed=true;}
+                                if(channel == message.channel.name){allowedChannel = true;allowed=true;}
                             })
                         }
                         if(allowedChannel){
@@ -374,7 +374,7 @@ client.on('message', message => {
                             });
                             break;
 
-                        /*case 'play':
+                        case 'play':
                             music.play(message, suffix, client);
                             break;
 
@@ -404,7 +404,7 @@ client.on('message', message => {
 
                         case 'clearqueue':
                              music.clearqueue(message, suffix, client);
-                            break;*/
+                            break;
 
                         case "blacklist":
                             var type = param[1];
