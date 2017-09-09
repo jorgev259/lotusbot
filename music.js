@@ -22,7 +22,7 @@ var defaultPlaylist;
  */
 module.exports = {
     startAuto:function(client,connection){
-        ypi.playlistInfo("AIzaSyAHrzLTPSeOF_7YNct3DoYzmjxkKyCHiCY", "PL1fIU72-EgAwOobFV7WgxjSpRBgm4QcVF", function(playlistItems) {
+        ypi.playlistInfo(process.env.youtubeapi, "PL1fIU72-EgAwOobFV7WgxjSpRBgm4QcVF", function(playlistItems) {
             defaultPlaylist=playlistItems;
             voiceConnection = connection;
             module.exports.executeQueue("",client);
