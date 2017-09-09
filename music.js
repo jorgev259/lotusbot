@@ -11,7 +11,7 @@ module.exports = {
         ypi.playlistInfo(process.env.youtubeapi, playlist, function(playlistItems) {
             defaultPlaylist=playlistItems;
             voiceConnection = connection;
-            module.exports.playSong());
+            module.exports.playSong();
         });
     },
 
