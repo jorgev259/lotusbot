@@ -249,7 +249,7 @@ client.on('message', message => {
                                     .setDescription(quote.content + "\nQuote id: " + count)
                                     .setTitle("#" + quote.channel.name)
                                     .setThumbnail(thumb)
-                                    .setAuthor(quote.author.username, quote.author.avatarURL);
+                                    .setAuthor(quote.author.username, quote.author.defaultAvatarURL);
                                         quotes.save({
                                         "id":count,
                                         "desc":quote.content,
@@ -257,7 +257,7 @@ client.on('message', message => {
                                         "author":quote.author.username,
                                         "thumb":thumb,
                                         "color":color,
-                                        "avatar": quote.author.avatarURL
+                                        "avatar": quote.author.defaultAvatarURL
                                     });
                                     message.guild.channels.find("name","featured-quotes").send({embed});
                                     message.delete();
