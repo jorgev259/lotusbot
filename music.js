@@ -35,7 +35,7 @@ module.exports = {
 					return response.edit(wrap('Invalid video!'));
 				}
 
-				info.requester = msg.member;
+				info.requester = msg.author;
 
 				// Queue the video.
 				response.edit(wrap('Queued: ' + info.title)).then(() => {
@@ -76,7 +76,7 @@ module.exports = {
 	queue:function(msg, suffix, client) {
 		// Get the queue text.
 		const text = queue.map((video, index) => (
-			(index + 1) + ': ' + video.title + " (Requested by )"
+			(index + 1) + ': ' + video.title + " (Requested by " + video.requester.username + "#" + video.requester.discriminator + ")"
 		)).join('\n');
 
 		// Get the status of the queue.
@@ -138,6 +138,7 @@ module.exports = {
             queue[0] = {};
             queue[0].title = song.title;
             queue[0].webpage_url = "https://www.youtube.com/watch?v=" + song.resourceId.videoId;
+            queue[0].requester = voiceConnection.client.user;
 		}
 
         const video = queue[0];
