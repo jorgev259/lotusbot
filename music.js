@@ -76,7 +76,7 @@ module.exports = {
 	queue:function(msg, suffix, client) {
 		// Get the queue text.
 		const text = queue.map((video, index) => (
-			(index + 1) + ': ' + video.title + " (Requested by )" + video.requester.discriminator
+			(index + 1) + ': ' + video.title + " (Requested by )"
 		)).join('\n');
 
 		// Get the status of the queue.
