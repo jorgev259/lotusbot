@@ -160,15 +160,12 @@ module.exports = {
 		});
 
 		dispatcher.on('end', () => {
-			// Wait a second.
-			setTimeout(() => {
-				if (queue.length > 0) {
-					// Remove the song from the queue.
-					queue.shift();
-					// Play the next song in the queue.
-					module.exports.playSong();
-				}
-			}, 1000);
+            if (queue.length > 0) {
+				// Remove the song from the queue.
+				queue.shift();
+				// Play the next song in the queue.
+				module.exports.playSong();
+			}
 		});
 	}
 }
