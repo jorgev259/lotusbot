@@ -50,7 +50,7 @@ module.exports = {
 
 	skip:function(msg, suffix, client) {
 		// Get the voice connection
-        var staff = msg.member.guild.roles.find("name", "Staff");
+        var staff = msg.member.guild.roles.find("name", "Staff Team");
 
 		if (voiceConnection === null) return msg.channel.send(wrap('No music being played.'));
 
