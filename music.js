@@ -35,7 +35,7 @@ module.exports = {
 					return response.edit(wrap('Invalid video!'));
 				}
 
-				info.requester = msg.author.id;
+				info.requester = msg.member;
 
 				// Queue the video.
 				response.edit(wrap('Queued: ' + info.title)).then(() => {
@@ -54,7 +54,7 @@ module.exports = {
 
 		if (voiceConnection === null) return msg.channel.send(wrap('No music being played.'));
 
-		if (!(queue[0].requester === msg.member.id || msg.member.roles.has(staff.id))) return msg.channel.send(wrap('You cannot skip this as you didn\'t queue it. Ask a staff member to skip it if needed'));
+		if (!(queue[0].requester.id === msg.member.id || msg.member.roles.has(staff.id))) return msg.channel.send(wrap('You cannot skip this as you didn\'t queue it. Ask a staff member to skip it if needed'));
 		// Get the number to skip.
 		let toSkip = 1; // Default 1.
 		if (!isNaN(suffix) && parseInt(suffix) > 0) {
@@ -76,7 +76,7 @@ module.exports = {
 	queue:function(msg, suffix, client) {
 		// Get the queue text.
 		const text = queue.map((video, index) => (
-			(index + 1) + ': ' + video.title
+			(index + 1) + ': ' + video.title + " (Requested by )" + video.requester.discriminator
 		)).join('\n');
 
 		// Get the status of the queue.
