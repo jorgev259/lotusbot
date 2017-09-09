@@ -21,8 +21,8 @@ var defaultPlaylist;
  * 							volume: The default volume of the player.
  */
 module.exports = {
-    startAuto:function(client,connection){
-        ypi.playlistInfo(process.env.youtubeapi, "PL1fIU72-EgAwOobFV7WgxjSpRBgm4QcVF", function(playlistItems) {
+    startAuto:function(client,connection,playlist){
+        ypi.playlistInfo(process.env.youtubeapi, playlist, function(playlistItems) {
             defaultPlaylist=playlistItems;
             voiceConnection = connection;
             module.exports.executeQueue("",client);
