@@ -160,12 +160,7 @@ module.exports = {
 		});
 
 		dispatcher.on('end', () => {
-            if (queue.length > 0) {
-				// Remove the song from the queue.
-				queue.shift();
-				// Play the next song in the queue.
-				module.exports.playSong();
-			}
+            module.exports.playSong();
 		});
 	}
 }
