@@ -4,9 +4,6 @@ module.exports = function(){
         bodyParser  = require("body-parser"),
         methodOverride = require("method-override");
 
-    var port = process.env.PORT || 8080;
-    app.listen(port, function() {});
-
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
     app.use(methodOverride());
