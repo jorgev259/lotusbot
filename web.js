@@ -35,5 +35,5 @@ module.exports = function(){
       res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
         next();
     });
-    //app.listen((process.env.OPENSHIFT_NODEJS_PORT||8080), process.env.OPENSHIFT_NODEJS_IP, function() {console.log(process.env.OPENSHIFT_NODEJS_IP + ":" + process.env.OPENSHIFT_NODEJS_PORT)});
+    app.listen((process.env.PORT || 8080);
 }
