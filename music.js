@@ -132,13 +132,15 @@ module.exports = {
     },
 
 	playSong:function() {
-		// If the queue is empty, finish.
+		// If the queue is empty, finish.}
+        console.log(queue);
 		if (queue.length === 0) {
             var song = defaultPlaylist[(Math.floor((Math.random() * defaultPlaylist.length) + 1))];
             queue[0] = {};
             queue[0].title = song.title;
             queue[0].webpage_url = "https://www.youtube.com/watch?v=" + song.resourceId.videoId;
             queue[0].requester = voiceConnection.client.user;
+            console.log(queue)
 		}
 
         const video = queue[0];
