@@ -14,7 +14,7 @@ module.exports = {
                 play();
             });
         )
-    }
+    },
 
     play:function(){
 		let dispatcher;
