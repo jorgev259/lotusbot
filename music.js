@@ -1,168 +1,88 @@
 var YoutubeDL = require('youtube-dl');
-var ytdl = require('ytdl-core');
+var yt = require('ytdl-core');
 var ypi = require('youtube-playlist-info');
 var voiceConnection;
 let queue = [];
-let DEFAULT_VOLUME = 50;
 var defaultPlaylist;
 
 module.exports = {
-    startAuto:function(client,connection,playlist){
-        ypi.playlistInfo(process.env.youtubeapi, playlist, function(playlistItems) {
-            defaultPlaylist=playlistItems;
-            voiceConnection = connection;
-            module.exports.playSong();
+    set:function(client){
+        client.channels.find('name','🎵 Music 24/7 🎵').join().then(connection =>
+            ypi.playlistInfo(process.env.youtubeapi, config.autolist.split("playlist?list=")[1], function(playlistItems) {
+                defaultPlaylist=playlistItems;
+                voiceConnection = connection;
+                play();
+            });
+        )
+    }
+
+    play:function(){
+		let dispatcher;
+
+        if (queue.length == 0){
+            var next = defaultPlaylist[(Math.floor((Math.random() * defaultPlaylist.length) + 1))];
+            queue[0] = {};
+            queue[0].title = next.title;
+            queue[0].url = "https://www.youtube.com/watch?v=" + next.resourceId.videoId;
+            queue[0].requester = voiceConnection.client.user;
+        };
+        var song = queue[0];
+        msg.channel.send(`Playing: **${song.title}** as requested by: **${song.requester}**`);
+        dispatcher = voiceConnection.playStream(yt(song.url, { audioonly: true }));
+			/*let collector = msg.channel.createMessageCollector(m => m);
+			collector.on('message', m => {
+				if (m.content.startsWith(tokens.prefix + 'pause')) {
+					msg.channel.send('paused').then(() => {dispatcher.pause();});
+				} else if (m.content.startsWith(tokens.prefix + 'resume')){
+					msg.channel.send('resumed').then(() => {dispatcher.resume();});
+				} else if (m.content.startsWith(tokens.prefix + 'skip')){
+					msg.channel.send('skipped').then(() => {dispatcher.end();});
+				} else if (m.content.startsWith('volume+')){
+					if (Math.round(dispatcher.volume*50) >= 100) return msg.channel.send(`Volume: ${Math.round(dispatcher.volume*50)}%`);
+					dispatcher.setVolume(Math.min((dispatcher.volume*50 + (2*(m.content.split('+').length-1)))/50,2));
+					msg.channel.send(`Volume: ${Math.round(dispatcher.volume*50)}%`);
+				} else if (m.content.startsWith('volume-')){
+					if (Math.round(dispatcher.volume*50) <= 0) return msg.channel.send(`Volume: ${Math.round(dispatcher.volume*50)}%`);
+					dispatcher.setVolume(Math.max((dispatcher.volume*50 - (2*(m.content.split('-').length-1)))/50,0));
+					msg.channel.send(`Volume: ${Math.round(dispatcher.volume*50)}%`);
+				} else if (m.content.startsWith(tokens.prefix + 'time')){
+					msg.channel.send(`time: ${Math.floor(dispatcher.time / 60000)}:${Math.floor((dispatcher.time % 60000)/1000) <10 ? '0'+Math.floor((dispatcher.time % 60000)/1000) : Math.floor((dispatcher.time % 60000)/1000)}`);
+				}
+			});*/
+        dispatcher.on('end', () => {
+            collector.stop();
+            queue.shift();
+			play();
+        });
+        dispatcher.on('error', (err) => {
+            msg.channel.send('error: ' + err)
+            queue.shift();
+			play();
         });
     },
 
-	play:function(msg, suffix, client) {
-		// Make sure the user is in a voice channel.
-		if (msg.member.voiceChannel === undefined) return msg.channel.send(wrap('You\'re not in a voice channel.'));
 
-		// Make sure the suffix exists.
-		if (!suffix) return msg.channel.send(wrap('No video specified!'));
-
-		// Get the video information.
-		msg.channel.send(wrap('Searching...')).then(response => {
-			var searchstring = suffix
-			if (!suffix.toLowerCase().startsWith('http')) {
-				searchstring = 'gvsearch1:' + suffix;
-			}
-
-			YoutubeDL.getInfo(searchstring, ['-q', '--no-warnings', '--force-ipv4'], (err, info) => {
-				// Verify the info.
-				if (err || info.format_id === undefined || info.format_id.startsWith('0')) {
-					return response.edit(wrap('Invalid video!'));
-				}
-
-				info.requester = msg.author;
-
-				// Queue the video.
-				response.edit(wrap('Queued: ' + info.title)).then(() => {
-					queue.push(info);
-					// Play if only one element in the queue.
-					if (queue.length === 1) module.exports.playSong();
-				}).catch(console.log);
-			});
-		}).catch(console.log);
+	join:function(msg){
+        const voiceChannel = msg.member.voiceChannel;
+		if (!voiceChannel || voiceChannel.type !== 'voice') return msg.reply('I couldn\'t connect to your voice channel...');
+		voiceChannel.join();
 	},
 
-
-	skip:function(msg, suffix, client) {
-		// Get the voice connection
-        var staff = msg.member.guild.roles.find("name", "Staff Team");
-
-		if (voiceConnection === null) return msg.channel.send(wrap('No music being played.'));
-
-		if (!(queue[0].requester.id === msg.member.id || msg.member.roles.has(staff.id))) return msg.channel.send(wrap('You cannot skip this as you didn\'t queue it. Ask a staff member to skip it if needed'));
-		// Get the number to skip.
-		let toSkip = 1; // Default 1.
-		if (!isNaN(suffix) && parseInt(suffix) > 0) {
-			toSkip = parseInt(suffix);
-		}
-		toSkip = Math.min(toSkip, queue.length);
-
-		// Skip.
-		queue.splice(0, toSkip - 1);
-
-		// Resume and stop playing.
-		var dispatcher = voiceConnection.player.dispatcher;
-		if (voiceConnection.paused) dispatcher.resume();
-		dispatcher.end();
-
-		msg.channel.send(wrap('Skipped ' + toSkip + '!'));
-	},
-
-	queue:function(msg, suffix, client) {
-		// Get the queue text.
-		var text = queue.map((video, index) => (
-			(index + 1) + ': ' + video.title + " (Requested by " + video.requester.username + "#" + video.requester.discriminator + ")"
-		)).join('\n');
-
-		// Get the status of the queue.
-		let queueStatus = 'Stopped';
-		if (voiceConnection !== null) {
-			var dispatcher = voiceConnection.player.dispatcher;
-			queueStatus = dispatcher.paused ? 'Paused' : 'Playing';
-		}
-
-		// Send the queue and status.
-		msg.channel.send(wrap('Queue (' + queueStatus + '):\n' + text));
-	},
-
-	pause:function(msg, suffix, client) {
-		// Get the voice connection.
-		if (voiceConnection === null) return msg.channel.send(wrap('No music being played.'));
-
-		// Pause.
-		msg.channel.send(wrap('Playback paused.'));
-		var dispatcher = voiceConnection.player.dispatcher;
-		if (!dispatcher.paused) dispatcher.pause();
-    },
-
-	join:function(msg,client) {
-        msg.member.voiceChannel.join();
-	},
-
-	clearqueue:function(msg, suffix, client) {
-        queue.splice(0, queue.length);
-        msg.channel.send(wrap('Queue cleared!'));
-    },
-
-	resume:function(msg, suffix, client) {
-		// Get the voice connection.
-		if (voiceConnection === null) return msg.channel.send(wrap('No music being played.'));
-
-		// Resume.
-		msg.channel.send(wrap('Playback resumed.'));
-		var dispatcher = voiceConnection.player.dispatcher;
-		if (dispatcher.paused) dispatcher.resume();
-	},
-
-	volume:function(msg, suffix, client) {
-		// Get the voice connection.
-		if (voiceConnection === null) return msg.channel.send(wrap('No music being played.'));
-
-		// Get the dispatcher
-		var dispatcher = voiceConnection.player.dispatcher;
-
-		if (suffix > 200 || suffix < 0) return msg.channel.send(wrap('Volume out of range!'));
-		msg.channel.send(wrap("Volume set to " + suffix));
-		dispatcher.setVolume((suffix/100));
-    },
-
-	playSong:function() {
-		if (queue.length === 0) {
-            var song = defaultPlaylist[(Math.floor((Math.random() * defaultPlaylist.length) + 1))];
-            queue[0] = {};
-            queue[0].title = song.title;
-            queue[0].webpage_url = "https://www.youtube.com/watch?v=" + song.resourceId.videoId;
-            queue[0].requester = voiceConnection.client.user;
-		}
-        console.log("Im gonna drop some sick beats");
-        var video = queue[0];
-
-        let dispatcher = voiceConnection.playStream(ytdl(video.webpage_url, {filter: 'audioonly'}), {seek: 0, volume: (DEFAULT_VOLUME/100)});
-
-        voiceConnection.on('error', (error) => {
-		// Skip to the next song.
-			console.log(error);
-			queue.shift();
-			module.exports.playSong();
+	add:function(msg){
+		let url = msg.content.split(' ')[1];
+		if (url == '' || url === undefined) return msg.channel.send(`You must add a YouTube video url, or id after ${tokens.prefix}add`);
+		yt.getInfo(url, (err, info) => {
+			if(err) return msg.channel.send('Invalid YouTube Link: ' + err);
+			queue.push({url: url, title: info.title, requester: msg.author});
+			msg.channel.send(`added **${info.title}** to the queue`);
+            module.exports.play(msg);
 		});
-
-		dispatcher.on('error', (error) => {
-			// Skip to the next song.
-			console.log(error);
-			queue.shift();
-			module.exports.playSong();
-		});
-
-		dispatcher.on('end', () => {
-            queue.shift();
-            module.exports.playSong();
-		});
-	}
+	},
+	queue:function(msg){
+		let tosend = [];
+		queue.forEach((song, i) => { tosend.push(`${i+1}. ${song.title} - Requested by: ${song.requester.username}`);});
+		msg.channel.send(`Currently **${tosend.length}** songs queued ${(tosend.length > 15 ? '*[Only next 15 shown]*' : '')}\n\`\`\`${tosend.slice(0,15).join('\n')}\`\`\``);
+	},
 }
 
 function wrap(text) {

@@ -23,7 +23,7 @@ var blacklist = db.collection('blacklist');
 
 client.on('ready', () => {
     console.log('I am ready!');
-    client.channels.find('name','🎵 Music 24/7 🎵').join().then(connection => music.startAuto(client,connection,config.autolist.split("playlist?list=")[1]));
+    music.set(client);
 });
 
 client.on("guildMemberAdd", (member) => {
@@ -374,7 +374,7 @@ client.on('message', message => {
                             break;
 
                         case 'play':
-                            music.play(message, suffix, client);
+                            music.add(message);
                             break;
 
                         case 'skip':
@@ -382,7 +382,7 @@ client.on('message', message => {
                             break;
 
                         case 'queue':
-                             music.queue(message, suffix, client);
+                             music.queue(message);
                             break
 
                         case 'pause':
@@ -398,7 +398,7 @@ client.on('message', message => {
                             break;
 
                         case 'join':
-                             music.join(message, suffix, client);
+                             music.join(message);
                             break;
 
                         case 'clearqueue':
