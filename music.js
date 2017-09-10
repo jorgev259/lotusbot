@@ -159,6 +159,7 @@ module.exports = {
 		});
 
 		dispatcher.on('end', () => {
+            queue.shift();
             module.exports.playSong();
 		});
 	}
