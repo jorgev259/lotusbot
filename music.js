@@ -7,13 +7,13 @@ var defaultPlaylist;
 
 module.exports = {
     set:function(client){
-        client.channels.find('name','🎵 Music 24/7 🎵').join().then(connection =>
+        client.channels.find('name','🎵 Music 24/7 🎵').join().then(connection =>{
             ypi.playlistInfo(process.env.youtubeapi, config.autolist.split("playlist?list=")[1], function(playlistItems) {
                 defaultPlaylist=playlistItems;
                 voiceConnection = connection;
                 play();
             });
-        )
+        })
     },
 
     play:function(){
