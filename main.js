@@ -34,7 +34,7 @@ client.on("guildMemberAdd", (member) => {
 
         }else{
             member.guild.channels.find("name","general").send("Welcome to Fandom Circle, <@" + member.id + ">! Have Fun");
-            member.addRole(member.guild.roles.find("name", "Nation"));
+            member.addRole(member.guild.roles.find("name", "Customers"));
         }
     })
 });
