@@ -35,5 +35,5 @@ module.exports = function(){
       res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
         next();
     });
-    app.listen((process.env.PORT || 8080);
+    app.listen(process.env.PORT || 8080);
 }
