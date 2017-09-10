@@ -1,5 +1,5 @@
-const YoutubeDL = require('youtube-dl');
-const ytdl = require('ytdl-core');
+var YoutubeDL = require('youtube-dl');
+var ytdl = require('ytdl-core');
 var ypi = require('youtube-playlist-info');
 var voiceConnection;
 let queue = [];
@@ -66,7 +66,7 @@ module.exports = {
 		queue.splice(0, toSkip - 1);
 
 		// Resume and stop playing.
-		const dispatcher = voiceConnection.player.dispatcher;
+		var dispatcher = voiceConnection.player.dispatcher;
 		if (voiceConnection.paused) dispatcher.resume();
 		dispatcher.end();
 
@@ -75,14 +75,14 @@ module.exports = {
 
 	queue:function(msg, suffix, client) {
 		// Get the queue text.
-		const text = queue.map((video, index) => (
+		var text = queue.map((video, index) => (
 			(index + 1) + ': ' + video.title + " (Requested by " + video.requester.username + "#" + video.requester.discriminator + ")"
 		)).join('\n');
 
 		// Get the status of the queue.
 		let queueStatus = 'Stopped';
 		if (voiceConnection !== null) {
-			const dispatcher = voiceConnection.player.dispatcher;
+			var dispatcher = voiceConnection.player.dispatcher;
 			queueStatus = dispatcher.paused ? 'Paused' : 'Playing';
 		}
 
@@ -96,7 +96,7 @@ module.exports = {
 
 		// Pause.
 		msg.channel.send(wrap('Playback paused.'));
-		const dispatcher = voiceConnection.player.dispatcher;
+		var dispatcher = voiceConnection.player.dispatcher;
 		if (!dispatcher.paused) dispatcher.pause();
     },
 
@@ -115,7 +115,7 @@ module.exports = {
 
 		// Resume.
 		msg.channel.send(wrap('Playback resumed.'));
-		const dispatcher = voiceConnection.player.dispatcher;
+		var dispatcher = voiceConnection.player.dispatcher;
 		if (dispatcher.paused) dispatcher.resume();
 	},
 
@@ -124,7 +124,7 @@ module.exports = {
 		if (voiceConnection === null) return msg.channel.send(wrap('No music being played.'));
 
 		// Get the dispatcher
-		const dispatcher = voiceConnection.player.dispatcher;
+		var dispatcher = voiceConnection.player.dispatcher;
 
 		if (suffix > 200 || suffix < 0) return msg.channel.send(wrap('Volume out of range!'));
 		msg.channel.send(wrap("Volume set to " + suffix));
@@ -140,7 +140,7 @@ module.exports = {
             queue[0].requester = voiceConnection.client.user;
 		}
         console.log("Im gonna drop some sick beats");
-        const video = queue[0];
+        var video = queue[0];
 
         let dispatcher = voiceConnection.playStream(ytdl(video.webpage_url, {filter: 'audioonly'}), {seek: 0, volume: (DEFAULT_VOLUME/100)});
 
