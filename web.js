@@ -1,3 +1,4 @@
+var db = require('mongojs')(process.env.mongourl);
 var commands = db.collection('commands');
 
 module.exports = function(){

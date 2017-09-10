@@ -177,7 +177,6 @@ client.on('message', message => {
                             break;
 
                         case "perms":
-                            //perms command add/remove role/user/channel
                             var name = param[1];
                             var type = param[2];
                             param.shift();
