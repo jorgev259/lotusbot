@@ -132,17 +132,14 @@ module.exports = {
     },
 
 	playSong:function() {
-		// If the queue is empty, finish.}
-        console.log(queue);
 		if (queue.length === 0) {
             var song = defaultPlaylist[(Math.floor((Math.random() * defaultPlaylist.length) + 1))];
             queue[0] = {};
             queue[0].title = song.title;
             queue[0].webpage_url = "https://www.youtube.com/watch?v=" + song.resourceId.videoId;
             queue[0].requester = voiceConnection.client.user;
-            console.log(queue)
 		}
-
+        console.log("Im gonna drop some sick beats");
         const video = queue[0];
 
         let dispatcher = voiceConnection.playStream(ytdl(video.webpage_url, {filter: 'audioonly'}), {seek: 0, volume: (DEFAULT_VOLUME/100)});
