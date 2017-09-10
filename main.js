@@ -23,7 +23,7 @@ var blacklist = db.collection('blacklist');
 
 client.on('ready', () => {
     console.log('I am ready!');
-    music.set(client);
+    music.set(client,config.autolist.split("playlist?list=")[1]);
 });
 
 client.on("guildMemberAdd", (member) => {
