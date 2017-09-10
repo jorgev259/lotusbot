@@ -12,9 +12,9 @@ module.exports = {
                 defaultPlaylist=playlistItems;
                 voiceConnection = connection;
                 play();
-            });
+            };
         )
-    },
+    )},
 
     play:function(){
 		let dispatcher;
