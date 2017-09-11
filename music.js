@@ -11,7 +11,7 @@ module.exports = {
             ypi.playlistInfo(process.env.youtubeapi, playlist, function(playlistItems) {
                 defaultPlaylist=playlistItems;
                 voiceConnection = connection;
-                play();
+                module.exports.play();
             });
         })
     },
@@ -52,12 +52,12 @@ module.exports = {
         dispatcher.on('end', () => {
             collector.stop();
             queue.shift();
-			play();
+			module.exports.play();
         });
         dispatcher.on('error', (err) => {
             msg.channel.send('error: ' + err)
             queue.shift();
-			play();
+			module.exports.play();
         });
     },
 
