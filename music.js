@@ -27,7 +27,7 @@ module.exports = {
             queue[0].requester = voiceConnection.client.user;
         };
         var song = queue[0];
-        msg.channel.send(`Playing: **${song.title}** as requested by: **${song.requester}**`);
+        //msg.channel.send(`Playing: **${song.title}** as requested by: **${song.requester}**`);
         dispatcher = voiceConnection.playStream(yt(song.url, { audioonly: true }));
 			/*let collector = msg.channel.createMessageCollector(m => m);
 			collector.on('message', m => {
