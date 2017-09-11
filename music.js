@@ -20,6 +20,7 @@ module.exports = {
 		let dispatcher;
 
         if (queue.length == 0){
+
             var next = defaultPlaylist[(Math.floor((Math.random() * defaultPlaylist.length) + 1))];
             queue[0] = {};
             queue[0].title = next.title;
@@ -27,6 +28,7 @@ module.exports = {
             queue[0].requester = voiceConnection.client.user;
         };
         var song = queue[0];
+        console.log(song);
         //msg.channel.send(`Playing: **${song.title}** as requested by: **${song.requester}**`);
         dispatcher = voiceConnection.playStream(yt(song.url, { audioonly: true }));
 			/*let collector = msg.channel.createMessageCollector(m => m);
