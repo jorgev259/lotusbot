@@ -13,7 +13,8 @@ var music = require('./music.js');
 var db = require('mongojs')(process.env.mongourl);
 var config;
 db.collection('config').find({},function(err,result){
-    config = result[0]
+    config = result[0];
+    music.set(client,config.autolist.split("playlist?list=")[1]);
 });
 
 var commands = db.collection('commands');
@@ -23,7 +24,7 @@ var blacklist = db.collection('blacklist');
 
 client.on('ready', () => {
     console.log('I am ready!');
-    music.set(client,config.autolist.split("playlist?list=")[1]);
+
 });
 
 client.on("guildMemberAdd", (member) => {
