@@ -259,7 +259,7 @@ client.on('message', message => {
                                         "color":color,
                                         "avatar": quote.author.defaultAvatarURL
                                     });
-                                    message.guild.channels.find("name","Memorabilia").send({embed});
+                                    message.guild.channels.find("name","memorabilia").send({embed});
                                     message.delete();
                                     message.reply(" has recorded your message in the books of history <@" + quote.author.id + ">");
                                 });
