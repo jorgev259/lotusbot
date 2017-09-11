@@ -24,7 +24,6 @@ var blacklist = db.collection('blacklist');
 
 client.on('ready', () => {
     console.log('I am ready!');
-
 });
 
 client.on("guildMemberAdd", (member) => {
