@@ -34,7 +34,7 @@ client.on("guildMemberAdd", (member) => {
             member.ban({"reason":"Automatic blacklist ban"});
 
         }else{
-            member.guild.channels.find("name","general").send("Welcome to Fandom Circle, <@" + member.id + ">! Have Fun");
+            member.guild.channels.find("name","main-lounge").send("Welcome to Fandom Circle, <@" + member.id + ">! Have Fun");
             member.addRole(member.guild.roles.find("name", "Customers"));
         }
     })
