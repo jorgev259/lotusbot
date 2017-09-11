@@ -50,7 +50,6 @@ module.exports = {
 				}
 			});*/
         dispatcher.on('end', () => {
-            collector.stop();
             queue.shift();
 			module.exports.play();
         });
