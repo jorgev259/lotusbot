@@ -28,7 +28,6 @@ module.exports = {
             queue[0].requester = voiceConnection.client.user;
         };
         var song = queue[0];
-        console.log(song);
         //msg.channel.send(`Playing: **${song.title}** as requested by: **${song.requester}**`);
         dispatcher = voiceConnection.playStream(yt(song.url, { audioonly: true }));
 			/*let collector = msg.channel.createMessageCollector(m => m);
@@ -56,7 +55,7 @@ module.exports = {
 			module.exports.play();
         });
         dispatcher.on('error', (err) => {
-            msg.channel.send('error: ' + err)
+            //msg.channel.send('error: ' + err)
             queue.shift();
 			module.exports.play();
         });
