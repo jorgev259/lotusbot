@@ -69,7 +69,7 @@ module.exports = {
 
 	add:function(msg){
 		let url = msg.content.split(' ')[1];
-		if (url == '' || url === undefined) return msg.channel.send(`You must add a YouTube video url, or id after ${tokens.prefix}add`);
+		if (url == '' || url === undefined) return msg.channel.send(`You must add a YouTube video url, or id after`);
 		yt.getInfo(url, (err, info) => {
 			if(err) return msg.channel.send('Invalid YouTube Link: ' + err);
 			queue.push({url: url, title: info.title, requester: msg.author});
