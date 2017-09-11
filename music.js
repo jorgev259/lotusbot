@@ -74,7 +74,6 @@ module.exports = {
 			if(err) return msg.channel.send('Invalid YouTube Link: ' + err);
 			queue.push({url: url, title: info.title, requester: msg.author});
 			msg.channel.send(`added **${info.title}** to the queue`);
-            module.exports.play(msg);
 		});
 	},
 	queue:function(msg){
