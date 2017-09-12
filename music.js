@@ -4,6 +4,7 @@ var ypi = require('youtube-playlist-info');
 var voiceConnection;
 let queue = [];
 var defaultPlaylist;
+var dispatcher;
 
 module.exports = {
     set:function(client,playlist){
@@ -17,10 +18,7 @@ module.exports = {
     },
 
     play:function(){
-		let dispatcher;
-
         if (queue.length == 0){
-
             var next = defaultPlaylist[(Math.floor((Math.random() * defaultPlaylist.length) + 1))];
             queue[0] = {};
             queue[0].title = next.title;
