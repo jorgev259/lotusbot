@@ -86,7 +86,7 @@ module.exports = {
     skip:function(msg){
         var staff = msg.member.guild.roles.find("name", "Staff Team");
         var out = "";
-        if (!(queue[0].requester.id === msg.member.id || msg.member.roles.has(staff.id))){
+        if (queue[0].requester.id === msg.author.id || msg.member.roles.has(staff.id)){
             dispatcher.end();
             out = (queue[0].title  + " has been skipped!");
         }else{
