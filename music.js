@@ -82,6 +82,19 @@ module.exports = {
 		queue.forEach((song, i) => { tosend.push(`${i+1}. ${song.title} - Requested by: ${song.requester.username}`);});
 		msg.channel.send(`Currently **${tosend.length}** songs queued ${(tosend.length > 15 ? '*[Only next 15 shown]*' : '')}\n\`\`\`${tosend.slice(0,15).join('\n')}\`\`\``);
 	},
+
+    skip:function(msg){
+        var staff = msg.member.guild.roles.find("name", "Staff Team");
+        var out = "";
+        if (!(queue[0].requester.id === msg.member.id || msg.member.roles.has(staff.id))){
+            dispatcher.end();
+            out = (queue[0].title  + " has been skipped!");
+        }else{
+           out = (wrap('You cannot skip this as you didn\'t queue it. Ask a staff member to skip it if needed'))
+        }
+
+        msg.channel.send(out);
+    }
 }
 
 function wrap(text) {

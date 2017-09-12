@@ -379,14 +379,14 @@ client.on('message', message => {
                             break;
 
                         case 'skip':
-                             music.skip(message, suffix, client);
+                             music.skip(message);
                             break;
 
                         case 'queue':
                              music.queue(message);
                             break
 
-                        case 'pause':
+                        /*case 'pause':
                              music.pause(message, suffix, client);
                             break;
 
@@ -396,15 +396,15 @@ client.on('message', message => {
 
                         case 'volume':
                              music.volume(message, suffix, client);
-                            break;
+                            break;*/
 
                         case 'join':
                              music.join(message);
                             break;
 
-                        case 'clearqueue':
+                        /*case 'clearqueue':
                              music.clearqueue(message, suffix, client);
-                            break;
+                            break;*/
 
                         case "blacklist":
                             var type = param[1];
