@@ -249,7 +249,7 @@ client.on('message', message => {
                                     .setDescription(quote.content + "\nQuote id: " + count)
                                     .setTitle("#" + quote.channel.name)
                                     .setThumbnail(thumb)
-                                    .setAuthor(quote.author.username, quote.author.defaultAvatarURL);
+                                    .setAuthor(quote.member.nickname, quote.author.displayAvatarURL);
                                         quotes.save({
                                         "id":count,
                                         "desc":quote.content,
