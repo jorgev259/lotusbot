@@ -4,7 +4,7 @@ var ypi = require('youtube-playlist-info');
 var voiceConnection;
 let queue = [];
 var defaultPlaylist;
-var dispatcher;
+
 
 module.exports = {
     set:function(client,playlist){
@@ -18,6 +18,7 @@ module.exports = {
     },
 
     play:function(){
+        let dispatcher;
         if (queue.length == 0){
             var next = defaultPlaylist[(Math.floor((Math.random() * defaultPlaylist.length) + 1))];
             queue[0] = {};
@@ -85,7 +86,7 @@ module.exports = {
         var staff = msg.member.guild.roles.find("name", "Staff Team");
         var out = "";
         if (queue[0].requester.id === msg.author.id || msg.member.roles.has(staff.id)){
-            dispatcher.end();
+            voiceConnection.dispatcher.end();
             out = (queue[0].title  + " has been skipped!");
         }else{
            out = (wrap('You cannot skip this as you didn\'t queue it. Ask a staff member to skip it if needed'))
