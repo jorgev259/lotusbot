@@ -28,16 +28,8 @@ client.on('ready', () => {
 });
 
 client.on("guildMemberAdd", (member) => {
-    blacklist.find({"id":member.id},function(err,result){
-        if(result.length>0){
-            member.guild.channels.find("name","higher-staff-talk").send(member.user.username + " tried to join. He couldnt get pass the first minion")
-            member.ban({"reason":"Automatic blacklist ban"});
-
-        }else{
-            member.guild.channels.find("name","main-lounge").send("Welcome to Fandom Circle, <@" + member.id + ">! Have Fun");
-            member.addRole(member.guild.roles.find("name", "Customers"));
-        }
-    })
+    member.guild.channels.find("name","main-lounge").send("Welcome to Fandom Circle, <@" + member.id + ">! Have Fun");
+    member.addRole(member.guild.roles.find("name", "Customers"));
 });
 
 client.on('message', message => {
@@ -405,27 +397,6 @@ client.on('message', message => {
                         /*case 'clearqueue':
                              music.clearqueue(message, suffix, client);
                             break;*/
-
-                        case "blacklist":
-                            var type = param[1];
-                            var id = param[2];
-                            var response;
-                            param.shift();
-                            param.shift();
-                            param.shift();
-                            switch(type){
-                                case "add":
-                                    blacklist.save({"id":id,"reason":param.join(" ")});
-                                    response = id + " has been blacklisted. Reason: " + param.join(" ");
-                                    break;
-
-                                case "remove":
-                                    blacklist.remove({"id":id});
-                                    response = id + " has been removed from the blacklist."
-                                    break;
-                            }
-                            message.reply(response);
-                            break;
 
                         case "prune":
                             message.channel.bulkDelete(parseInt(param[1]));
