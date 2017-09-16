@@ -427,6 +427,10 @@ client.on('message', message => {
                             message.reply(response);
                             break;
 
+                        case "prune"
+                            message.channel.bulkDelete(parseInt(param[1]));
+                            break;
+
                         case "eval":
                             try {
                                 param.shift();
