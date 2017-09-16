@@ -427,7 +427,7 @@ client.on('message', message => {
                             message.reply(response);
                             break;
 
-                        case "prune"
+                        case "prune":
                             message.channel.bulkDelete(parseInt(param[1]));
                             break;
 
