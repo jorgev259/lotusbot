@@ -440,7 +440,7 @@ client.on('message', message => {
 
                               message.channel.send(evaled, {code:"xl"});
                             } catch (err) {
-                              message.channel.send(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
+                              message.channel.send(`\`ERROR\` \`\`\`xl\n${err}\n\`\`\``);
                             }
 
                             break;
