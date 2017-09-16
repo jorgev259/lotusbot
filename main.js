@@ -228,7 +228,11 @@ client.on('message', message => {
                                 }
                             });
                             break;
-
+                        case "ban":
+                            message.mentions.members.forEach(function(mention){
+                                mention.ban();
+                            })
+                            break;
                         case "addquote":
                             var color;
                             var thumb;
