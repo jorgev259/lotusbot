@@ -435,7 +435,10 @@ client.on('message', message => {
                               if (typeof evaled !== "string")
                                 evaled = require("util").inspect(evaled);
 
-                              message.channel.send(clean(evaled), {code:"xl"});
+                            if (typeof(evaled) === "string")
+                                evaled = evaled.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
+
+                              message.channel.send(evaled, {code:"xl"});
                             } catch (err) {
                               message.channel.send(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
                             }
