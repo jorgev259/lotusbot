@@ -429,7 +429,8 @@ client.on('message', message => {
 
                         case "eval":
                             try {
-                              const code = param.shift().join(" ");
+                                param.shift();
+                              const code = param.join(" ");
                               let evaled = eval(code);
 
                               if (typeof evaled !== "string")
