@@ -28,8 +28,8 @@ client.on('ready', () => {
 });
 
 client.on("guildMemberAdd", (member) => {
-    member.guild.channels.find("name","main-lounge").send("Welcome to Fandom Circle, <@" + member.id + ">! Have Fun");
-    member.addRole(member.guild.roles.find("name", "Customers"));
+    member.guild.channels.find("name","main-lounge").send("Welcome <@" + member.id + ">! Have Fun");
+    member.addRole(member.guild.roles.find("name", "Customer"));
 });
 
 client.on('message', message => {
