@@ -17,10 +17,12 @@ var perms = db.collection('perms');
 var quotes = db.collection('quotes');
 var blacklist = db.collection('blacklist');
 
+var config;
+
 client.on('ready', () => {
     console.log('I am ready!');
     db.collection('config').find({},function(err,result){
-        const config = result[0];
+        config = result[0];
         music.set(client,config.autolist.split("playlist?list=")[1]);
     });
 });
