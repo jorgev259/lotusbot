@@ -11,8 +11,6 @@ var restAPI = require('./web.js')();
 var music = require('./music.js');
 
 var db = require('mongojs')(process.env.mongourl);
-const config;
-
 
 var commands = db.collection('commands');
 var perms = db.collection('perms');
@@ -22,7 +20,7 @@ var blacklist = db.collection('blacklist');
 client.on('ready', () => {
     console.log('I am ready!');
     db.collection('config').find({},function(err,result){
-        config = result[0];
+        const config = result[0];
         music.set(client,config.autolist.split("playlist?list=")[1]);
     });
 });
