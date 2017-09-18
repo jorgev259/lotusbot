@@ -28,7 +28,7 @@ client.on('ready', () => {
 });
 
 client.on("guildMemberAdd", (member) => {
-    member.guild.channels.find("name","main-lounge").send("Welcome <@" + member.id + ">! Have Fun");
+    member.guild.channels.find("name","general").send("Welcome <@" + member.id + ">! Have Fun");
     member.addRole(member.guild.roles.find("name", "Customer"));
 });
 
