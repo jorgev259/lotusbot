@@ -11,7 +11,7 @@ var restAPI = require('./web.js')();
 var music = require('./music.js');
 
 var db = require('mongojs')(process.env.mongourl);
-var config;
+const config;
 
 
 var commands = db.collection('commands');
