@@ -8,7 +8,7 @@ var defaultPlaylist;
 
 module.exports = {
     set:function(client,playlist){
-        client.channels.find('name','Music stuff').join().then(connection =>{
+        client.channels.find('name','🎵 Jukebox 24/7').join().then(connection =>{
             ypi.playlistInfo(process.env.youtubeapi, playlist, function(playlistItems) {
                 defaultPlaylist=playlistItems;
                 voiceConnection = connection;
