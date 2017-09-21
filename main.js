@@ -241,7 +241,7 @@ client.on('message', message => {
                                     .setDescription(quote.content + "\nQuote id: " + count)
                                     .setTitle("#" + quote.channel.name)
                                     .setThumbnail(thumb)
-                                    .setAuthor(quote.member.nickname, quote.author.displayAvatarURL());
+                                    .setAuthor(quote.author.username, quote.author.displayAvatarURL());
                                         quotes.save({
                                         "id":count,
                                         "desc":quote.content,
