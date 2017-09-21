@@ -8,13 +8,17 @@ var defaultPlaylist;
 
 module.exports = {
     set:function(client,playlist){
-        client.channels.find('name','🎵 Jukebox 24/7').join().then(connection =>{
-            ypi.playlistInfo(process.env.youtubeapi, playlist, function(playlistItems) {
-                defaultPlaylist=playlistItems;
-                voiceConnection = connection;
-                module.exports.play();
-            });
-        })
+        try{
+            client.channels.find('name','🎵 Jukebox 24/7').join().then(connection =>{
+                ypi.playlistInfo(process.env.youtubeapi, playlist, function(playlistItems) {
+                    defaultPlaylist=playlistItems;
+                    voiceConnection = connection;
+                    module.exports.play();
+                });
+            })
+        }catch(e){
+            console.log("couldnt join voice channel");
+        }
     },
 
     play:function(){
