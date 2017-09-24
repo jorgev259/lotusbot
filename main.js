@@ -16,7 +16,6 @@ var reactionNumbers = ["1⃣","2⃣","3⃣","4⃣","5⃣","6⃣","7⃣","8⃣","
 var commands = db.collection('commands');
 var perms = db.collection('perms');
 var quotes = db.collection('quotes');
-var blacklist = db.collection('blacklist');
 var art = db.collection('art-ids')
 
 var config;
