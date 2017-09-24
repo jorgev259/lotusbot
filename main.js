@@ -8,7 +8,7 @@ const client = new Discord.Client();
 
 var util = require('./utilities.js');
 var restAPI = require('./web.js')();
-var music = require('./music.js');
+//var music = require('./music.js');
 
 var db = require('mongojs')(process.env.mongourl);
 var reactionNumbers = ["1⃣","2⃣","3⃣","4⃣","5⃣","6⃣","7⃣","8⃣","9⃣", "🔟"];
@@ -25,7 +25,7 @@ client.on('ready', () => {
     console.log('I am ready!');
     db.collection('config').find({},function(err,result){
         config = result[0];
-        music.set(client,config.autolist.split("playlist?list=")[1]);
+        //music.set(client,config.autolist.split("playlist?list=")[1]);
     });
 });
 
@@ -393,7 +393,7 @@ client.on('message', message => {
                             });
                             break;
 
-                        case 'play':
+                        /*case 'play':
                             music.add(message);
                             break;
 
@@ -415,13 +415,13 @@ client.on('message', message => {
 
                         case 'volume':
                              music.volume(message, suffix, client);
-                            break;*/
+                            break;
 
                         case 'join':
                              music.join(message);
                             break;
 
-                        /*case 'clearqueue':
+                        case 'clearqueue':
                              music.clearqueue(message, suffix, client);
                             break;*/
 
