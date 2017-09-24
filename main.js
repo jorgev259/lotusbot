@@ -11,11 +11,13 @@ var restAPI = require('./web.js')();
 var music = require('./music.js');
 
 var db = require('mongojs')(process.env.mongourl);
+var reactionNumbers = ["1⃣","2⃣","3⃣","4⃣","5⃣","6⃣","7⃣","8⃣","9⃣", "🔟"];
 
 var commands = db.collection('commands');
 var perms = db.collection('perms');
 var quotes = db.collection('quotes');
 var blacklist = db.collection('blacklist');
+var art = db.collection('art-ids')
 
 var config;
 
@@ -31,6 +33,31 @@ client.on("guildMemberAdd", (member) => {
     member.guild.channels.find("name","main-lounge").send("Welcome to Fandom Circle, <@" + member.id + ">! Have Fun");
      member.addRole(member.guild.roles.find("name", "Customers"));
 });
+
+client.on("messageReactionAdd",(reaction,user)=>{
+    if(user.id != client.user.id && reaction.message.channel.name == "art"){
+        art.find({"id":reaction.message.id},function(err,result){
+            if(result.length>0){
+                util.checkReact(reaction,user,result[0])
+            }
+        })
+    }
+});
+
+client.on("messageReactionRemove",(reaction,user)=>{
+    console.log(user.username);
+    if(reaction.message.channel.name == "art"){
+        var count =  util.emojiCount(reaction,user);
+        if(count == 0){
+            art.find({"id":reaction.message.id},function(err,result){
+                if(result.length>0){
+                    result[0].score = result[0].score - util.findEmoji(reaction.emoji.name);
+                    art.save(result[0]);
+                }
+            })
+        }
+    }
+})
 
 client.on('message', message => {
     var prefix = config.prefix;
@@ -436,7 +463,12 @@ client.on('message', message => {
             }
         }else{
             switch(message.channel.name){
-
+                case "art":
+                    if(message.attachments.size > 0){
+                        util.react(0,10,message);
+                        art.save({"id":message.id,"score":0,"author":message.author.id});
+                    }
+                    break;
             }
     }
 });
