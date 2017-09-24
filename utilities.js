@@ -53,12 +53,6 @@ module.exports = {
             points.score += module.exports.findEmoji(reactionR.emoji.name);
             art.save(points);
         }
-    },
-
-    startArt:function(){
-        art.find({},function(err,result){
-
-        })
     }
 };
 
