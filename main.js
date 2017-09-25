@@ -30,7 +30,7 @@ client.on('ready', () => {
 
 client.on("guildMemberAdd", (member) => {
     member.guild.channels.find("name","main-lounge").send("Welcome to Fandom Circle, <@" + member.id + ">! Have Fun");
-     member.addRole(member.guild.roles.find("name", "Customers"));
+     member.addRoles([member.guild.roles.find("name", "Customers"),member.guild.roles.find("name","[1] Level")]);
 });
 
 client.on("messageReactionAdd",(reaction,user)=>{
