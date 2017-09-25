@@ -20,6 +20,17 @@ var art = db.collection('art-ids')
 
 var config;
 
+function role(number,guild){
+    var channel = guild.channels.find("name","level-" + number);
+    var rolerole = guild.roles.find("name","[" + number + "] Level");
+    channel.permissionsFor(guild.id,{SEND_MESSAGES: false,READ_MESSAGES:false});
+    channel.permissionsFor(rolerole.id,{SEND_MESSAGES: true,READ_MESSAGES:true});
+
+    if(number<40){
+        role(number + 1,guild)
+    }
+}
+
 client.on('ready', () => {
     console.log('I am ready!');
     db.collection('config').find({},function(err,result){
@@ -27,11 +38,8 @@ client.on('ready', () => {
         //music.set(client,config.autolist.split("playlist?list=")[1]);
     });
 
-    var guild = client.guilds.find("id","289758148175200257");
-
-    guild.channels.map(channel => {
-        console.log(channel);
-    })
+   var guild = client.guilds.find("id","289758148175200257");
+    role(1,guild);
 });
 
 client.on("guildMemberAdd", (member) => {
