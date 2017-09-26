@@ -23,8 +23,8 @@ var config;
 function role(number,guild){
     var channel = guild.channels.find("name","level-" + number);
     var rolerole = guild.roles.find("name","[" + number + "] Level");
-    channel.permissionsFor(guild.id,{SEND_MESSAGES: false,READ_MESSAGES:false});
-    channel.permissionsFor(rolerole.id,{SEND_MESSAGES: false,READ_MESSAGES:true});
+    channel.overwritePermissions(guild.id,{SEND_MESSAGES: false,READ_MESSAGES:false});
+    channel.overwritePermissions(rolerole.id,{SEND_MESSAGES: false,READ_MESSAGES:true});
     console.log(number);
     if(number<40){
         role(number + 1,guild)
