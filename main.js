@@ -44,7 +44,6 @@ client.on("messageReactionAdd",(reaction,user)=>{
 });
 
 client.on("messageReactionRemove",(reaction,user)=>{
-    console.log(user.username);
     if(reaction.message.channel.name == "art"){
         var count =  util.emojiCount(reaction,user);
         if(count == 0){
@@ -426,6 +425,17 @@ client.on('message', message => {
 
                         case "prune":
                             message.channel.bulkDelete(parseInt(param[1]));
+                            break;
+
+                        case "mute":
+                            if (message.mentions.members.size>0){
+                                message.mentions.members.map(member => {
+                                    member.addRole(member.guild.roles.find("name","Muted"))
+                                    member.send("You got muted, appeal to a Staff member if you want to be unmuted");
+                                })
+                            }else{
+                                message.reply(" you forgot to mention the users......")
+                            }
                             break;
 
                         case "eval":
