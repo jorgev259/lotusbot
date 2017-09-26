@@ -37,9 +37,6 @@ client.on('ready', () => {
         config = result[0];
         //music.set(client,config.autolist.split("playlist?list=")[1]);
     });
-
-   var guild = client.guilds.find("id","289758148175200257");
-    role(1,guild);
 });
 
 client.on("guildMemberAdd", (member) => {
