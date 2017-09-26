@@ -20,17 +20,6 @@ var art = db.collection('art-ids')
 
 var config;
 
-function role(number,guild){
-    var channel = guild.channels.find("name","level-" + number);
-    var rolerole = guild.roles.find("name","[" + number + "] Level");
-    channel.overwritePermissions(guild.id,{SEND_MESSAGES: false,VIEW_CHANNEL:false});
-    channel.overwritePermissions(rolerole,{SEND_MESSAGES: false,VIEW_CHANNEL:true});
-    console.log(number);
-    if(number<40){
-        role(number + 1,guild)
-    }
-}
-
 client.on('ready', () => {
     console.log('I am ready!');
     db.collection('config').find({},function(err,result){
