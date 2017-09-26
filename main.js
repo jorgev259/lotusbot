@@ -441,7 +441,7 @@ client.on('message', message => {
                         case "unmute":
                             message.mentions.members.map(member => {
                                 member.removeRole(member.guild.roles.find("name","Muted"))
-                            }
+                            })
                             break;
 
                         case "eval":
