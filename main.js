@@ -27,11 +27,11 @@ client.on('ready', () => {
         //music.set(client,config.autolist.split("playlist?list=")[1]);
     });
 
-    client.guilds.get("289758148175200257").channels.get("361635275170119693").search({
+    client2.guilds.get("289758148175200257").channels.get("361635275170119693").search({
           has:"-image",
         }).then(res => {
            res.results.forEach(function(result){
-            client2.guilds.get("289758148175200257").channels.get("361635275170119693").bulkDelete(result);
+            client.guilds.get("289758148175200257").channels.get("361635275170119693").bulkDelete(result);
             })
         })
 });
