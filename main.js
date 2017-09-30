@@ -9,6 +9,7 @@ const client = new Discord.Client();
 var util = require('./utilities.js');
 var restAPI = require('./web.js')();
 //var music = require('./music.js');
+var something = require('./test.js')();
 
 var db = require('mongojs')(process.env.mongourl);
 var reactionNumbers = ["1⃣","2⃣","3⃣","4⃣","5⃣","6⃣","7⃣","8⃣","9⃣", "🔟"];
