@@ -5,7 +5,6 @@ dotenv.load();
 const Discord = require('discord.js');
 var fs = require("fs");
 const client = new Discord.Client();
-const client2 = new Discord.Client();
 
 var util = require('./utilities.js');
 //var music = require('./music.js');
@@ -26,14 +25,6 @@ client.on('ready', () => {
         config = result[0];
         //music.set(client,config.autolist.split("playlist?list=")[1]);
     });
-
-    client2.guilds.get("289758148175200257").channels.get("361635275170119693").search({
-          has:"-image",
-        }).then(res => {
-           res.results.forEach(function(result){
-            client.guilds.get("289758148175200257").channels.get("361635275170119693").bulkDelete(result);
-            })
-        })
 });
 
 client.on("guildMemberAdd", (member) => {
@@ -495,5 +486,5 @@ client.on('message', message => {
             }
     }
 });
-client2.login(process.env.discord_token);
+
 client.login(process.env.discord_token);
