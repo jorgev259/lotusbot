@@ -26,13 +26,6 @@ client.on('ready', () => {
         config = result[0];
         //music.set(client,config.autolist.split("playlist?list=")[1]);
     });
-
-    client.guilds.find("id","289758148175200257").channels.find("id","361635275170119693").messages.map(m =>{
-        if(!(m.embeds.length >0 || m.attachments.size>0)){
-            m.delete();
-        }
-    });
-
 });
 
 client.on("guildMemberAdd", (member) => {
