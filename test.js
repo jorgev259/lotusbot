@@ -18,5 +18,5 @@ module.exports = function(){
     })
 
     client2.login(process.env.discord_token);
-    client.login(proess.env.chitotoken)
+    client.login(process.env.chitotoken)
 }
