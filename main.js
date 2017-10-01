@@ -477,14 +477,14 @@ client.on('message', message => {
 
             }
         }else{
-            switch(message.channel.name){
-                case "art":
+            /*switch(message.channel.name){
+                case "creations":
                     if(message.attachments.size > 0){
                         util.react(0,10,message);
                         art.save({"id":message.id,"score":0,"author":message.author.id});
                     }
                     break;
-            }
+            }*/
     }
 });
 
