@@ -11,7 +11,7 @@ var restAPI = require('./web.js')();
 //var music = require('./music.js');
 
 var db = require('mongojs')(process.env.mongourl);
-var reactionNumbers = ["1⃣","2⃣","3⃣","4⃣","5⃣","6⃣","7⃣","8⃣","9⃣", "🔟"];
+var reactions = ["rage","thinking","blush","stuck_out_tongue_closed_eyes","heart_eyes"];
 
 var commands = db.collection('commands');
 var perms = db.collection('perms');
@@ -480,12 +480,13 @@ client.on('message', message => {
             switch(message.channel.name){
                 case "creations":
                     /*if(message.attachments.size > 0){
-                        util.react(0,10,message);
                         art.save({"id":message.id,"score":0,"author":message.author.id});
                     }*/
                     if(!(message.attachments.size > 0 || message.embeds.length>0)){
                         message.delete();
                         message.author.send("#creations is used to post your original creations, discuss or comment about the on #art. If your work is being deleted please contact a staff member");
+                    }else{
+                        util.react(0,5,message);
                     }
                     break;
             }
