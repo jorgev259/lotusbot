@@ -7,7 +7,6 @@ var fs = require("fs");
 const client = new Discord.Client();
 
 var util = require('./utilities.js');
-var restAPI = require('./web.js')();
 //var music = require('./music.js');
 
 var reactions = ["rage","thinking","blush","stuck_out_tongue_closed_eyes","heart_eyes"];
