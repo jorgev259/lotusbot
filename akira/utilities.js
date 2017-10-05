@@ -1,6 +1,5 @@
 var reactions = ["rage","thinking","blush","stuck_out_tongue_closed_eyes","heart_eyes"];
 var fs = require("fs");
-var art = db.collection('art-ids')
 
 module.exports = {
     checkalias:function(command, collection, callback){
