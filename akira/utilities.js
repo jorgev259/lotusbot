@@ -1,6 +1,5 @@
 var reactions = ["rage","thinking","blush","stuck_out_tongue_closed_eyes","heart_eyes"];
 var fs = require("fs");
-var db = require('mongojs')(process.env.mongourl);
 var art = db.collection('art-ids')
 
 module.exports = {
