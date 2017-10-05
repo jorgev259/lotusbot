@@ -1,6 +1,4 @@
-var dotenv = require('dotenv');
 var validUrl = require('valid-url');
-dotenv.load();
 
 const Discord = require('discord.js');
 var fs = require("fs");
@@ -430,4 +428,4 @@ client.on('message', message => {
     }
 });
 
-client.login(process.env.realtoken);
+client.login(config.token);
