@@ -55,13 +55,7 @@ module.exports = {
     },
 
     save:function(data,name){
-        fs.truncate("../data/" + name + ".json", 0, function() {
-            fs.writeFile("../data/" + name + ".json", JSON.stringify(data), function (err) {
-                if (err) {
-                    return console.log("Error writing file: " + err);
-                }
-            });
-        });
+        fs.writeFile("../data/" + name + ".json", JSON.stringify(data), 'utf-8');
     }
-};
+}
 
