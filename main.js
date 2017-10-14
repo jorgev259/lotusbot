@@ -159,9 +159,9 @@ client.on('message', message => {
                     return commands[key].type == param[1];
                 })
                 if(commandList.length>0){
-                    var final = "```" + commands[commandList[0]].name;
+                    var final = "```" + commandList[0];
                     for(var i=1;i<commandList.length;i++){
-                        final += ", " + commands[commandList[i]].name;
+                        final += ", " + commandList[i];
                     };
                     message.reply(final + "```");
                 }else{
