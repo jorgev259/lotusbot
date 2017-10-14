@@ -414,13 +414,13 @@ client.on('message', message => {
         }
     }else{
         switch(message.channel.name){
-            case "creations":
+            case "art":
                 /*if(message.attachments.size > 0){
                         art.save({"id":message.id,"score":0,"author":message.author.id});
                     }*/
                 if(!(message.attachments.size > 0 || message.embeds.length>0)){
                     message.delete();
-                    message.author.send("#creations is used to post your original creations, discuss or comment about the on #art. If your work is being deleted please contact a staff member");
+                    message.author.send("#art is used to post your original creations, discuss or comment about them on #creations. If your work is being deleted please contact a staff member");
                 }else{
                     util.react(0,5,message);
                 }
