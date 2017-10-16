@@ -21,11 +21,7 @@ client.on('ready', () => {
 
 client.on("guildMemberAdd", (member) => {
     member.addRoles([member.guild.roles.find("name", "Customers"),member.guild.roles.find("name","[1]")]);
-<<<<<<< HEAD
-    member.guild.channels.find("name","chat").send("Welcome to Fandom Circle, <@${member.id}>! Have Fun");
-=======
-    member.guild.channels.find("name","main-lounge").send("Welcome to Fandom Circle, <@" + member.id + ">! Have Fun");
->>>>>>> origin/master
+    member.guild.channels.find("name","main-lounge").send(`Welcome to Fandom Circle, <@${member.id}>! Have Fun`);
 });
 
 client.on("messageReactionAdd",(reaction,user)=>{
