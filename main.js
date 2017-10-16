@@ -100,7 +100,7 @@ client.on('message', message => {
         if(command == undefined){command = {}; command.type = param[0]};
         switch(command.type){
             case "simple":
-                message.channel.send(eval(command.content));
+                message.channel.send(eval("`" + command.content + "`"));
                 break;
 
             case "say":
@@ -112,7 +112,11 @@ client.on('message', message => {
                 break
 
                 case "embed":
-                message.channel.send("",{files: [command.content[0]]});
+                try{
+                    message.channel.send("",{files: [command.content[0]]});
+                }catch(e){
+                    util.log("")
+                }
                 if(command.content.length>1){
                     var first = command.content[0];
                     for(var i=1;i<command.content.length;i++){
