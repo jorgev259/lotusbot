@@ -100,7 +100,7 @@ client.on('message', message => {
         if(command == undefined){command = {}; command.type = param[0]};
         switch(command.type){
             case "simple":
-                message.channel.send(command.content);
+                message.channel.send(eval(command.content));
                 break;
 
             case "say":
