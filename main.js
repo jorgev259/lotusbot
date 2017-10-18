@@ -112,7 +112,7 @@ client.on('message', message => {
                 break
 
                 case "embed":
-                message.channel.send("",{files: [command.content[0]]}).then(function(message){
+                message.channel.send(new Discord.MessageAttachment(command.content[0])).then(function(message){
                     if(command.content.length>1){
                         var first = command.content[0];
                         for(var i=1;i<command.content.length;i++){
