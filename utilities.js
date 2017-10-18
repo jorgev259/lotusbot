@@ -1,5 +1,6 @@
 var reactions = ["rage","thinking","blush","stuck_out_tongue_closed_eyes","heart_eyes"];
 var fs = require("fs");
+const Discord = require('discord.js');
 
 module.exports = {
     checkalias:function(command, collection, callback){
@@ -55,7 +56,11 @@ module.exports = {
     },
 
     save:function(data,name){
-        fs.writeFile("../data/" + name + ".json", JSON.stringify(data), 'utf-8');
+        fs.writeFile("../data/" + name + ".json", JSON.stringify(data), 'utf-8', function(){});
+    },
+
+    log:function(data,log){
+        data.guild.channels.find("name","bot-logs").send(new Discord.MessageEmbed().setTimestamp().setDescription(log));
     }
 }
 

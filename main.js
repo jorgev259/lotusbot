@@ -112,20 +112,25 @@ client.on('message', message => {
                 break
 
                 case "embed":
-                try{
-                    message.channel.send("",{files: [command.content[0]]});
-                }catch(e){
-                    util.log("")
-                }
-                if(command.content.length>1){
-                    var first = command.content[0];
-                    for(var i=1;i<command.content.length;i++){
-                        command.content[i-1] = command.content[i];
-                    };
-                    command.content[command.content.length - 1] = first;
-                    commands[commandName] = command;
-                    util.save(commands,"commands");
-                }
+                message.channel.send("",{files: [command.content[0]]}).then(function(message){
+                    if(command.content.length>1){
+                        var first = command.content[0];
+                        for(var i=1;i<command.content.length;i++){
+                            command.content[i-1] = command.content[i];
+                        };
+                        command.content[command.content.length - 1] = first;
+                        commands[commandName] = command;
+                        util.save(commands,"commands");
+                    }
+                },function(error){
+                    util.log(message,param[0] + " failed with " + error + "\n " + command.content[0])
+                    if(error == "Error: 403 Forbidden"){
+                        util.log(message, "removed " + command.content[0] + " from " + commandName);
+                        command.content.splice(0,1);
+                        commands[commandName] = command;
+                        util.save(commands,"commands");
+                    }
+                })
                 break;
 
             case "add":
