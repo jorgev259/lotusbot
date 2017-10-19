@@ -81,6 +81,7 @@ client.on('message', message => {
                         }
                     }
                 }
+
                 if(!allowed && perms[commandName].user.length>0){
                     for(var i=0;i<perms[commandName].user.length;i++){
                         if(perms[commandName].user[i] == message.author.id){
@@ -196,7 +197,7 @@ client.on('message', message => {
                 param.shift();
                 param.shift();
                 param.shift();
-                if(perm != undefined){
+                if(perms[name] != undefined){
                     switch(type){
                         case "add":
                             if((Array.from(message.mentions.users.values())).length > 0){
