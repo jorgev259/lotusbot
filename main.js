@@ -54,7 +54,7 @@ client.on('message', message => {
     if(message.content.startsWith(prefix)){
         const commandName = message.content.substring(prefix.length).split(/[ \n]/)[0].toLowerCase().trim();
         const suffix = message.content.substring(prefix.length + commandName.length).trim();
-        var command = commands[commandName];
+        var command = {};
 
         var param = message.content.split(" ");
         param[0] = param[0].split(prefix)[1];
@@ -96,7 +96,11 @@ client.on('message', message => {
             if(!allowed){
                 command.type = "simple";
                 command.content = "You are not allowed to use this command";
+            }else{
+                command = commands[commandName];
             }
+        }else{
+            command = commands[commandName];
         }
         if(command == undefined){command = {}; command.type = param[0]};
         switch(command.type){
