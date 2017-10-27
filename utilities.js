@@ -1,3 +1,4 @@
+var reactionNumbers = ["1⃣","2⃣","3⃣","4⃣","5⃣","6⃣","7⃣","8⃣","9⃣", "🔟"];
 var reactions = ["rage","thinking","blush","stuck_out_tongue_closed_eyes","heart_eyes"];
 var fs = require("fs");
 const Discord = require('discord.js');
@@ -20,8 +21,7 @@ module.exports = {
 
     react:function(number,limit,poll){
         if(number<limit){
-            console.log(reactions[number]);
-            poll.react(poll.guild.emojis.find("name",reactions[number])).then(function(){
+            poll.react(poll.guild.emojis.find("name",reactionNumbers[number])).then(function(){
                 module.exports.react(number+1,limit,poll);
             })
         };
