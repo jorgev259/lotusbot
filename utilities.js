@@ -21,7 +21,7 @@ module.exports = {
 
     react:function(number,limit,poll){
         if(number<limit){
-            poll.react(poll.guild.emojis.find("name",reactionNumbers[number])).then(function(){
+            poll.react(reactionNumbers[number]).then(function(){
                 module.exports.react(number+1,limit,poll);
             })
         };
