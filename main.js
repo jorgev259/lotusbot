@@ -339,7 +339,7 @@ client.on('message', message => {
                     var time = parseInt(param[1]);
                     param.shift();
                     param.shift();
-                    var text = param.join(" ") + ": ";
+                    var text = param.join(" ") + ": \n";
                     var count = 0;
                     var options = m.content.split("|");
                     options.forEach(function(option){
