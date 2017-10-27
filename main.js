@@ -14,7 +14,7 @@ var perms = require("../data/perms.json");
 var quotes = require("../data/quotes.json");
 //var art= require("../data/art.json");
 var config = require("../data/config.json");
-var codes = require("../data/codes.json");
+//var codes = require("../data/codes.json");
 
 
 client.on('ready', () => {
