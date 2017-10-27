@@ -16,6 +16,7 @@ var quotes = require("../data/quotes.json");
 var config = require("../data/config.json");
 var codes = require("../data/codes.json");
 
+
 client.on('ready', () => {
     console.log('I am ready!');
 });
@@ -391,22 +392,19 @@ client.on('message', message => {
                 message.channel.bulkDelete(parseInt(param[1]) + 1);
                 break;
 
-            case "mute":
-                if (message.mentions.members.size>0){
-                    message.mentions.members.map(member => {
-                        member.addRole(member.guild.roles.find("name","Muted"))
-                        member.send("You got muted, appeal to a Staff member if you want to be unmuted");
-                    })
-                }else{
-                    message.reply(" you forgot to mention the users......")
-                }
-                break;
+  /*          case "fcode":
+                switch(param[1]){
+                    case "register":
+                        break;
 
-            case "unmute":
-                message.mentions.members.map(member => {
-                    member.removeRole(member.guild.roles.find("name","Muted"))
-                })
-                break;
+                    case "remove"
+                        break;
+
+                    default:
+
+                        break;
+                }
+                break;*/
 
             case "eval":
                 try {
