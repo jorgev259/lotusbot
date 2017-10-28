@@ -26,7 +26,7 @@ client.on("guildMemberAdd", (member) => {
     member.guild.channels.find("name","main-lounge").send(`Welcome to Fandom Circle, <@${member.id}>! Have Fun`);
 });
 
-client.on("messageReactionAdd",(reaction,user)=>{
+/*client.on("messageReactionAdd",(reaction,user)=>{
     if(user.id != client.user.id && reaction.message.channel.name == "art"){
         art.find({"id":reaction.message.id},function(err,result){
             if(result.length>0){
@@ -48,7 +48,7 @@ client.on("messageReactionRemove",(reaction,user)=>{
             })
         }
     }
-})
+})*/
 
 client.on('message', message => {
     var prefix = config.prefix;
