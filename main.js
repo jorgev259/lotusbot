@@ -12,6 +12,8 @@ var reactions = ["rage","thinking","blush","stuck_out_tongue_closed_eyes","heart
 var commands = require("../data/commands.json");
 var perms = require("../data/perms.json");
 var quotes = require("../data/quotes.json");
+var levels = require("../data/levels.json");
+var exp = require("../data/exp.json");
 //var art= require("../data/art.json");
 var config = require("../data/config.json");
 //var codes = require("../data/codes.json");
@@ -24,6 +26,8 @@ client.on('ready', () => {
 client.on("guildMemberAdd", (member) => {
     member.addRoles([member.guild.roles.find("name", "☕ Customers"),member.guild.roles.find("name","[0]")]);
     member.guild.channels.find("name","main-lounge").send(`Welcome to Fandom Circle, <@${member.id}>! Have Fun`);
+    exp[msg.author.id] = {"lvl":0,"exp":0}
+    util.save(exp,"exp");
 });
 
 client.on("messageReactionAdd",(reaction,user)=>{
@@ -51,6 +55,7 @@ client.on("messageReactionRemove",(reaction,user)=>{
 })
 
 client.on('message', message => {
+    util.exp(exp,message);
     var prefix = config.prefix;
 
     if(message.content.startsWith(prefix)){
