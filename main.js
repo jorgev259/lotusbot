@@ -26,7 +26,7 @@ client.on('ready', () => {
 client.on("guildMemberAdd", (member) => {
     member.addRoles([member.guild.roles.find("name", "☕ Customers"),member.guild.roles.find("name","[0]")]);
     member.guild.channels.find("name","main-lounge").send(`Welcome to Fandom Circle, <@${member.id}>! Have Fun`);
-    exp[msg.author.id] = {"lvl":0,"exp":0}
+    exp[member.id] = {"lvl":0,"exp":0}
     util.save(exp,"exp");
 });
 
