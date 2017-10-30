@@ -308,28 +308,6 @@ client.on('message', message => {
                 message.reply("Set " + param[1] + " as " + param[2]);
                 break;
 
-            case "role":
-                param.splice(0,(Array.from(message.mentions.users.values())).length + 1);
-                var roles = param.join(" ").split("|");
-                message.mentions.users.forEach(function(user){
-                    var member = message.guild.member(user);
-                    var roleList = [];
-
-                    roles.forEach(function(rolename){
-                        var role = message.guild.roles.find("name",rolename);
-                        if(role === null){
-                            message.reply("Couldnt find role " + rolename);
-                        }else{
-                            roleList.push(role);
-                        }
-                    })
-                    if(roleList.length > 0){
-                        member.setRoles(roleList);
-                    }
-                })
-                message.reply("Roles completed!");
-                break;
-
             case "poll":
                 message.delete();
                 var optionMessage;
