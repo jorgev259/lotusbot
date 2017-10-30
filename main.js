@@ -3,6 +3,7 @@ var validUrl = require('valid-url');
 const Discord = require('discord.js');
 var fs = require("fs");
 const client = new Discord.Client();
+var voiceChannels = require("./voiceChannels.js")(client);
 
 var util = require('./utilities.js');
 //var music = require('./music.js');
