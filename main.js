@@ -61,12 +61,12 @@ client.on('message', message => {
     var prefix = config.prefix;
 
     if(message.content.startsWith(prefix)){
-        const commandName = message.content.substring(prefix.length).split(/[ \n]/)[0].toLowerCase().trim();
-        const suffix = message.content.substring(prefix.length + commandName.length).trim();
         var command = {};
 
         var param = message.content.split(" ");
         param[0] = param[0].split(prefix)[1];
+
+        const commandName = param[0]
 
         if(perms[commandName] != undefined){
             var allowedChannel = true;
