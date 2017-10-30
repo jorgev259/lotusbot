@@ -211,10 +211,10 @@ client.on('message', message => {
                 if(perms[name] != undefined){
                     switch(type){
                         case "add":
-                            if((Array.from(message.mentions.users.values())).length > 0){
-                                perms[name].user.push((Array.from(message.mentions.users.values()))[0].id);
-                            }else if((Array.from(message.mentions.channels.values())).length > 0){
-                                perms[name].channel.push((Array.from(message.mentions.channels.values()))[0].id);
+                            if(message.mentions.users.size > 0){
+                                perms[name].user.push(message.mentions.users.first().id);
+                            }else if(message.mentions.channels.size > 0){
+                                perms[name].channel.push(message.mentions.channels.first().id);
                             }else{
                                 perms[name].role.push(param.join(" "));
                             }
@@ -233,10 +233,10 @@ client.on('message', message => {
                         case "add":
                             perms[name] = {"user":[], "role":[], "channel":[]};
 
-                            if((Array.from(message.mentions.users.values())).length > 0){
-                                perms[name].user.push((Array.from(message.mentions.users.values()))[0].id);
-                            }else if((Array.from(message.mentions.channels.values())).length > 0){
-                                perms[name].channel.push((Array.from(message.mentions.channels.values()))[0].id);
+                            if(message.mentions.users.size > 0){
+                                perms[name].user.push(message.mentions.users.first().id);
+                            }else if(message.mentions.channels.size > 0){
+                                perms[name].channel.push(message.mentions.channels.first().id);
                             }else{
                                 perms[name].role.push(param.join(" "));
                             }
