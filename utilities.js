@@ -52,7 +52,13 @@ module.exports = {
             exp[msg.author.id].exp += randomExp;
 
             if(exp[msg.author.id].exp > levels[exp[msg.author.id].lvl].exp){ //checks if the user has reached enough exp
-                msg.member.removeRole(msg.guild.roles.find("name",`[${exp[msg.author.id].lvl}]`)); //removes past level role
+                var levelroles = msg.member.roles.filter(r=>r.name.startsWith("[")); //finds all roles that start with [
+                if(levelroles.size==1){
+                    msg.member.removeRole(levelroles.first()); //removes current lvl role
+                }else if(levelroles.size>1){
+                    msg.member.removeRoles(levelroles); //removes all lvl roles
+                }
+
                 msg.member.addRole(msg.guild.roles.find("name",`[${exp[msg.author.id].lvl + 1}]`)) //adds new level role
 
                 if(levels[exp[msg.author.id].lvl].rewards != undefined){
