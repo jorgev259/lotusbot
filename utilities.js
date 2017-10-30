@@ -48,7 +48,7 @@ module.exports = {
             if(exp[msg.author.id] == undefined){exp[msg.author.id] = {"lvl":0,"exp":0}}; //if the user is not on exp.json, adds it
 
             //adds random amount (15-25) of exp to the user
-            var randomExp = Math.floor(Math.random() * ((25-15)+1) + 15);
+            var randomExp = Math.floor(Math.random() * ((15-8)+1) + 8);
             exp[msg.author.id].exp += randomExp;
 
             if(exp[msg.author.id].exp > levels[exp[msg.author.id].lvl].exp){ //checks if the user has reached enough exp
@@ -72,7 +72,7 @@ module.exports = {
             cooldown[msg.author.id] = true; //sets the user on cooldown and will remove it in 60000 ms (1 minute)
             setTimeout(function(){
                 delete cooldown[msg.author.id];
-            },60000)
+            },90000)
         }
     },
 
