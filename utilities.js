@@ -55,14 +55,15 @@ module.exports = {
                 msg.member.removeRole(msg.member.roles.filter(role => role.name.startsWith("["))); //removes past level role
                 msg.member.addRole(msg.guild.roles.find("name",`[${exp[msg.author.id].lvl + 1}]`)) //adds new level role
 
-                levels[exp[msg.author.id].lvl].rewards.forEach(function(reward){ //checks every reward
-                    switch(reward.type){
-                        case "role":
-                            msg.member.addRole(msg.guild.roles.find("name",reward.name)); //adds the rewarded role
-                            break;
-                    }
-                })
-
+                if(levels[exp[msg.author.id].lvl].rewards != undefined){
+                    levels[exp[msg.author.id].lvl].rewards.forEach(function(reward){ //checks every reward
+                        switch(reward.type){
+                            case "role":
+                                msg.member.addRole(msg.guild.roles.find("name",reward.name)); //adds the rewarded role
+                                break;
+                        }
+                    })
+                }
                 exp[msg.author.id].lvl += 1;
             }
 
