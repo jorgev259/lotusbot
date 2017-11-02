@@ -261,12 +261,6 @@ client.on('message', message => {
                     }
                     break;
 
-                case "set":
-                    config[param[1]] = param[2];
-                    //save line
-                    message.reply("Set " + param[1] + " as " + param[2]);
-                    break;
-
                 case "poll":
                     message.delete();
                     var optionMessage;
