@@ -2,11 +2,49 @@ var reactionNumbers = ["1⃣","2⃣","3⃣","4⃣","5⃣","6⃣","7⃣","8⃣","
 var reactions = ["rage","thinking","blush","stuck_out_tongue_closed_eyes","heart_eyes"];
 var cooldown = {};
 
-var levels = require("../data/levels.json")
+var levels = require("../data/levels.json");
+var perms = require("../data/perms.json")
 var fs = require("fs");
 const Discord = require('discord.js');
 
 module.exports = {
+    permCheck:function(message, commandName){
+        if(perms[commandName] == undefined){return true}
+        var allowedChannel = true;
+        var allowed = false;
+
+        if(perms[commandName].channel.length>0){
+            allowedChannel = false;
+            perms[commandName].channel.forEach(function(channel){
+                if(channel == message.channel.name){allowedChannel = true}
+            })
+        }
+        if(allowedChannel){
+            if(perms[commandName].role.length==0 && perms[commandName].user.length==0){return true};
+
+            if(perms[commandName].role.length>0){
+                for(var i=0;i<perms[commandName].role.length;i++){
+                    var role = message.member.guild.roles.find("name", perms[commandName].role[i]);
+                    if(role != null && message.member.roles.has(role.id)){
+                        return true;
+                        i=perms[commandName].role.length;
+                    }
+                }
+            }
+
+            if(!allowed && perms[commandName].user.length>0){
+                for(var i=0;i<perms[commandName].user.length;i++){
+                    if(perms[commandName].user[i] == message.author.id){
+                        return true;
+                        i=perms[commandName].user.length;
+                    }
+                }
+            }
+
+        }
+        return false;
+    },
+
     react:function(number,limit,poll){
         if(number<limit){
             poll.react(reactionNumbers[number]).then(function(){
