@@ -10,9 +10,6 @@ var config = require("../data/config.json");
 var fs = require("fs");
 const Discord = require('discord.js');
 
-var cl2 = new Discord.Client();
-cl2.login(config.chito);
-
 module.exports = {
     permCheck:function(message, commandName){
         if(perms[commandName] == undefined){return true}
@@ -146,7 +143,12 @@ module.exports = {
     },
 
     send:function(message){
-       cl2.guilds.find("name","Fandom Circle").channels.find("name","bot-logs").send(message);
+        var cl2 = new Discord.Client();
+        cl2.login(config.chito).then(()=>{
+            cl2.guilds.find("name","Fandom Circle").channels.find("name","bot-logs").send(message).then((token)=>{
+                cl2.destroy();
+            });
+        });
     },
 
     log:function(data,log){
