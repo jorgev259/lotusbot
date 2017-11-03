@@ -89,7 +89,10 @@ module.exports = {
 
     exp:function(exp,msg){
         if(cooldown[msg.author.id] == undefined && !msg.author.bot){ //checks if the user is not on cooldown and filters bots out
-            if(exp[msg.author.id] == undefined){exp[msg.author.id] = {"lvl":0,"exp":0}}; //if the user is not on exp.json, adds it
+            if(exp[msg.author.id] == undefined){
+                exp[msg.author.id] = {"lvl":0,"exp":0}
+                msg.member.addRole(member.guild.roles.find("name",`[${exp[member.id].lvl}]`));
+            }; //if the user is not on exp.json, adds it
 
             //adds random amount (15-25) of exp to the user
             var randomExp = Math.floor(Math.random() * ((15-8)+1) + 8);
