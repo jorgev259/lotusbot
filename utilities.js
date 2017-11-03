@@ -123,7 +123,7 @@ module.exports = {
                                     var newNick = module.exports.stripEmoji(msg.member.nickname) + " " + reward.name.split(" ")[0];
                                     msg.member.setNickname(newNick);
                                     nicks[member.id] = newNick;
-                                    utils.save(nicks,"nicks");
+                                    module.exports.save(nicks,"nicks");
                                 }
                                 break;
                         }
