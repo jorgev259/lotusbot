@@ -6,8 +6,12 @@ var cooldown = {};
 var levels = require("../data/levels.json");
 var perms = require("../data/perms.json");
 var nicks = require("../data/nicks.json");
+var config = require("../data/config.json");
 var fs = require("fs");
 const Discord = require('discord.js');
+
+var cl2 = new Discord.Client();
+cl2.login(config.chito);
 
 module.exports = {
     permCheck:function(message, commandName){
@@ -107,6 +111,7 @@ module.exports = {
                 }
 
                 msg.member.addRole(msg.guild.roles.find("name",`[${exp[msg.author.id].lvl + 1}]`)) //adds new level role
+                util.send(msg, `>add-money bank <@${msg.author.id}> ${exp[msg.author.id].lvl * 1000}`);
 
                 if(levels[exp[msg.author.id].lvl].rewards != undefined){
                     levels[exp[msg.author.id].lvl].rewards.forEach(function(reward){ //checks every reward
@@ -138,6 +143,10 @@ module.exports = {
 
     save:function(data,name){
         fs.writeFile("../data/" + name + ".json", JSON.stringify(data), 'utf-8', function(){});
+    },
+
+    send:function(message){
+       cl2.guilds.find("name","Fandom Circle").channels.find("name","bot-logs").send(message);
     },
 
     log:function(data,log){
