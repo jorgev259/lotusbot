@@ -111,7 +111,7 @@ module.exports = {
                 }
 
                 msg.member.addRole(msg.guild.roles.find("name",`[${exp[msg.author.id].lvl + 1}]`)) //adds new level role
-                module.exports.send(msg, `>add-money bank <@${msg.author.id}> ${exp[msg.author.id].lvl * 1000}`);
+                module.exports.send(`>add-money bank <@${msg.author.id}> ${exp[msg.author.id].lvl * 1000}`);
 
                 if(levels[exp[msg.author.id].lvl].rewards != undefined){
                     levels[exp[msg.author.id].lvl].rewards.forEach(function(reward){ //checks every reward
