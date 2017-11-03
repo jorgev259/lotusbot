@@ -1,9 +1,11 @@
 var reactionNumbers = ["1⃣","2⃣","3⃣","4⃣","5⃣","6⃣","7⃣","8⃣","9⃣", "🔟"];
 var reactions = ["rage","thinking","blush","stuck_out_tongue_closed_eyes","heart_eyes"];
+var emojis = ["☕","🍜","🍰","🍪"];
 var cooldown = {};
 
 var levels = require("../data/levels.json");
-var perms = require("../data/perms.json")
+var perms = require("../data/perms.json");
+var nicks = require("../data/nicks.json");
 var fs = require("fs");
 const Discord = require('discord.js');
 
@@ -81,6 +83,10 @@ module.exports = {
         }
     },
 
+    stripEmoji:function(text){
+        return text.split(emojis[0])[0].split(emojis[1])[0].split(emojis[2])[0].split(emojis[3])[0];
+    },
+
     exp:function(exp,msg){
         if(cooldown[msg.author.id] == undefined && !msg.author.bot){ //checks if the user is not on cooldown and filters bots out
             if(exp[msg.author.id] == undefined){exp[msg.author.id] = {"lvl":0,"exp":0}}; //if the user is not on exp.json, adds it
@@ -103,7 +109,14 @@ module.exports = {
                     levels[exp[msg.author.id].lvl].rewards.forEach(function(reward){ //checks every reward
                         switch(reward.type){
                             case "role":
-                                msg.member.addRole(msg.guild.roles.find("name",reward.name)); //adds the rewarded role
+                                if(!msg.member.nickname.endsWith("🔰")){
+                                    msg.member.addRole(msg.guild.roles.find("name",reward.name)); //adds the rewarded role
+
+                                    var newNick = module.exports.stripEmoji(msg.member.nickname) + " " + reward.name.split(" ")[0];
+                                    msg.member.setNickname(newNick);
+                                    nicks[member.id] = newNick;
+                                    utils.save(nicks,"nicks");
+                                }
                                 break;
                         }
                     })
