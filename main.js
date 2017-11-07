@@ -3,7 +3,6 @@ var validUrl = require('valid-url');
 const Discord = require('discord.js');
 var fs = require("fs");
 const client = new Discord.Client();
-var voiceChannels = require("./voiceChannels.js")(client);
 
 var util = require('./utilities.js');
 //var music = require('./music.js');
@@ -11,6 +10,7 @@ var util = require('./utilities.js');
 var reactions = ["rage","thinking","blush","stuck_out_tongue_closed_eyes","heart_eyes"];
 
 var commands = require("../data/commands.json");
+
 var perms = require("../data/perms.json");
 var quotes = require("../data/quotes.json");
 var levels = require("../data/levels.json");
@@ -18,6 +18,7 @@ var exp = require("../data/exp.json");
 //var art= require("../data/art.json");
 var config = require("../data/config.json");
 //var codes = require("../data/codes.json");
+var vc = require("./vc.js")(client);
 
 client.on('ready', () => {
     console.log('I am ready!');
