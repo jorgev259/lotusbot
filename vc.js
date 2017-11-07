@@ -1,4 +1,5 @@
 var channels = require("../data/vc.json");
+var util = require("./utilities.js");
 var channelID = {};
 
 module.exports = function(client){
@@ -40,7 +41,7 @@ module.exports = function(client){
                     }
                 }
             }catch(e){
-
+                util.log(member,e.message);
             }
         }
     })
