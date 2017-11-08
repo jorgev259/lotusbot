@@ -368,11 +368,10 @@ client.on('message', message => {
                     /*if(message.attachments.size > 0){
                         art.save({"id":message.id,"score":0,"author":message.author.id});
                     }*/
-                    if(!(message.attachments.size > 0 || message.embeds.length>0)){
-                        message.delete();
-                        message.author.send("#creations is used to post your original creations, discuss or comment about them on #art. If your work is being deleted please contact a staff member");
-                    }else{
+                    if(message.attachments.size > 0 || message.embeds.length>0){
                         util.react(0,5,message);
+                    }else{
+
                     }
                     break;
             }
