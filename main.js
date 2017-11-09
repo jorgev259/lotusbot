@@ -2,6 +2,7 @@ var validUrl = require('valid-url');
 
 const Discord = require('discord.js');
 var fs = require("fs");
+var jimp = require("jimp");
 const client = new Discord.Client();
 
 var util = require('./utilities.js');
@@ -19,6 +20,15 @@ var exp = require("../data/exp.json");
 var config = require("../data/config.json");
 //var codes = require("../data/codes.json");
 var vc = require("./vc.js")(client);
+
+var arial;
+var bar;
+jimp.loadFont(jimp.FONT_SANS_32_WHITE).then(function(font){
+    arial = font;
+})
+jimp.read("./images/bar1.png").then((image)=>{
+    bar = image;
+})
 
 client.on('ready', () => {
     console.log('I am ready!');
@@ -323,6 +333,29 @@ client.on('message', message => {
                             });
                         });
                     });
+                    break;
+
+                case "profile":
+                    jimp.read("",function(err,bg){
+                        jimp.read("./images/border1.png",function(err,template){
+                            jimp.read(message.author.avatarURL({"format":"jpg"}),function(err,pfp){
+                                var expBar = bar.clone();
+                                var percent = ((exp[message.author.id].exp * 100)/levels[exp[message.author.id].lvl].exp)/100;
+                                pfp.resize(195,195);
+                                expBar.crop(0,0,(435*percent),26);
+                                template.composite(pfp,72,297);
+                                template.composite(expBar,312,460);
+
+                                template.print(arial,507,500,(exp[message.author.id].exp.toString() + " / " + levels[exp[message.author.id].lvl].exp));
+                                template.print(arial,506,539,("123435667"));
+
+                                template.getBuffer(jimp.MIME_PNG,function(err,buffer){
+                                    message.channel.send(new Discord.MessageAttachment(buffer,"profile.png"));
+                                })
+                            })
+
+                        })
+                    })
                     break;
 
                 case "prune":
