@@ -25,19 +25,19 @@ module.exports = function(client){
                 }else if(channelID[member.id] == undefined){
                     channelID[member.id] = channel.id;
                     if(channels[channel.name] != undefined){
-                        member.addRole(guild.roles.find("name",channels[channel.name]));
+                        member.addRole(guild.roles.find("name",channels[channel.name]),"Added voice channel role");
                     }
                 }else if(channelID[member.id] != channel.id){
                     var roles = member.roles.filter(r=>r.name.startsWith("🔊"));
                     if(roles.size==1){
-                        member.removeRole(roles.first());
+                        member.removeRole(roles.first(), "Removed voice channel role");
                     }else if(roles.size>1){
-                        member.removeRoles(roles);
+                        member.removeRoles(roles, "Removed voice channel roles");
                     }
                     channelID[member.id] = channel.id;
 
                     if(channels[channel.name] != undefined){
-                        member.addRole(guild.roles.find("name",channels[channel.name]));
+                        member.addRole(guild.roles.find("name",channels[channel.name]),"Added voice channel role");
                     }
                 }
             }catch(e){

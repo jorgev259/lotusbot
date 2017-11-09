@@ -40,7 +40,7 @@ client.on("guildMemberAdd", (member) => {
         exp[member.id] = {"lvl":0,"exp":0};
         util.save(exp,"exp");
     }
-    member.addRoles([member.guild.roles.find("name", "☕ Customers"),member.guild.roles.find("name",`[${exp[member.id].lvl}]`)]);
+    member.addRoles([member.guild.roles.find("name", "☕ Customers"),member.guild.roles.find("name",`[${exp[member.id].lvl}]`)],"User join");
 });
 
 /*client.on("messageReactionAdd",(reaction,user)=>{
