@@ -7,9 +7,6 @@
     "test": "node inspect main.js",
     "start": "node main.js"
   },
-  "engines": {
-    "node": ">8.0.0"
-  },
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -17,9 +14,11 @@
     "discord.js": "github:hydrabolt/discord.js",
     "ejs": "~1.0.0",
     "ffmpeg-binaries": "^3.2.2",
+    "gm": "^1.23.0",
     "jimp": "^0.2.28",
     "opusscript": "0.0.3",
     "redis": "^2.7.1",
+    "streamifier": "^0.1.1",
     "uws": "^8.14.0",
     "valid-url": "^1.0.9",
     "youtube-dl": "^1.12.2",
