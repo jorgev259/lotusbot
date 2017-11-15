@@ -330,24 +330,30 @@ client.on('message', message => {
                     break;
 
                 case "profile":
+                    var pfMember;
+                    if(message.mentions.members.size > 0){
+                        pfMember = message.mentions.members.first()
+                    }else{
+                        pfMember = message.member;
+                    }
                     var bg = "";
-                    if(exp["123"] == undefined || exp["123"].bg == undefined){
+                    if(exp[pfMember.id] == undefined || exp[pfMember.id].bg == undefined){
                         bg = "./images/backgrounds/default.png";
                     }else{
-                        bg = `./images/backgrounds/${exp["123"].bg}.png`;
+                        bg = `./images/backgrounds/${exp[pfMember.id].bg}.png`;
                     }
-                    jimp.read(message.author.displayAvatarURL({"format":"jpg"}),function(err,pfp){
+                    jimp.read(pfMember.user.displayAvatarURL({"format":"jpg"}),function(err,pfp){
                         jimp.read(bg,function(err,backg){
                             jimp.read("./images/profile.png",function(err,base){
                                 jimp.read("./images/bar1.png",function(err,expBar){
-                                    var percent = (exp[message.author.id].exp /levels[exp[message.author.id].lvl].exp);
+                                    var percent = (exp[pfMember.id].exp /levels[exp[pfMember.id].lvl].exp);
                                     pfp.resize(195,195);
                                     expBar.crop(0,0,(435*percent),26);
                                     backg.composite(base,0,0);
                                     backg.composite(pfp,72,296);
                                     backg.composite(expBar,312,461);
 
-                                    var nick = message.member.nickname.split(" ");
+                                    var nick = pfMember.nickname.split(" ");
                                     nick.pop();
 
                                     backg.getBuffer(backg.getMIME(),(err,buffer)=>{
@@ -355,11 +361,11 @@ client.on('message', message => {
                                             .fill("#ffffff")
                                             .font("font/Mizo Arial.ttf", 36)
                                             .drawText(353,440, nick.join(" "))
-                                            .drawText(506,530, exp[message.author.id].exp.toString() + " / " + levels[exp[message.author.id].lvl].exp)
+                                            .drawText(506,530, exp[pfMember.id].exp.toString() + " / " + levels[exp[pfMember.id].lvl].exp)
                                             .drawText(506,568, "12345678")
                                             .fill("#000000")
                                             .font("font/BebasNeue Bold.ttf", 200)
-                                            .drawText(90,645,exp[message.author.id].lvl)
+                                            .drawText(90,645,exp[pfMember.id].lvl)
                                             .toBuffer(function(err,buffOut){
                                                 message.channel.send(new Discord.MessageAttachment(buffOut,"profile.png"))
                                             })
