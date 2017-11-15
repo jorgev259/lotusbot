@@ -340,7 +340,7 @@ client.on('message', message => {
                     if(exp[pfMember.id] == undefined || exp[pfMember.id].bg == undefined){
                         bg = "./images/backgrounds/default.png";
                     }else{
-                        bg = `./images/backgrounds/${exp[pfMember.id].bg}.png`;
+                        bg = `./images/backgrounds/d${exp[pfMember.id].bg}.png`;
                     }
                     jimp.read(pfMember.user.displayAvatarURL({"format":"jpg"}),function(err,pfp){
                         jimp.read(bg,function(err,backg){
