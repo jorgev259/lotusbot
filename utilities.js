@@ -117,7 +117,10 @@ module.exports = {
                                 if(!msg.member.nickname.endsWith("🔰")){
                                     msg.member.addRole(msg.guild.roles.find("name",reward.name),"Added reward role"); //adds the rewarded role
 
-                                    var newNick = module.exports.stripEmoji(msg.member.nickname)[0] + " " + reward.name.split(" ")[0];
+                                    var nick = message.member.nickname.split(" ");
+                                    nick.pop();
+
+                                    var newNick = module.exports.stripEmoji(nick.join(" "))[0] + " " + reward.name.split(" ")[0];
                                     msg.member.setNickname(newNick,"Changed nickname emoji");
                                     nicks[msg.member.id] = newNick;
                                     module.exports.save(nicks,"nicks");
