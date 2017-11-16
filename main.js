@@ -2,8 +2,10 @@ var validUrl = require('valid-url');
 
 const Discord = require('discord.js');
 var fs = require("fs");
-var jimp = require("jimp");
-var gm=require("gm");
+const Canvas = require('canvas')
+const download = require('image-downloader')
+Canvas.registerFont("./font/BebasNeue Bold.ttf",{family:"BebasNeue Bold"})
+Canvas.registerFont("./font/Mizo Arial.ttf",{family:"Mizo Arial"})
 
 const client = new Discord.Client();
 
@@ -342,22 +344,52 @@ client.on('message', message => {
                     }else{
                         bg = `./images/backgrounds/d${exp[pfMember.id].bg}.png`;
                     }
-                    jimp.read(pfMember.user.displayAvatarURL({"format":"jpg"}),function(err,pfp){
-                        jimp.read(bg,function(err,backg){
-                            jimp.read("./images/profile.png",function(err,base){
-                                jimp.read("./images/bar1.png",function(err,expBar){
-                                    var percent = (exp[pfMember.id].exp /levels[exp[pfMember.id].lvl].exp);
-                                    pfp.resize(195,195);
-                                    expBar.crop(0,0,(435*percent),26);
-                                    backg.composite(base,0,0);
-                                    backg.composite(pfp,72,296);
-                                    backg.composite(expBar,312,461);
+                    var nick = pfMember.nickname.split(" ");
+                    nick.pop();
 
-                                    var nick = pfMember.nickname.split(" ");
-                                    nick.pop();
+                    const options = {
+                        url: pfMember.user.displayAvatarURL({"format":"png"}),
+                        dest: `temp/${pfMember.id}.png`
+                    }
 
-                                    backg.getBuffer(backg.getMIME(),(err,buffer)=>{
+                    download.image(options).then(({ filename, image }) => {
+                        var profile = Canvas.createCanvas(1059,787);
+                        var pfCtx = profile.getContext('2d');
+                        var img = new Canvas.Image();
+
+                        img.src = fs.readFileSync(bg);
+                        pfCtx.drawImage(img,0,0);
+
+                        img.src= fs.readFileSync("./images/profile.png");
+                        pfCtx.drawImage(img,0,0);
+
+                        img.src= fs.readFileSync(`temp/${pfMember.id}.png`);
+                        pfCtx.drawImage(img,72,296,195,195);
+                        fs.unlink(`temp/${pfMember.id}.png`)
+
+                        img.src= fs.readFileSync("./images/bar1.png");
+                        var percent = ((exp[pfMember.id].exp - levels[exp[pfMember.id].lvl -1].exp) / (levels[exp[pfMember.id].lvl].exp - levels[exp[pfMember.id].lvl -1].exp));
+
+                        pfCtx.drawImage(img,312,461,(435*percent),26);
+
+                        pfCtx.font = '180px BebasNueue Bold';
+                        pfCtx.fillStyle = '#000000';
+                        pfCtx.fillText(exp[pfMember.id].lvl, 90,645);
+
+                        pfCtx.font = '30px Mizo Arial';
+                        pfCtx.fillStyle = '#ffffff';
+                        pfCtx.fillText(nick.join(" "), 353,440);
+                        pfCtx.fillText(exp[pfMember.id].exp.toString() + " / " + levels[exp[pfMember.id].lvl].exp, 506,530);
+                        pfCtx.fillText("12345667", 506,568);
+
+                        console.log("sent");
+                        message.channel.send(new Discord.MessageAttachment(profile.toBuffer(),"profile.png"))
+
+                    })
+
+                    /*backg.getBuffer(backg.getMIME(),(err,buffer)=>{
                                         gm(buffer, 'image.png')
+                                            .compose(bg)
                                             .fill("#ffffff")
                                             .font("font/Mizo Arial.ttf", 36)
                                             .drawText(353,440, nick.join(" "))
@@ -370,10 +402,27 @@ client.on('message', message => {
                                                 message.channel.send(new Discord.MessageAttachment(buffOut,"profile.png"))
                                             })
                                     })
+                                    gm().in('-geometry', '+0+0')
+                                        .in(bg)
+                                        .in('-geometry', '+0+0')
+                                        .in("./images/profile.png")
+                                        .in('-geometry', `+312+461`)
+                                        .in("./images/bar1.png")
+                                        .flatten()
+                                        .toBuffer(function(err,buffOut){
+                                                message.channel.send(new Discord.MessageAttachment(buffOut,"profile.png"))
+                                            })
+
+
+                                    gm(bg)
+                                        .composite(gm("./images/profile.png").crop(20,20,0,0))
+                                        .toBuffer(function(err,buffOut){
+                                        message.channel.send(new Discord.MessageAttachment(buffOut,"profile.png"))
+                                    })
                                 })
                             })
                         })
-                    })
+                    })*/
                     break;
 
                 case "prune":

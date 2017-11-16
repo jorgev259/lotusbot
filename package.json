@@ -11,11 +11,11 @@
   "license": "ISC",
   "dependencies": {
     "bufferutil": "^3.0.3",
+    "canvas": "github:Automattic/node-canvas",
     "discord.js": "github:hydrabolt/discord.js",
     "ejs": "~1.0.0",
     "ffmpeg-binaries": "^3.2.2",
-    "gm": "^1.23.0",
-    "jimp": "^0.2.28",
+    "image-downloader": "^3.3.0",
     "opusscript": "0.0.3",
     "redis": "^2.7.1",
     "streamifier": "^0.1.1",
