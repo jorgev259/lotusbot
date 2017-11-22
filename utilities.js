@@ -108,7 +108,7 @@ module.exports = {
                 }
 
                 msg.member.addRole(msg.guild.roles.find("name",`[${exp[msg.author.id].lvl + 1}]`),"Added new level role") //adds new level role
-                module.exports.send(`>add-money bank <@${msg.author.id}> ${(exp[msg.author.id].lvl + 1)* 1000}`);
+                //module.exports.send(`>add-money bank <@${msg.author.id}> ${(exp[msg.author.id].lvl + 1)* 1000}`);
 
                 if(levels[exp[msg.author.id].lvl].rewards != undefined){
                     levels[exp[msg.author.id].lvl].rewards.forEach(function(reward){ //checks every reward
@@ -145,14 +145,6 @@ module.exports = {
         fs.writeFile("../data/" + name + ".json", JSON.stringify(data), 'utf-8', function(){});
     },
 
-    send:function(message){
-        var cl2 = new Discord.Client();
-        cl2.login(config.chito).then(()=>{
-            cl2.guilds.find("name","Fandom Circle").channels.find("name","bot-logs").send(message).then((token)=>{
-                cl2.destroy();
-            });
-        });
-    },
 
     log:function(data,log){
         data.guild.channels.find("name","bot-logs").send(new Discord.MessageEmbed().setTimestamp().setDescription(log));
