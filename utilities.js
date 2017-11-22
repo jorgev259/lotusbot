@@ -122,7 +122,7 @@ module.exports = {
 					else {
 						db.run(`UPDATE economy SET money = '${row.money + ((exp[msg.author.id].lvl + 1)* 1000)}' WHERE userID = '${msg.author.id}'`);
 						db.get(`SELECT * FROM economy WHERE userID = '${userID}'`, function(err, row) {
-							log(message,`The user ${row.userID} got ${row.money} now!`);
+							module.exports.log(message,`The user ${row.userID} got ${row.money} now!`);
 						});
 					}
 				})
