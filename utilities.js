@@ -116,7 +116,7 @@ module.exports = {
 					if (!row) {
 						var stmt = db.prepare("INSERT INTO economy (userID,money,lastDaily) VALUES (?,?,?)");
 
-						stmt.run(userID, 0, 'Not Collected')
+						stmt.run(msg.author.id, 0, 'Not Collected')
 
 					}
 					else {
