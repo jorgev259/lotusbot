@@ -7,8 +7,8 @@ const download = require('image-downloader')
 const economy = require('discord-eco-chito');
 economy.start("../shiro/userData.sqlite");
 
-Canvas.registerFont("./font/BebasNeue Bold.ttf",{family:"BebasNeue Bold"})
-Canvas.registerFont("./font/Mizo Arial.ttf",{family:"Mizo Arial"})
+//Canvas.registerFont("./font/BebasNeue Bold.ttf",{family:"BebasNeue Bold"})
+//Canvas.registerFont("./font/Mizo Arial.ttf",{family:"Mizo Arial"})
 
 const client = new Discord.Client();
 
