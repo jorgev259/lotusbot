@@ -9,8 +9,6 @@ var nicks = require("../data/nicks.json");
 var config = require("../data/config.json");
 var fs = require("fs");
 
-const sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database('../shiro/userData.sqlite');
 
 module.exports = {
 	permCheck:function(message, commandName){
@@ -112,20 +110,7 @@ module.exports = {
 				msg.member.addRole(msg.guild.roles.find("name",`[${exp[msg.author.id].lvl + 1}]`),"Added new level role") //adds new level role
 				//module.exports.send(`>add-money bank <@${msg.author.id}> ${(exp[msg.author.id].lvl + 1)* 1000}`);
 
-				db.get(`SELECT * FROM economy WHERE userID = '${msg.author.id}'`, function(err, row) {
-					if (!row) {
-						var stmt = db.prepare("INSERT INTO economy (userID,money,lastDaily) VALUES (?,?,?)");
-
-						stmt.run(msg.author.id, 0, 'Not Collected')
-
-					}
-					else {
-						db.run(`UPDATE economy SET money = '${row.money + ((exp[msg.author.id].lvl + 1)* 1000)}' WHERE userID = '${msg.author.id}'`);
-						db.get(`SELECT * FROM economy WHERE userID = '${userID}'`, function(err, row) {
-							module.exports.log(message,`The user ${row.userID} got ${row.money} now!`);
-						});
-					}
-				})
+				//add money reward
 
 				if(levels[exp[msg.author.id].lvl].rewards != undefined){
 					levels[exp[msg.author.id].lvl].rewards.forEach(function(reward){ //checks every reward
