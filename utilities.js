@@ -3,6 +3,9 @@ var reactions = ["rage","thinking","blush","stuck_out_tongue_closed_eyes","heart
 var emojis = [/(☕)/,/(🍜)/,/(🍰)/,/(🍪)/,/(🔰)/];
 var cooldown = {};
 
+const economy = require('discord-eco-chito');
+economy.start("../shiro/userData.sqlite");
+
 var levels = require("../data/levels.json");
 var perms = require("../data/perms.json");
 var nicks = require("../data/nicks.json");
@@ -110,7 +113,9 @@ module.exports = {
 				msg.member.addRole(msg.guild.roles.find("name",`[${exp[msg.author.id].lvl + 1}]`),"Added new level role") //adds new level role
 				//module.exports.send(`>add-money bank <@${msg.author.id}> ${(exp[msg.author.id].lvl + 1)* 1000}`);
 
-				//add money reward
+				economy.updateBalance(message.author.id + message.guild.id, parseInt(`+${(exp[msg.author.id].lvl + 1)* 1000}`)).then((i) => {
+					msg.author.send(`You just got ${(exp[msg.author.id].lvl + 1)* 1000} for reaching level ${exp[msg.author.id].lvl + 1}`);
+				})
 
 				if(levels[exp[msg.author.id].lvl].rewards != undefined){
 					levels[exp[msg.author.id].lvl].rewards.forEach(function(reward){ //checks every reward
