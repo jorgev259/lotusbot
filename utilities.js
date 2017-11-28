@@ -114,7 +114,7 @@ module.exports = {
 				msg.member.addRole(msg.guild.roles.find("name",`[${exp[msg.author.id].lvl + 1}]`),"Added new level role") //adds new level role
 				//module.exports.send(`>add-money bank <@${msg.author.id}> ${(exp[msg.author.id].lvl + 1)* 1000}`);
 
-				economy.updateBalance(message.author.id + message.guild.id, parseInt(`+${(exp[msg.author.id].lvl + 1)* 1000}`)).then((i) => {
+				economy.updateBalance(msg.author.id + msg.guild.id, parseInt(`+${(exp[msg.author.id].lvl + 1)* 1000}`)).then((i) => {
 					msg.author.send(`You just got ${(exp[msg.author.id].lvl + 1)* 1000} for reaching level ${exp[msg.author.id].lvl + 1}`);
 				})
 
