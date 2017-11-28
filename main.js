@@ -367,23 +367,23 @@ client.on('message', message => {
 							img.src= fs.readFileSync("./images/profile.png");
 							pfCtx.drawImage(img,0,0);
 
-							img.src= fs.readFileSync(`temp/${pfMember.id}.png`);
+							img.src= fs.readFileSync(`temp/${i.userID}.png`);
 							pfCtx.drawImage(img,72,296,195,195);
-							fs.unlink(`temp/${pfMember.id}.png`)
+							fs.unlink(`temp/${i.userID}.png`)
 
 							img.src= fs.readFileSync("./images/bar1.png");
-							var percent = ((exp[pfMember.id].exp - levels[exp[pfMember.id].lvl -1].exp) / (levels[exp[pfMember.id].lvl].exp - levels[exp[pfMember.id].lvl -1].exp));
+							var percent = ((exp[i.userID].exp - levels[exp[i.userID].lvl -1].exp) / (levels[exp[i.userID].lvl].exp - levels[exp[i.userID].lvl -1].exp));
 
 							pfCtx.drawImage(img,312,461,(435*percent),26);
 
 							pfCtx.font = '180px "BebasNeue Bold"';
 							pfCtx.fillStyle = '#000000';
-							pfCtx.fillText(exp[pfMember.id].lvl, 90,645);
+							pfCtx.fillText(exp[i.userID].lvl, 90,645);
 
 							pfCtx.font = '30px "Mizo Arial"';
 							pfCtx.fillStyle = '#ffffff';
 							pfCtx.fillText(nick.join(" "), 353,440);
-							pfCtx.fillText(exp[pfMember.id].exp.toString() + " / " + levels[exp[pfMember.id].lvl].exp, 506,530);
+							pfCtx.fillText(exp[i.userID].exp.toString() + " / " + levels[exp[i.userID].lvl].exp, 506,530);
 							pfCtx.fillText(i.money, 506,568);
 
 							message.channel.send(new Discord.MessageAttachment(profile.toBuffer(),"profile.png"))
