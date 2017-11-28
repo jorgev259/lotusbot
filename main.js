@@ -7,8 +7,8 @@ const download = require('image-downloader')
 const economy = require('discord-eco-chito');
 economy.start("../shiro/userData.sqlite");
 
-//Canvas.registerFont("./font/BebasNeue Bold.ttf",{family:"BebasNeue Bold"})
-//Canvas.registerFont("./font/Mizo Arial.ttf",{family:"Mizo Arial"})
+Canvas.registerFont("./font/BebasNeue Bold.ttf",{family:"BebasNeue Bold"})
+Canvas.registerFont("./font/Mizo Arial.ttf",{family:"Mizo Arial"})
 
 const client = new Discord.Client();
 
@@ -376,7 +376,7 @@ client.on('message', message => {
 
 							pfCtx.drawImage(img,312,461,(435*percent),26);
 
-							pfCtx.font = '180px "BebasNueue Bold"';
+							pfCtx.font = '180px "BebasNeue Bold"';
 							pfCtx.fillStyle = '#000000';
 							pfCtx.fillText(exp[pfMember.id].lvl, 90,645);
 
