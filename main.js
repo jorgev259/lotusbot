@@ -373,8 +373,12 @@ client.on('message', message => {
 							fs.unlink(`temp/${id}.png`)
 
 							img.src= fs.readFileSync("./images/bar1.png");
-							var percent = ((exp[id].exp - levels[exp[id].lvl -1].exp) / (levels[exp[id].lvl].exp - levels[exp[id].lvl -1].exp));
-
+							var percent;
+							if(exp[id].lvl > 0) {
+								percent = ((exp[id].exp - levels[exp[id].lvl -1].exp) / (levels[exp[id].lvl].exp - levels[exp[id].lvl -1].exp))
+							}else{
+								percent = ((levels[1].exp - exp[id].exp) / (levels[1].exp))
+							}
 							pfCtx.drawImage(img,312,461,(435*percent),26);
 
 							pfCtx.font = '180px "BebasNeue Bold"';
