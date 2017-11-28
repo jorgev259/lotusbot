@@ -67,7 +67,7 @@ client.on("messageReactionRemove",(reaction,user)=>{
 })*/
 
 client.on('message', message => {
-	util.exp(exp,message);
+
 	var prefix = config.prefix;
 
 	if(message.content.startsWith(prefix)){
@@ -479,6 +479,7 @@ client.on('message', message => {
 			}
 		}
 	}
+	util.exp(message);
 });
 
 client.login(config.token);

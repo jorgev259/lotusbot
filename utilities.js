@@ -7,6 +7,7 @@ const economy = require('discord-eco-chito');
 economy.start("../shiro/userData.sqlite");
 
 var levels = require("../data/levels.json");
+var exp =require("../data/exp.json");
 var perms = require("../data/perms.json");
 var nicks = require("../data/nicks.json");
 var config = require("../data/config.json");
@@ -91,7 +92,7 @@ module.exports = {
 		return text.split(emojis[0])[0].split(emojis[1])[0].split(emojis[2])[0].split(emojis[3])[0].split(emojis[4])[0];
 	},
 
-	exp:function(exp,msg){
+	exp:function(msg){
 		if(cooldown[msg.author.id] == undefined && !msg.author.bot){ //checks if the user is not on cooldown and filters bots out
 			if(exp[msg.author.id] == undefined){
 				exp[msg.author.id] = {"lvl":0,"exp":0}
