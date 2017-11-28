@@ -389,42 +389,6 @@ client.on('message', message => {
 							message.channel.send(new Discord.MessageAttachment(profile.toBuffer(),"profile.png"))
 						})
 					})
-					/*backg.getBuffer(backg.getMIME(),(err,buffer)=>{
-                                        gm(buffer, 'image.png')
-                                            .compose(bg)
-                                            .fill("#ffffff")
-                                            .font("font/Mizo Arial.ttf", 36)
-                                            .drawText(353,440, nick.join(" "))
-                                            .drawText(506,530, exp[pfMember.id].exp.toString() + " / " + levels[exp[pfMember.id].lvl].exp)
-                                            .drawText(506,568, "12345678")
-                                            .fill("#000000")
-                                            .font("font/BebasNeue Bold.ttf", 200)
-                                            .drawText(90,645,exp[pfMember.id].lvl)
-                                            .toBuffer(function(err,buffOut){
-                                                message.channel.send(new Discord.MessageAttachment(buffOut,"profile.png"))
-                                            })
-                                    })
-                                    gm().in('-geometry', '+0+0')
-                                        .in(bg)
-                                        .in('-geometry', '+0+0')
-                                        .in("./images/profile.png")
-                                        .in('-geometry', `+312+461`)
-                                        .in("./images/bar1.png")
-                                        .flatten()
-                                        .toBuffer(function(err,buffOut){
-                                                message.channel.send(new Discord.MessageAttachment(buffOut,"profile.png"))
-                                            })
-
-
-                                    gm(bg)
-                                        .composite(gm("./images/profile.png").crop(20,20,0,0))
-                                        .toBuffer(function(err,buffOut){
-                                        message.channel.send(new Discord.MessageAttachment(buffOut,"profile.png"))
-                                    })
-                                })
-                            })
-                        })
-                    })*/
 					break;
 
 				case "prune":
