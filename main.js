@@ -386,9 +386,7 @@ client.on('message', message => {
 							pfCtx.fillText(exp[pfMember.id].exp.toString() + " / " + levels[exp[pfMember.id].lvl].exp, 506,530);
 							pfCtx.fillText(i.money, 506,568);
 
-							console.log("sent");
 							message.channel.send(new Discord.MessageAttachment(profile.toBuffer(),"profile.png"))
-
 						})
 					})
 					/*backg.getBuffer(backg.getMIME(),(err,buffer)=>{
