@@ -111,34 +111,35 @@ module.exports = {
 					msg.member.removeRoles(levelroles,"Removed level roles"); //removes all lvl roles
 				}
 
-				msg.member.addRole(msg.guild.roles.find("name",`[${exp[msg.author.id].lvl + 1}]`),"Added new level role") //adds new level role
+				exp[msg.author.id].lvl += 1;
+
+				msg.member.addRole(msg.guild.roles.find("name",`[${exp[msg.author.id].lvl}]`),"Added new level role") //adds new level role
 				//module.exports.send(`>add-money bank <@${msg.author.id}> ${(exp[msg.author.id].lvl + 1)* 1000}`);
 
-				economy.updateBalance(msg.author.id + msg.guild.id, parseInt(`+${(exp[msg.author.id].lvl + 1)* 1000}`)).then((i) => {
-					msg.author.send(`You just got ${(exp[msg.author.id].lvl + 1)* 1000} for reaching level ${exp[msg.author.id].lvl + 1}`);
-
-
-					if(levels[exp[msg.author.id].lvl].rewards != undefined){
-						levels[exp[msg.author.id].lvl].rewards.forEach(function(reward){ //checks every reward
-							switch(reward.type){
-								case "role":
-									if(!msg.member.nickname.endsWith("🔰")){
-										msg.member.addRole(msg.guild.roles.find("name",reward.name),"Added reward role"); //adds the rewarded role
-
-										var nick = message.member.nickname.split(" ");
-										nick.pop();
-
-										var newNick = module.exports.stripEmoji(nick.join(" "))[0] + " " + reward.name.split(" ")[0];
-										msg.member.setNickname(newNick,"Changed nickname emoji");
-										nicks[msg.member.id] = newNick;
-										module.exports.save(nicks,"nicks");
-									}
-									break;
-							}
-						})
-					}
-					exp[msg.author.id].lvl += 1;
+				economy.updateBalance(msg.author.id + msg.guild.id, parseInt(`+${exp[msg.author.id].lvl * 1000}`)).then((i) => {
+					msg.author.send(`You just got ${exp[msg.author.id].lvl * 1000} for reaching level ${exp[msg.author.id].lvl}`);
 				})
+
+				if(levels[exp[msg.author.id].lvl].rewards != undefined){
+					levels[exp[msg.author.id].lvl].rewards.forEach(function(reward){ //checks every reward
+						switch(reward.type){
+							case "role":
+								if(!msg.member.nickname.endsWith("🔰")){
+									msg.member.addRole(msg.guild.roles.find("name",reward.name),"Added reward role"); //adds the rewarded role
+
+									var nick = message.member.nickname.split(" ");
+									nick.pop();
+
+									var newNick = module.exports.stripEmoji(nick.join(" "))[0] + " " + reward.name.split(" ")[0];
+									msg.member.setNickname(newNick,"Changed nickname emoji");
+									nicks[msg.member.id] = newNick;
+									module.exports.save(nicks,"nicks");
+								}
+								break;
+						}
+					})
+				}
+
 			}
 
 			module.exports.save(exp,"exp");
