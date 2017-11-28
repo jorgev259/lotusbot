@@ -377,7 +377,7 @@ client.on('message', message => {
 							if(exp[id].lvl > 0) {
 								percent = ((exp[id].exp - levels[exp[id].lvl -1].exp) / (levels[exp[id].lvl].exp - levels[exp[id].lvl -1].exp))
 							}else{
-								percent = ((levels[1].exp - exp[id].exp) / (levels[1].exp))
+								percent = ((exp[id].exp) / (levels[0].exp))
 							}
 							pfCtx.drawImage(img,312,461,(435*percent),26);
 
