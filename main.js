@@ -433,19 +433,23 @@ client.on('message', message => {
 
 					break;
 			}
-		}else{
-			switch(message.channel.name){
-				case "creations":
-					/*if(message.attachments.size > 0){
+		}
+	}else{
+		switch(message.channel.name){
+			case "creations":
+				/*if(message.attachments.size > 0){
                         art.save({"id":message.id,"score":0,"author":message.author.id});
                     }*/
-					if(message.attachments.size > 0 || message.embeds.length>0){
-						util.react(0,5,message);
-					}else{
+				if(message.attachments.size > 0 || message.embeds.length>0){
+					util.react(0,5,message);
+				}else{
 
-					}
-					break;
-			}
+				}
+				break;
+
+			case "akira":
+				util.talk(client,message);
+				break;
 		}
 	}
 });

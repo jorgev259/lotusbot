@@ -151,6 +151,12 @@ module.exports = {
 		}
 	},
 
+	talk:function(client,msg){
+		if(msg.mentions.channels.size>0){
+			client.channels.resolve(msg.mentions.channels.first()).send(msg.content.split(`<#${msg.mentions.channels.first().id}>`).join(""));
+		}
+	},
+
 	save:function(data,name){
 		fs.writeFile("../data/" + name + ".json", JSON.stringify(data), 'utf-8', function(){});
 	},
