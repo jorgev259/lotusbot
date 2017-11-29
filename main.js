@@ -84,15 +84,7 @@ client.on('message', message => {
 					message.channel.send(eval("`" + command.content + "`"));
 					break;
 
-				case "say":
-					message.mentions.channels.forEach(function(channel){
-						param.shift();
-						param.shift();
-						channel.send((param.join(" ")).split("\\n").join("\n"));
-					});
-					break
-
-					case "embed":
+				case "embed":
 					message.channel.send(new Discord.MessageAttachment(command.content[0])).then(function(message){
 						if(command.content.length>1){
 							var first = command.content[0];
