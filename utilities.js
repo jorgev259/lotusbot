@@ -3,9 +3,6 @@ var reactions = ["rage","thinking","blush","stuck_out_tongue_closed_eyes","heart
 var emojis = [/(☕)/,/(🍜)/,/(🍰)/,/(🍪)/,/(🔰)/];
 var cooldown = {};
 
-const economy = require('discord-eco-chito');
-economy.start("../shiro/userData.sqlite");
-
 var levels = require("../data/levels.json");
 var exp =require("../data/exp.json");
 var perms = require("../data/perms.json");
@@ -116,9 +113,8 @@ module.exports = {
 				msg.member.addRole(msg.guild.roles.find("name",`[${exp[msg.author.id].lvl}]`),"Added new level role") //adds new level role
 				//module.exports.send(`>add-money bank <@${msg.author.id}> ${(exp[msg.author.id].lvl + 1)* 1000}`);
 
-				economy.updateBalance(msg.author.id + msg.guild.id, parseInt(`+${exp[msg.author.id].lvl * 1000}`)).then((i) => {
-					msg.author.send(`You just got ${exp[msg.author.id].lvl * 1000} for reaching level ${exp[msg.author.id].lvl}`);
-				})
+				exp[msg.author.id].money += exp[msg.author.id].lvl * 1000 //adds money reward for leveling up
+				msg.author.send(`You just got ${exp[msg.author.id].lvl * 1000} for reaching level ${exp[msg.author.id].lvl}`);
 
 				if(levels[exp[msg.author.id].lvl].rewards != undefined){
 					levels[exp[msg.author.id].lvl].rewards.forEach(function(reward){ //checks every reward
