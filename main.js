@@ -20,7 +20,6 @@ var commands = require("../data/commands.json");
 var perms = require("../data/perms.json");
 var quotes = require("../data/quotes.json");
 var levels = require("../data/levels.json");
-var exp = require("../data/exp.json");
 //var art= require("../data/art.json");
 var config = require("../data/config.json");
 //var codes = require("../data/codes.json");
@@ -32,6 +31,7 @@ client.on('ready', () => {
 });
 
 client.on("guildMemberAdd", (member) => {
+	var exp = JSON.parse(fs.readFileSync('../data/exp.json', 'utf8'));
 	member.guild.channels.find("name","main-lounge").send(`Welcome to Fandom Circle, <@${member.id}>! Have Fun`);
 	if(exp[member.id] == undefined){
 		exp[member.id] = {"lvl":0,"exp":0,"money":0,"lastDaily":"Not Collected"};
@@ -65,7 +65,7 @@ client.on("messageReactionRemove",(reaction,user)=>{
 })*/
 
 client.on('message', message => {
-	//util.exp(message);
+	util.exp(message);
 	var prefix = config.prefix;
 
 	if(message.content.startsWith(prefix)){
@@ -76,7 +76,7 @@ client.on('message', message => {
 		var command = commands[commandName];
 
 		if(util.permCheck(message,commandName)){
-			if(command == undefined){command = {}; command.type = param[0]};
+			if(command == undefined){command = {}; command.type = param[0].toLowerCase()};
 			switch(command.type){
 				case "simple":
 					message.channel.send(eval("`" + command.content + "`"));
@@ -325,6 +325,7 @@ client.on('message', message => {
 					break;
 
 				case "profile":
+					var exp = JSON.parse(fs.readFileSync('../data/exp.json', 'utf8'));
 					var pfMember;
 					if(message.mentions.members.size > 0){
 						pfMember = message.mentions.members.first()
@@ -335,7 +336,7 @@ client.on('message', message => {
 					if(exp[pfMember.id] == undefined || exp[pfMember.id].bg == undefined){
 						bg = "./images/backgrounds/default.png";
 					}else{
-						bg = `./images/backgrounds/d${exp[pfMember.id].bg}.png`;
+						bg = `./images/backgrounds/${exp[pfMember.id].bg}.png`;
 					}
 					var nick = pfMember.nickname.split(" ");
 					nick.pop();
@@ -382,6 +383,28 @@ client.on('message', message => {
 
 						message.channel.send(new Discord.MessageAttachment(profile.toBuffer(),"profile.png"))
 					})
+					break;
+
+				case "background":
+					var inventory = JSON.parse(fs.readFileSync('../data/inventory.json', 'utf8'));
+					var exp = JSON.parse(fs.readFileSync('../data/exp.json', 'utf8'));
+
+					if(param.length > 1){
+						var code = param[1].toUpperCase();
+						if(fs.existsSync(`./images/backgrounds/${code}.png`) || code=="DEFAULT"){
+							if(inventory[message.author.id][`bg${code}`] || code=="DEFAULT"){
+								exp[message.author.id].bg = code;
+								util.save(exp,"exp");
+								message.channel.send("New background applied!")
+							}else{
+								message.channel.send("Sorry, you dont own this background ;-;");
+							}
+						}else{
+							message.channel.send(`The background code ${code} doesnt exist. Check https://www.fandomcircle.com/shop-1#PROFILES for more info`)
+						}
+					}else{
+						message.channel.send("You forgot the background's code. Usage: >background <code>");
+					}
 					break;
 
 				case "prune":
