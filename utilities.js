@@ -92,7 +92,7 @@ module.exports = {
 	exp:function(msg){
 		if(cooldown[msg.author.id] == undefined && !msg.author.bot){ //checks if the user is not on cooldown and filters bots out
 			if(exp[msg.author.id] == undefined){
-				exp[msg.author.id] = {"lvl":0,"exp":0}
+				exp[msg.author.id] = {"lvl":0,"exp":0,"money":0,"lastDaily":"Not Collected"}
 				msg.member.addRole(msg.member.guild.roles.find("name",`[${exp[msg.member.id].lvl}]`),"Added level role");
 			}; //if the user is not on exp.json, adds it
 
