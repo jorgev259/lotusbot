@@ -1,6 +1,7 @@
 var validUrl = require('valid-url');
 
 const Discord = require('discord.js');
+var json = require('jsonfile')
 var fs = require("fs");
 const Canvas = require('canvas')
 const download = require('image-downloader')
@@ -31,7 +32,7 @@ client.on('ready', () => {
 });
 
 client.on("guildMemberAdd", (member) => {
-	var exp = JSON.parse(fs.readFileSync('../data/exp.json', 'utf-8',function(){}));
+	var exp = json.readFileSync("../data/exp.json");
 	member.guild.channels.find("name","main-lounge").send(`Welcome to Fandom Circle, <@${member.id}>! Have Fun`);
 	if(exp[member.id] == undefined){
 		exp[member.id] = {"lvl":0,"exp":0,"money":0,"lastDaily":"Not Collected"};
@@ -63,10 +64,6 @@ client.on("messageReactionRemove",(reaction,user)=>{
         }
     }
 })*/
-
-client.on("debug",info=>{
-	console.log(info)
-})
 
 client.on('message', message => {
 	util.exp(message);
@@ -329,7 +326,7 @@ client.on('message', message => {
 					break;
 
 				case "profile":
-					var exp = JSON.parse(fs.readFileSync('../data/exp.json', 'utf-8'));
+					var exp = json.readFileSync("../data/exp.json");
 					var pfMember;
 					if(message.mentions.members.size > 0){
 						pfMember = message.mentions.members.first()
@@ -390,8 +387,8 @@ client.on('message', message => {
 					break;
 
 				case "background":
-					var inventory = JSON.parse(fs.readFileSync('../data/inventory.json', 'utf-8'));
-					var exp = JSON.parse(fs.readFileSync('../data/exp.json', 'utf-8'));
+					var inventory = json.readFileSync("../data/inventory.json");
+					var exp = json.readFileSync("../data/exp.json");
 
 					if(param.length > 1){
 						var code = param[1].toUpperCase();

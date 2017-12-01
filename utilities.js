@@ -8,6 +8,7 @@ var perms = require("../data/perms.json");
 var nicks = require("../data/nicks.json");
 var config = require("../data/config.json");
 var fs = require("fs");
+var json = require("jsonfile");
 
 
 module.exports = {
@@ -89,7 +90,7 @@ module.exports = {
 	},
 
 	exp:function(msg){
-		var exp = JSON.parse(fs.readFileSync('../data/exp.json', 'utf-8'));
+		var exp = json.readFileSync("../data/exp.json");
 		if(cooldown[msg.author.id] == undefined && !msg.author.bot){ //checks if the user is not on cooldown and filters bots out
 			if(exp[msg.author.id] == undefined){
 				exp[msg.author.id] = {"lvl":0,"exp":0,"money":0,"lastDaily":"Not Collected"}
@@ -154,7 +155,7 @@ module.exports = {
 	},
 
 	save:function(data,name){
-		fs.writeFile("../data/" + name + ".json", JSON.stringify(data), 'utf-8', function(){});
+		json.writeFile("../data/" + name + ".json", data, function (err) {})
 	},
 
 

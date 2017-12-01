@@ -16,6 +16,7 @@
     "ejs": "~1.0.0",
     "ffmpeg-binaries": "^3.2.2",
     "image-downloader": "^3.3.0",
+    "jsonfile": "^4.0.0",
     "opusscript": "0.0.3",
     "redis": "^2.7.1",
     "streamifier": "^0.1.1",
