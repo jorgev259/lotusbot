@@ -64,6 +64,10 @@ client.on("messageReactionRemove",(reaction,user)=>{
     }
 })*/
 
+client.on("debug",info=>{
+	console.log(info)
+})
+
 client.on('message', message => {
 	util.exp(message);
 	var prefix = config.prefix;
