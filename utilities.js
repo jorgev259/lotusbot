@@ -4,7 +4,6 @@ var emojis = [/(☕)/,/(🍜)/,/(🍰)/,/(🍪)/,/(🔰)/];
 var cooldown = {};
 
 var levels = require("../data/levels.json");
-var exp =require("../data/exp.json");
 var perms = require("../data/perms.json");
 var nicks = require("../data/nicks.json");
 var config = require("../data/config.json");
@@ -90,6 +89,7 @@ module.exports = {
 	},
 
 	exp:function(msg){
+		var exp = JSON.parse(fs.readFileSync('../data/exp.json', 'utf-8'));
 		if(cooldown[msg.author.id] == undefined && !msg.author.bot){ //checks if the user is not on cooldown and filters bots out
 			if(exp[msg.author.id] == undefined){
 				exp[msg.author.id] = {"lvl":0,"exp":0,"money":0,"lastDaily":"Not Collected"}
