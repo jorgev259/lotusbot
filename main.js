@@ -428,6 +428,8 @@ client.on('message', message => {
 
 				case "eval":
 					try {
+						var exp = json.readFileSync("../data/exp.json");
+						var inventory = json.readFileSync("../data/inventory.json");
 						param.shift();
 						const code = param.join(" ");
 						let evaled = eval(code);
