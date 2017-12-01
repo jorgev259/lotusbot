@@ -31,7 +31,7 @@ client.on('ready', () => {
 });
 
 client.on("guildMemberAdd", (member) => {
-	var exp = JSON.parse(fs.readFileSync('../data/exp.json', 'utf8'));
+	var exp = JSON.parse(fs.readFileSync('../data/exp.json', 'utf-8'));
 	member.guild.channels.find("name","main-lounge").send(`Welcome to Fandom Circle, <@${member.id}>! Have Fun`);
 	if(exp[member.id] == undefined){
 		exp[member.id] = {"lvl":0,"exp":0,"money":0,"lastDaily":"Not Collected"};
@@ -325,7 +325,7 @@ client.on('message', message => {
 					break;
 
 				case "profile":
-					var exp = JSON.parse(fs.readFileSync('../data/exp.json', 'utf8'));
+					var exp = JSON.parse(fs.readFileSync('../data/exp.json', 'utf-8'));
 					var pfMember;
 					if(message.mentions.members.size > 0){
 						pfMember = message.mentions.members.first()
@@ -386,8 +386,8 @@ client.on('message', message => {
 					break;
 
 				case "background":
-					var inventory = JSON.parse(fs.readFileSync('../data/inventory.json', 'utf8'));
-					var exp = JSON.parse(fs.readFileSync('../data/exp.json', 'utf8'));
+					var inventory = JSON.parse(fs.readFileSync('../data/inventory.json', 'utf-8'));
+					var exp = JSON.parse(fs.readFileSync('../data/exp.json', 'utf-8'));
 
 					if(param.length > 1){
 						var code = param[1].toUpperCase();
