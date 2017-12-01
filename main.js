@@ -335,7 +335,7 @@ client.on('message', message => {
 					}
 					var bg = "";
 					if(exp[pfMember.id] == undefined || exp[pfMember.id].bg == undefined){
-						bg = "./images/backgrounds/default.png";
+						bg = "./images/backgrounds/DEFAULT.png";
 					}else{
 						bg = `./images/backgrounds/${exp[pfMember.id].bg}.png`;
 					}
