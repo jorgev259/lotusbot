@@ -78,7 +78,7 @@ client.on('message', message => {
 		var param = message.content.split(" ");
 		param[0] = param[0].split(prefix)[1];
 
-		const commandName = param[0]
+		const commandName = param[0].toLowerCase();
 		var command = commands[commandName];
 
 		if(util.permCheck(message,commandName)){
