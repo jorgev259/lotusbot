@@ -3,6 +3,7 @@ var reactions = ["rage","thinking","blush","stuck_out_tongue_closed_eyes","heart
 var emojis = [/(☕)/,/(🍜)/,/(🍰)/,/(🍪)/,/(🔰)/];
 var cooldown = {};
 
+const Discord = require('discord.js');
 var levels = require("../data/levels.json");
 var perms = require("../data/perms.json");
 var nicks = require("../data/nicks.json");
@@ -154,13 +155,26 @@ module.exports = {
 		}
 	},
 
+	typing:function(client,channelName){
+		client.on("typingStart",(channel,user)=>{
+			if(channel.name == channelName){
+				client.channels.find("name",channelName).startTyping();
+			}
+		});
+		client.on("typingStop",(channel,user)=>{
+			if(channel.name == channelName){
+				client.channels.find("name",channelName).stopTyping();
+			}
+		});
+	},
+
 	save:function(data,name){
 		json.writeFile("../data/" + name + ".json", data, function (err) {})
 	},
 
 
-	log:function(data,log){
-		data.guild.channels.find("name","bot-logs").send(new Discord.MessageEmbed().setTimestamp().setDescription(log));
+	log:function(client,log){
+		if(client.channels.find("name","bot-logs")) client.channels.find("name","bot-logs").send(new Discord.MessageEmbed().setTimestamp().setDescription(log));
 	}
 }
 

@@ -26,10 +26,15 @@ var config = require("../data/config.json");
 //var codes = require("../data/codes.json");
 var vc = require("./vc.js")(client);
 
-
 client.on('ready', () => {
-	console.log('I am ready!');
+	util.log(client,'I am ready!');
 });
+
+client.on('debug',info=>{
+	if(!info.startsWith("[ws]")){
+		util.log(client,info);
+	}
+})
 
 client.on("guildMemberAdd", (member) => {
 	var exp = json.readFileSync("../data/exp.json");
@@ -66,7 +71,7 @@ client.on("messageReactionRemove",(reaction,user)=>{
 })*/
 
 client.on('message', message => {
-	util.exp(message);
+	//util.exp(message);
 	var prefix = config.prefix;
 
 	if(message.content.startsWith(prefix)){
@@ -95,9 +100,9 @@ client.on('message', message => {
 							util.save(commands,"commands");
 						}
 					},function(error){
-						util.log(message,param[0] + " failed with " + error + "\n " + command.content[0])
+						util.log(client,param[0] + " failed with " + error + "\n " + command.content[0])
 						if(error == "Error: 403 Forbidden"){
-							util.log(message, "removed " + command.content[0] + " from " + commandName);
+							util.log(client, "removed " + command.content[0] + " from " + commandName);
 							command.content.splice(0,1);
 							commands[commandName] = command;
 							util.save(commands,"commands");
