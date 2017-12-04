@@ -174,7 +174,10 @@ module.exports = {
 
 
 	log:function(client,log){
-		if(client.channels.find("name","bot-logs")) client.channels.find("name","bot-logs").send(new Discord.MessageEmbed().setTimestamp().setDescription(log));
+		if(client.status == 0){
+			console.log(client.channels.size);
+			client.channels.find("name","bot-logs").send(new Discord.MessageEmbed().setTimestamp().setDescription(log));
+		}
 	}
 }
 

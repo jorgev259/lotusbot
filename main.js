@@ -3,7 +3,7 @@ var validUrl = require('valid-url');
 const Discord = require('discord.js');
 var json = require('jsonfile')
 var fs = require("fs");
-const Canvas = require('canvas')
+//const Canvas = require('canvas')
 const download = require('image-downloader')
 
 Canvas.registerFont("./font/BebasNeue Bold.ttf",{family:"BebasNeue Bold"})
@@ -330,7 +330,7 @@ client.on('message', message => {
 					});
 					break;
 
-				case "profile":
+				/*case "profile":
 					var exp = json.readFileSync("../data/exp.json");
 					var pfMember;
 					if(message.mentions.members.size > 0){
@@ -389,7 +389,7 @@ client.on('message', message => {
 
 						message.channel.send(new Discord.MessageAttachment(profile.toBuffer(),"profile.png"))
 					})
-					break;
+					break;*/
 
 				case "background":
 					var inventory = json.readFileSync("../data/inventory.json");
