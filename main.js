@@ -3,7 +3,7 @@ var validUrl = require('valid-url');
 const Discord = require('discord.js');
 var json = require('jsonfile')
 var fs = require("fs");
-//const Canvas = require('canvas')
+const Canvas = require('canvas')
 const download = require('image-downloader')
 
 Canvas.registerFont("./font/BebasNeue Bold.ttf",{family:"BebasNeue Bold"})
