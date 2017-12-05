@@ -114,9 +114,7 @@ client.on('message', message => {
 					case "add":
 						var name = param[2].toLowerCase();
 						var type = param[1].toLowerCase();
-						param.shift();
-						param.shift();
-						param.shift();
+						param = param.slice(3);
 						if(commands[name] != undefined && type === "embed"){
 							commands[name].content.push(param.join(" "));
 							util.save(commands,"commands");
@@ -232,8 +230,7 @@ client.on('message', message => {
 							m.delete();
 							optionMessage.delete();
 							var time = parseInt(param[1]);
-							param.shift();
-							param.shift();
+							param= param.slice(2)
 							var text = param.join(" ") + ": \n";
 							var count = 0;
 							var options = m.content.split("|");
@@ -388,7 +385,7 @@ client.on('message', message => {
 						try {
 							/*var exp = json.readFileSync("../data/exp.json");
 							var inventory = json.readFileSync("../data/inventory.json");*/
-							param.shift();
+							param= param.slice(1)
 							const code = param.join(" ");
 							let evaled = eval(code);
 
