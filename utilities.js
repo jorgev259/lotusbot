@@ -5,8 +5,7 @@ var cooldown = {};
 
 const Discord = require('discord.js');
 var levels = require("../data/levels.json");
-var perms = require("../data/perms.json");
-var nicks = require("../data/nicks.json");
+
 var config = require("../data/config.json");
 var fs = require("fs");
 var json = require("jsonfile");
@@ -14,6 +13,8 @@ var json = require("jsonfile");
 
 module.exports = {
 	permCheck:function(message, commandName){
+		var perms = json.readFileSync("../data/perms.json");
+
 		if(perms[commandName] == undefined){return true}
 		var allowedChannel = true;
 		var allowed = false;
@@ -123,6 +124,8 @@ module.exports = {
 						switch(reward.type){
 							case "role":
 								if(!msg.member.nickname.endsWith("🔰")){
+									var nicks = json.readFileSync("../data/nicks.json");
+
 									msg.member.addRole(msg.guild.roles.find("name",reward.name),"Added reward role"); //adds the rewarded role
 
 									var nick = message.member.nickname.split(" ");
