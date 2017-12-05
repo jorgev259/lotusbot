@@ -363,10 +363,6 @@ client.on('message', message => {
 						}
 						break;
 
-					case "prune":
-						message.channel.bulkDelete(parseInt(param[1]) + 1);
-						break;
-
 						/*          case "fcode":
                 switch(param[1]){
                     case "register":
