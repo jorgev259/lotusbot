@@ -177,8 +177,9 @@ module.exports = {
 
 
 	log:function(client,log){
-		if(client.status == 0){
-			client.channels.find("name","bot-logs").send(new Discord.MessageEmbed().setTimestamp().setDescription(log));
+		if(client != null && client.channels.size>0 && client.readyAt != null){
+			console.log(log);
+			client.channels.find("name","bot-logs").send({embed:new Discord.MessageEmbed().setTimestamp().setDescription(log)});
 		}
 	}
 }
