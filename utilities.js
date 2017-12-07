@@ -55,11 +55,11 @@ module.exports = {
 		var exp = json.readFileSync("../data/exp.json");
 		if(inventory[id] == undefined) {
 			inventory[id]={};
-			util.save(inventory,"inventory");
+			module.exports.save(inventory,"inventory");
 		}
 		if(exp[id] == undefined){
 			exp[id] = {"lvl":0,"exp":0,"money":0,"lastDaily":"Not Collected"};
-			util.save(exp,"exp");
+			module.exports.save(exp,"exp");
 			client.guilds.first().members.fetch(id).then(member=>{
 				member.addRole(member.guild.roles.find("name",`[${exp[id].lvl}]`),"Added level role");
 			})			
