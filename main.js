@@ -69,7 +69,7 @@ client.on("messageReactionRemove",(reaction,user)=>{
 
 client.on('message', message => {
 	try{
-		//util.exp(message,client);
+		util.exp(message,client);
 		var prefix = ">";
 
 		if(message.content.startsWith(prefix)){
