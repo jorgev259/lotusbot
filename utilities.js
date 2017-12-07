@@ -6,7 +6,6 @@ var cooldown = {};
 const Discord = require('discord.js');
 var levels = require("../data/levels.json");
 
-var config = require("../data/config.json");
 var fs = require("fs");
 var json = require("jsonfile");
 

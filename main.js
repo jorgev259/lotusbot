@@ -22,7 +22,6 @@ var perms = require("../data/perms.json");
 var quotes = require("../data/quotes.json");
 var levels = require("../data/levels.json");
 //var art= require("../data/art.json");
-var config = require("../data/config.json");
 //var codes = require("../data/codes.json");
 var vc = require("./vc.js")(client);
 
@@ -73,7 +72,7 @@ client.on("messageReactionRemove",(reaction,user)=>{
 client.on('message', message => {
 	try{
 		//util.exp(message);
-		var prefix = config.prefix;
+		var prefix = ">";
 
 		if(message.content.startsWith(prefix)){
 			var param = message.content.split(" ");
@@ -422,4 +421,4 @@ client.on('message', message => {
 	}
 });
 
-client.login(config.token);
+client.login(require("../data/tokens.json").akira);
