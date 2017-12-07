@@ -36,7 +36,7 @@ client.on('debug',info=>{
 })
 
 client.on("guildMemberAdd", (member) => {
-	util.userCheck(member.id)
+	util.userCheck(member.id,client)
 
 	var exp = json.readFileSync("../data/exp.json");
 	member.guild.channels.find("name","main-lounge").send(`Welcome to Fandom Circle, <@${member.id}>! Have Fun`);
@@ -69,7 +69,7 @@ client.on("messageReactionRemove",(reaction,user)=>{
 
 client.on('message', message => {
 	try{
-		//util.exp(message);
+		//util.exp(message,client);
 		var prefix = ">";
 
 		if(message.content.startsWith(prefix)){

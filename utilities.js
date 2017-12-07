@@ -50,7 +50,7 @@ module.exports = {
 		return false;
 	},
 
-	userCheck:function(id){
+	userCheck:function(id,client){
 		var inventory = json.readFileSync("../data/inventory.json");
 		var exp = json.readFileSync("../data/exp.json");
 		if(inventory[id] == undefined) {
@@ -106,10 +106,10 @@ module.exports = {
 		return text.split(emojis[0])[0].split(emojis[1])[0].split(emojis[2])[0].split(emojis[3])[0].split(emojis[4])[0];
 	},
 
-	exp:function(msg){
+	exp:function(msg,client){
 		var exp = json.readFileSync("../data/exp.json");
 		if(cooldown[msg.author.id] == undefined && !msg.author.bot){ //checks if the user is not on cooldown and filters bots out
-			module.exports.userCheck(msg.author.id)
+			module.exports.userCheck(msg.author.id,client)
 
 			//adds random amount (15-25) of exp to the user
 			var randomExp = Math.floor(Math.random() * ((15-8)+1) + 8);
