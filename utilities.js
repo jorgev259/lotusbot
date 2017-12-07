@@ -50,6 +50,20 @@ module.exports = {
 		return false;
 	},
 
+	userCheck:function(id){
+		var inventory = json.readFileSync("../data/inventory.json");
+		var exp = json.readFileSync("../data/exp.json");
+		if(inventory[id] == undefined) {
+			inventory[id]={};
+			util.save(inventory,"inventory");
+		}
+		if(exp[id] == undefined){
+			exp[id] = {"lvl":0,"exp":0,"money":0,"lastDaily":"Not Collected"};
+			msg.member.addRole(msg.member.guild.roles.find("name",`[${exp[msg.member.id].lvl}]`),"Added level role");
+			util.save(exp,"exp");
+		}
+	},
+
 	react:function(number,limit,poll){
 		if(number<limit){
 			poll.react(reactionNumbers[number]).then(function(){
@@ -93,10 +107,7 @@ module.exports = {
 	exp:function(msg){
 		var exp = json.readFileSync("../data/exp.json");
 		if(cooldown[msg.author.id] == undefined && !msg.author.bot){ //checks if the user is not on cooldown and filters bots out
-			if(exp[msg.author.id] == undefined){
-				exp[msg.author.id] = {"lvl":0,"exp":0,"money":0,"lastDaily":"Not Collected"}
-				msg.member.addRole(msg.member.guild.roles.find("name",`[${exp[msg.member.id].lvl}]`),"Added level role");
-			}; //if the user is not on exp.json, adds it
+			module.exports.userCheck(msg.author.id)
 
 			//adds random amount (15-25) of exp to the user
 			var randomExp = Math.floor(Math.random() * ((15-8)+1) + 8);
@@ -155,19 +166,6 @@ module.exports = {
 		if(msg.mentions.channels.size>0){
 			client.channels.resolve(msg.mentions.channels.first()).send(msg.content.split(`<#${msg.mentions.channels.first().id}>`).join(""));
 		}
-	},
-
-	typing:function(client,channelName){
-		client.on("typingStart",(channel,user)=>{
-			if(channel.name == channelName){
-				client.channels.find("name",channelName).startTyping();
-			}
-		});
-		client.on("typingStop",(channel,user)=>{
-			if(channel.name == channelName){
-				client.channels.find("name",channelName).stopTyping();
-			}
-		});
 	},
 
 	save:function(data,name){
