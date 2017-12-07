@@ -59,8 +59,10 @@ module.exports = {
 		}
 		if(exp[id] == undefined){
 			exp[id] = {"lvl":0,"exp":0,"money":0,"lastDaily":"Not Collected"};
-			msg.member.addRole(msg.member.guild.roles.find("name",`[${exp[msg.member.id].lvl}]`),"Added level role");
 			util.save(exp,"exp");
+			client.guilds.first().members.fetch(id).then(member=>{
+				member.addRole(member.guild.roles.find("name",`[${exp[id].lvl}]`),"Added level role");
+			})			
 		}
 	},
 
