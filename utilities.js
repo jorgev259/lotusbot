@@ -171,7 +171,7 @@ module.exports = {
 	},
 
 	save:function(data,name){
-		json.writeFile("../data/" + name + ".json", data, function (err) {})
+		json.writeFile("../data/" + name + ".json", data, {flag: 'a'},function (err) {})
 	},
 
 
