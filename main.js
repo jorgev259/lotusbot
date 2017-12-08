@@ -40,7 +40,7 @@ client.on("guildMemberAdd", (member) => {
 
 	var exp = json.readFileSync("../data/exp.json");
 	member.guild.channels.find("name","main-lounge").send(`Welcome to Fandom Circle, <@${member.id}>! Have Fun`);
-	member.addRoles([member.guild.roles.find("name", "☕ Customers"),member.guild.roles.find("name",`[${exp[member.id].lvl}]`)],"User join");
+	member.addRoles(member.guild.roles.find("name", "☕ - Customers"),"User join");
 });
 
 /*client.on("messageReactionAdd",(reaction,user)=>{
