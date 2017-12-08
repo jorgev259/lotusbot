@@ -117,7 +117,7 @@ module.exports = {
 			exp[msg.author.id].exp += randomExp;
 
 			if(exp[msg.author.id].exp > levels[exp[msg.author.id].lvl].exp){ //checks if the user has reached enough exp
-				var levelroles = msg.member.roles.filter(r=>r.name.startsWith("[")); //finds all roles that start with [
+				var levelroles = msg.member.roles.filter(r=>r.name.includes("Rank")) //finds all roles that start with [
 				if(levelroles.size==1){
 					msg.member.removeRole(levelroles.first(),"Removed current level role"); //removes current lvl role
 				}else if(levelroles.size>1){
@@ -126,7 +126,8 @@ module.exports = {
 
 				exp[msg.author.id].lvl += 1;
 
-				msg.member.addRole(msg.guild.roles.find("name",`[${exp[msg.author.id].lvl}]`),"Added new level role") //adds new level role
+				var role=msg.guild.roles.filter(r=>r.name.includes(`Rank - ${exp[msg.author.id].lvl}`))
+				msg.member.addRole(role,"Added new level role") //adds new level role
 				//module.exports.send(`>add-money bank <@${msg.author.id}> ${(exp[msg.author.id].lvl + 1)* 1000}`);
 
 				exp[msg.author.id].money += exp[msg.author.id].lvl * 1000 //adds money reward for leveling up
