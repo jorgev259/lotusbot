@@ -108,10 +108,10 @@ module.exports = {
 	},
 
 	exp:function(msg,client){
-		var exp = json.readFileSync("../data/exp.json");
 		if(cooldown[msg.author.id] == undefined && !msg.author.bot){ //checks if the user is not on cooldown and filters bots out
 			module.exports.userCheck(msg.author.id,client)
 
+			var exp = json.readFileSync("../data/exp.json");
 			//adds random amount (15-25) of exp to the user
 			var randomExp = Math.floor(Math.random() * ((15-8)+1) + 8);
 			exp[msg.author.id].exp += randomExp;
