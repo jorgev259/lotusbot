@@ -12,7 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "bufferutil": "^3.0.3",
-	"canvas": "github:Automattic/node-canvas",
+    "canvas": "github:Automattic/node-canvas",
     "discord.js": "github:hydrabolt/discord.js",
     "ffmpeg-binaries": "^3.2.2",
     "image-downloader": "^3.3.0",
@@ -22,6 +22,7 @@
     "streamifier": "^0.1.1",
     "uws": "^8.14.0",
     "valid-url": "^1.0.9",
+    "write-json-file": "^2.3.0",
     "youtube-dl": "^1.12.2",
     "youtube-playlist-info": "^0.1.0",
     "ytdl-core": "^0.17.1"

@@ -7,6 +7,7 @@ const Discord = require('discord.js');
 var levels = require("../data/levels.json");
 
 var fs = require("fs");
+const writeJsonFile = require('write-json-file');
 var json = require("jsonfile");
 
 
@@ -171,7 +172,8 @@ module.exports = {
 	},
 
 	save:function(data,name){
-		json.writeFile("../data/" + name + ".json", JSON.stringify(data), function (err) {})
+		//json.writeFile("../data/" + name + ".json", JSON.stringify(data), function (err) {})
+		writeJsonFile("../data/" + name + ".json", data).then(() => {});
 	},
 
 
