@@ -173,8 +173,7 @@ module.exports = {
 	},
 
 	save:function(data,name){
-		//json.writeFile("../data/" + name + ".json", JSON.stringify(data), function (err) {})
-		writeJsonFile("../data/" + name + ".json", data).then(() => {});
+		writeJsonFile.sync("../data/" + name + ".json", data).then(() => {});
 	},
 
 
