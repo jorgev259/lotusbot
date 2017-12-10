@@ -163,6 +163,53 @@ client.on('message', message => {
 						}
 						break;
 
+					case "perms":
+						var name = param[1];
+						var type = param[2];
+						param = param.slice(3);
+
+						if(perms[name] != undefined){
+							switch(type){
+								case "add":
+									if(message.mentions.users.size > 0){
+										perms[name].user.push(message.mentions.users.first().id);
+									}else if(message.mentions.channels.size > 0){
+										perms[name].channel.push(message.mentions.channels.first().id);
+									}else{
+										perms[name].role.push(param.join(" "));
+									}
+									util.save(perms,"perms");
+									message.reply(param.join(" ") + " is now allowed to use " + name);
+									break;
+		
+									/*case "remove":
+													result[0].perms = result[0].perms.filter(e => e !== param.join(" ") );
+													perms.save(result[0]);
+													message.reply("Removed " + param.join(" ") + " from the command " + name);
+													break;*/
+							}
+						}else{
+							switch(type){
+								case "add":
+									perms[name] = {"user":[], "role":[], "channel":[]};
+		
+									if(message.mentions.users.size > 0){
+										perms[name].user.push(message.mentions.users.first().id);
+									}else if(message.mentions.channels.size > 0){
+										perms[name].channel.push(message.mentions.channels.first().id);
+									}else{
+										perms[name].role.push(param.join(" "));
+									}
+		
+									util.save(perms,"perms");
+									message.reply(param.join(" ") + " is now allowed to use " + name);
+									break;
+		
+								case "delete":
+									message.reply("This command has no permissions set");
+							}
+						}
+						break;
 
 					case "addquote":
 						var color;
@@ -277,66 +324,66 @@ client.on('message', message => {
 						});
 						break;
 
-						/*case "profile":
-					var exp = json.readFileSync("../data/exp.json");
-					var pfMember;
-					if(message.mentions.members.size > 0){
-						pfMember = message.mentions.members.first()
-					}else{
-						pfMember = message.member;
-					}
-					var bg = "";
-					if(exp[pfMember.id] == undefined || exp[pfMember.id].bg == undefined){
-						bg = "./images/backgrounds/DEFAULT.png";
-					}else{
-						bg = `./images/backgrounds/${exp[pfMember.id].bg}.png`;
-					}
-					var nick = pfMember.nickname.split(" ");
-					nick.pop();
-
-					const options = {
-						url: pfMember.user.displayAvatarURL({"format":"png"}),
-						dest: `temp/${pfMember.id}.png`
-					}
-
-					download.image(options).then(({ filename, image }) => {
-						var id = pfMember.id
-						var profile = Canvas.createCanvas(1059,787);
-						var pfCtx = profile.getContext('2d');
-						var img = new Canvas.Image();
-
-						img.src = fs.readFileSync(bg);
-						pfCtx.drawImage(img,0,0);
-
-						img.src= fs.readFileSync("./images/profile.png");
-						pfCtx.drawImage(img,0,0);
-
-						img.src= fs.readFileSync(`temp/${id}.png`);
-						pfCtx.drawImage(img,72,296,195,195);
-						fs.unlink(`temp/${id}.png`)
-
-						img.src= fs.readFileSync("./images/bar1.png");
-						var percent;
-						if(exp[id].lvl > 0) {
-							percent = ((exp[id].exp - levels[exp[id].lvl -1].exp) / (levels[exp[id].lvl].exp - levels[exp[id].lvl -1].exp))
+					case "profile":
+						var exp = json.readFileSync("../data/exp.json");
+						var pfMember;
+						if(message.mentions.members.size > 0){
+							pfMember = message.mentions.members.first()
 						}else{
-							percent = ((exp[id].exp) / (levels[0].exp))
+							pfMember = message.member;
 						}
-						pfCtx.drawImage(img,312,461,(435*percent),26);
+						var bg = "";
+						if(exp[pfMember.id] == undefined || exp[pfMember.id].bg == undefined){
+							bg = "./images/backgrounds/DEFAULT.png";
+						}else{
+							bg = `./images/backgrounds/${exp[pfMember.id].bg}.png`;
+						}
+						var nick = pfMember.nickname.split(" ");
+						nick.pop();
 
-						pfCtx.font = '180px "BebasNeue Bold"';
-						pfCtx.fillStyle = '#000000';
-						pfCtx.fillText(exp[id].lvl, 90,645);
+						const options = {
+							url: pfMember.user.displayAvatarURL({"format":"png"}),
+							dest: `temp/${pfMember.id}.png`
+						}
 
-						pfCtx.font = '30px "Mizo Arial"';
-						pfCtx.fillStyle = '#ffffff';
-						pfCtx.fillText(nick.join(" "), 353,440);
-						pfCtx.fillText(exp[id].exp.toString() + " / " + levels[exp[id].lvl].exp, 506,530);
-						pfCtx.fillText(exp[id].money, 506,568);
+						download.image(options).then(({ filename, image }) => {
+							var id = pfMember.id
+							var profile = Canvas.createCanvas(1059,787);
+							var pfCtx = profile.getContext('2d');
+							var img = new Canvas.Image();
 
-						message.channel.send(new Discord.MessageAttachment(profile.toBuffer(),"profile.png"))
-					})
-					break;*/
+							img.src = fs.readFileSync(bg);
+							pfCtx.drawImage(img,0,0);
+
+							img.src= fs.readFileSync("./images/profile.png");
+							pfCtx.drawImage(img,0,0);
+
+							img.src= fs.readFileSync(`temp/${id}.png`);
+							pfCtx.drawImage(img,72,296,195,195);
+							fs.unlink(`temp/${id}.png`)
+
+							img.src= fs.readFileSync("./images/bar1.png");
+							var percent;
+							if(exp[id].lvl > 0) {
+								percent = ((exp[id].exp - levels[exp[id].lvl -1].exp) / (levels[exp[id].lvl].exp - levels[exp[id].lvl -1].exp))
+							}else{
+								percent = ((exp[id].exp) / (levels[0].exp))
+							}
+							pfCtx.drawImage(img,312,461,(435*percent),26);
+
+							pfCtx.font = '180px "BebasNeue Bold"';
+							pfCtx.fillStyle = '#000000';
+							pfCtx.fillText(exp[id].lvl, 90,645);
+
+							pfCtx.font = '30px "Mizo Arial"';
+							pfCtx.fillStyle = '#ffffff';
+							pfCtx.fillText(nick.join(" "), 353,440);
+							pfCtx.fillText(exp[id].exp.toString() + " / " + levels[exp[id].lvl].exp, 506,530);
+							pfCtx.fillText(exp[id].money, 506,568);
+
+							message.channel.send(new Discord.MessageAttachment(profile.toBuffer(),"profile.png"))
+						})
+						break;
 
 					case "background":
 						var inventory = json.readFileSync("../data/inventory.json");

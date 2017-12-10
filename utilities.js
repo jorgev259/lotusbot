@@ -126,7 +126,7 @@ module.exports = {
 
 				exp[msg.author.id].lvl += 1;
 
-				var role=msg.guild.roles.filter(r=>r.name.includes(`Rank - ${exp[msg.author.id].lvl}`))
+				var role=msg.guild.roles.filter(r=>r.name.includes(`Rank - ${exp[msg.author.id].lvl}]`))
 				msg.member.addRole(role,"Added new level role") //adds new level role
 				//module.exports.send(`>add-money bank <@${msg.author.id}> ${(exp[msg.author.id].lvl + 1)* 1000}`);
 

@@ -14,14 +14,33 @@ module.exports = function(client){
                 }
 
                 if((channel === null || channel.id != channelID[member.id]) && channels[guild.channels.get(channelID[member.id]).name]){
-                    guild.channels.find("name",channels[channel.name]).overwritePermissions(member,{VIEW_CHANNEL:false},"Allowed access to channel (voice)")
+                    switch(channels[channel.name].type){
+                        case "role":
+                            if(member.roles.exists("name",channels[channel.name].name)){
+                                member.removeRole(guild.roles.find("name",channels[channel.name].name))
+                            }
+                            break;
+
+                        case "permission":
+                            guild.channels.find("name",channels[channel.name].name).overwritePermissions(member,{VIEW_CHANNEL:false},"Denied access to channel (voice)")
+                            break;
+                    }
+                    
                     delete channelID[member.id];
                 }
 
 				if(channel != null){
 					channelID[member.id] = channel.id;
                     if(channels[channel.name]){
-						guild.channels.find("name",channels[channel.name]).overwritePermissions(member,{VIEW_CHANNEL:true},"Allowed access to channel (voice)")
+                        switch(channels[channel.name].type){
+                            case "role":
+                                member.addRole(guild.roles.find("name",channels[channel.name].name));
+                                break;
+    
+                            case "permission":
+                                guild.channels.find("name",channels[channel.name].name).overwritePermissions(member,{VIEW_CHANNEL:true},"Allowed access to channel (voice)")
+                                break;
+                        }
                     }
 				}
             }catch(e){
