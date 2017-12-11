@@ -128,10 +128,8 @@ module.exports = {
 
 				var role=msg.guild.roles.filter(r=>r.name.includes(`Rank - ${exp[msg.author.id].lvl}]`))
 				msg.member.addRole(role,"Added new level role") //adds new level role
-				//module.exports.send(`>add-money bank <@${msg.author.id}> ${(exp[msg.author.id].lvl + 1)* 1000}`);
 
 				exp[msg.author.id].money += exp[msg.author.id].lvl * 1000 //adds money reward for leveling up
-				msg.author.send(`You just got ${exp[msg.author.id].lvl * 1000} for reaching level ${exp[msg.author.id].lvl}`);
 
 				if(levels[exp[msg.author.id].lvl].rewards != undefined){
 					levels[exp[msg.author.id].lvl].rewards.forEach(function(reward){ //checks every reward
