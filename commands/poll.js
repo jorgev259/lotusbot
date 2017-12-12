@@ -21,7 +21,7 @@ module.exports = {
                 count++;
             })
             message.channel.send(text).then(poll => {
-                util.react(0,count,poll);
+                util.reactNumber(0,count,poll);
                 message.channel.send("Poll will be over in "  + time + " minutes").then(pollTime => {
                     setTimeout(function(){
                         pollTime.delete();

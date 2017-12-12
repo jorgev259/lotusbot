@@ -83,10 +83,14 @@ client.on('message', message => {
                        art.save({"id":message.id,"score":0,"author":message.author.id});
                    }*/
 				if(message.attachments.size > 0 || message.embeds.length>0){
-					util.react(0,5,message);
+					util.reactNumber(0,5,message);
 				}else{
 
 				}
+				break;
+			
+			case "news-n-stuff":
+				util.react(message);
 				break;
 
 			case "akira":

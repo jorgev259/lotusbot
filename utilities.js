@@ -1,5 +1,5 @@
 var reactionNumbers = ["1⃣","2⃣","3⃣","4⃣","5⃣","6⃣","7⃣","8⃣","9⃣", "🔟"];
-var reactions = ["rage","thinking","blush","stuck_out_tongue_closed_eyes","heart_eyes"];
+var reactions = ["390223211662540800","390223209930424321","390223211637243905","390223211616534577","390223211456888835","390223210240540683"];
 var emojis = [/(☕)/,/(🍜)/,/(🍰)/,/(🍪)/,/(🔰)/];
 var cooldown = {};
 
@@ -67,12 +67,18 @@ module.exports = {
 		}
 	},
 
-	react:function(number,limit,poll){
+	reactNumber:function(number,limit,poll){
 		if(number<limit){
 			poll.react(reactionNumbers[number]).then(function(){
-				module.exports.react(number+1,limit,poll);
+				module.exports.reactNumber(number+1,limit,poll);
 			})
 		};
+	},
+
+	react:function(msg){
+		reactions.forEach(reaction => {
+			msg.react(reaction);
+		})
 	},
 
 	/*findEmoji:function(emoji){
