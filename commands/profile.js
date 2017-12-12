@@ -1,7 +1,10 @@
 const Canvas = require('canvas');
 const Discord = require('discord.js');
 var json = require('jsonfile');
+var fs = require('fs');
 const download = require('image-downloader');
+
+var levels = require("../../data/levels.json")
 
 Canvas.registerFont("font/BebasNeue Bold.ttf",{family:"BebasNeue Bold"})
 Canvas.registerFont("font/Mizo Arial.ttf",{family:"Mizo Arial"})
@@ -9,7 +12,7 @@ Canvas.registerFont("font/Mizo Arial.ttf",{family:"Mizo Arial"})
 module.exports = {
     desc:"This is a description",
     execute(client, message, param){
-        var exp = json.readFileSync("../../data/exp.json");
+        var exp = json.readFileSync("../data/exp.json");
         var pfMember;
         if(message.mentions.members.size > 0){
             pfMember = message.mentions.members.first()
@@ -18,16 +21,16 @@ module.exports = {
         }
         var bg = "";
         if(exp[pfMember.id] == undefined || exp[pfMember.id].bg == undefined){
-            bg = "../images/backgrounds/DEFAULT.png";
+            bg = "images/backgrounds/DEFAULT.png";
         }else{
-            bg = `../images/backgrounds/${exp[pfMember.id].bg}.png`;
+            bg = `images/backgrounds/${exp[pfMember.id].bg}.png`;
         }
         var nick = pfMember.nickname.split(" ");
         nick.pop();
 
         const options = {
             url: pfMember.user.displayAvatarURL({"format":"png"}),
-            dest: `../temp/${pfMember.id}.png`
+            dest: `temp/${pfMember.id}.png`
         }
 
         download.image(options).then(({ filename, image }) => {
@@ -39,14 +42,14 @@ module.exports = {
             img.src = fs.readFileSync(bg);
             pfCtx.drawImage(img,0,0);
 
-            img.src= fs.readFileSync("../images/profile.png");
+            img.src= fs.readFileSync("images/profile.png");
             pfCtx.drawImage(img,0,0);
 
-            img.src= fs.readFileSync(`../temp/${id}.png`);
+            img.src= fs.readFileSync(`temp/${id}.png`);
             pfCtx.drawImage(img,72,296,195,195);
-            fs.unlink(`../temp/${id}.png`)
+            fs.unlink(`temp/${id}.png`)
 
-            img.src= fs.readFileSync("../images/bar1.png");
+            img.src= fs.readFileSync("images/bar1.png");
             var percent;
             if(exp[id].lvl > 0) {
                 percent = ((exp[id].exp - levels[exp[id].lvl -1].exp) / (levels[exp[id].lvl].exp - levels[exp[id].lvl -1].exp))
