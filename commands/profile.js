@@ -3,8 +3,8 @@ const Discord = require('discord.js');
 var json = require('jsonfile');
 const download = require('image-downloader');
 
-Canvas.registerFont("../font/BebasNeue Bold.ttf",{family:"BebasNeue Bold"})
-Canvas.registerFont("../font/Mizo Arial.ttf",{family:"Mizo Arial"})
+Canvas.registerFont("font/BebasNeue Bold.ttf",{family:"BebasNeue Bold"})
+Canvas.registerFont("font/Mizo Arial.ttf",{family:"Mizo Arial"})
 
 module.exports = {
     desc:"This is a description",
