@@ -14,7 +14,6 @@ module.exports = {
                     return m.edit("Git pull failed!")
                 }
                 
-                console.log(res);
                 if(res.files.length>0){
                     m.edit(`Git pull successful!
                     Modified files: ${res.files.join(" ,")}
