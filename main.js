@@ -42,7 +42,7 @@ client.on("guildMemberAdd", (member) => {
         })
     }
 });
-useless comment
+
 client.on("messageReactionRemove",(reaction,user)=>{
     if(reaction.message.channel.name == "art"){
         var count =  util.emojiCount(reaction,user);
