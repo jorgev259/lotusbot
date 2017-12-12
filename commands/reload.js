@@ -1,3 +1,5 @@
+var fs = require("fs");
+
 module.exports = {
     desc:"This is a description",
     execute(client, message, param){
@@ -5,11 +7,14 @@ module.exports = {
         if(commandName){
             message.delete();
 
-            if(client.commands.has(commandName) && fs.existsSync(`./${commandName}.js`,function(){})){
-                client.commands.set(commandName, fs.readFileSync(`./${commandName}.js`,function(){}));
+            var modulePath = `${__dirname}/${commandName}.js`;
+            if(client.commands.has(commandName) && fs.existsSync(modulePath)){
+                delete require.cache[require.resolve(`./${commandName}.js`)];
+
+                client.commands.set(commandName, require(`./${commandName}.js`));
                 message.channel.send(`Reloaded ${commandName}!`);
             }else{
-                message.channel.send(`${commandName} couldnt be found.`)
+                message.channel.send(`${commandName}.js couldnt be found.`)
             }
         }
     }
