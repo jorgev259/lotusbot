@@ -8,7 +8,7 @@ module.exports = {
             message.delete();
 
             var modulePath = `${__dirname}/${commandName}.js`;
-            if(client.commands.has(commandName) && fs.existsSync(modulePath)){
+            if(client.commands.has(commandName) || fs.existsSync(modulePath)){
                 delete require.cache[require.resolve(`./${commandName}.js`)];
 
                 client.commands.set(commandName, require(`./${commandName}.js`));
