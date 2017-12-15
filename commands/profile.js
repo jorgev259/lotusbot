@@ -45,7 +45,7 @@ module.exports = {
             img.src= fs.readFileSync("images/profile.png");
             pfCtx.drawImage(img,0,0);
 
-            img.src= fs.readFileSync(`temp/${id}.png`);
+            img.src= fs.readFileSync(`./temp/${id}.png`);
             pfCtx.drawImage(img,72,296,195,195);
             fs.unlink(`temp/${id}.png`)
 
