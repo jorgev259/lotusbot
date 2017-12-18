@@ -1,3 +1,5 @@
+var util = require("../utilities.js")
+
 module.exports = {
     desc:"This command displays information about a command. Usage: >help command",
     execute(client, message, param){
