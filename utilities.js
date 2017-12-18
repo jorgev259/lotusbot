@@ -146,7 +146,7 @@ module.exports = {
 
 									msg.member.addRole(msg.guild.roles.find("name",reward.name),"Added reward role"); //adds the rewarded role
 
-									var nick = message.member.nickname.split(" ");
+									var nick = msg.member.nickname.split(" ");
 									nick.pop();
 
 									var newNick = module.exports.stripEmoji(nick.join(" "))[0] + " " + reward.name.split(" ")[0];
