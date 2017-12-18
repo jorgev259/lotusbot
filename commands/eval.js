@@ -4,7 +4,7 @@ module.exports = {
         try {
             /*var exp = json.readFileSync("../data/exp.json");
             var inventory = json.readFileSync("../data/inventory.json");*/
-            param= param.slice(1)
+            param = param.slice(1)
             const code = param.join(" ");
             let evaled = eval(code);
 

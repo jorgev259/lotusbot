@@ -62,14 +62,15 @@ client.on('message', message => {
 		util.exp(message,client);
 		var prefix = ">";
 
-		if(message.content.startsWith(prefix) || message.content.startsWith(`<@​!${client.user.id}>`)){
+		if(message.content.startsWith(prefix) || message.content.startsWith("<@!" + client.user.id + ">")){			
 			var param = message.content.split(" ");
 
 			if(message.content.startsWith(prefix)){
 				param[0] = param[0].split(prefix)[1];
 			}else{
-				param.splice(1);
+				param.splice(0,1);
 			}
+
 			const commandName = param[0].toLowerCase();
 			var command = commands[commandName];
 
