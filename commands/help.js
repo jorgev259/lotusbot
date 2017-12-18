@@ -10,9 +10,11 @@ module.exports = {
         }else{
             var commands = ""
             Array.from(client.commands.keys()).forEach(idName => {
-                commands += `${idName}: ${client.commands.get(idName).desc}\n`
+                if(util.permCheck(message,idName)){
+                    commands += `${idName}: ${client.commands.get(idName).desc}\n`
+                }               
             })
-            message.channel.send(commands, {code:"xl",split:true});
+            message.author.send(commands, {code:"xl",split:true});
         }
         
     }
