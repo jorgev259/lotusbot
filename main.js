@@ -102,7 +102,7 @@ client.on('message', message => {
 				break;
 		}
 	}catch(e){
-		util.log(client,e);
+		util.log(client,`${e}\nSource: ${param[0]}`);
 	}
 });
 
