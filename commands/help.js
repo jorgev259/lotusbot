@@ -7,7 +7,7 @@ module.exports = {
             if (client.commands.has(param[1].toLowerCase())){
                 message.channel.send(client.commands.get(param[1].toLowerCase()).desc);
             }else{
-                message.channel.send(`${param[1]} couldnt be found`)
+                message.author.send(`${param[1]} couldnt be found`)
             }
         }else{
             var commands = ""
