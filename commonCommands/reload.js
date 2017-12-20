@@ -13,8 +13,6 @@ module.exports = {
 
                 client.commands.set(commandName, require(`./${commandName}.js`));
                 message.channel.send(`Reloaded ${commandName}!`);
-            }else{
-                message.channel.send(`${commandName}.js couldnt be found.`)
             }
         }
     }

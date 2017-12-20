@@ -7,8 +7,13 @@ var util = require('./utilities.js');
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands');
+const commonCommands = fs.readdirSync('./commonCommands');
 for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
+    client.commands.set(file.split(".js")[0], command);
+}
+for (const file of commonCommands) {
+    const command = require(`./commonCommands/${file}`);
     client.commands.set(file.split(".js")[0], command);
 }
 
