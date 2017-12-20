@@ -15,7 +15,7 @@ module.exports = {
 	permCheck:function(message, commandName){
 		var perms = json.readFileSync("../data/perms.json");
 
-		if(perms[commandName] == undefined){return true}
+		if(perms[commandName] == undefined || message.member.roles.exists("name","🍬 Admin") ||  message.member.roles.exists("name","name")){return true}
 		var allowedChannel = true;
 		var allowed = false;
 
@@ -60,11 +60,14 @@ module.exports = {
 		}
 		if(exp[id] == undefined){
 			exp[id] = {"lvl":0,"exp":0,"money":0,"lastDaily":"Not Collected"};
-			module.exports.save(exp,"exp");
+			module.exports.save(exp,"exp");		
 			client.guilds.first().members.fetch(id).then(member=>{
-				//member.addRole(member.guild.roles.find("name",`[${exp[id].lvl}]`),"Added level role");
-			})			
-		}
+				var role = member.guild.roles.filter(role => {
+					role.name.includes(`Rank - ${exp[id].lvl}`)
+				}).first();
+				member.addRole(role,"Added level role");
+			})
+		}		
 	},
 
 	reactNumber:function(number,limit,poll){
