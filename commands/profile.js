@@ -58,9 +58,8 @@ module.exports = {
             }
             pfCtx.drawImage(img,312,461,(435*percent),26);
 
-            pfCtx.font = '180px "BebasNeue Bold"';
-            pfCtx.fillStyle = '#000000';
-            pfCtx.fillText(exp[id].lvl, 90,645);
+            img.src=fs.readFileSync(`images/numbers/${exp[id].lvl}.png`);
+            pfCtx.drawImage(img,80,500);
 
             pfCtx.font = '30px "Mizo Arial"';
             pfCtx.fillStyle = '#ffffff';
