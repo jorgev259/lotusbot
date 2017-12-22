@@ -146,6 +146,9 @@ module.exports = {
 									var nicks = json.readFileSync("../data/nicks.json");
 
 									msg.member.addRole(msg.guild.roles.find("name",reward.name),"Added reward role"); //adds the rewarded role
+									if(reward.name && msg.author.roles.exists("name",reward.remove)){
+										msg.member.removeRole(msg.guild.roles.find("name",reward.remove),"Removed old rank")
+									}
 
 									var nick = msg.member.nickname.split(" ");
 									nick.pop();
