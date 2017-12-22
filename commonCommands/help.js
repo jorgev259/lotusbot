@@ -5,7 +5,7 @@ module.exports = {
     execute(client, message, param){
         if(param[1]){
             if (client.commands.has(param[1].toLowerCase())){
-                message.channel.send(client.commands.get(param[1].toLowerCase()).desc);
+                message.author.send(client.commands.get(param[1].toLowerCase()).desc);
             }
         }else{
             var commands = ""
