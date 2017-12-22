@@ -30,7 +30,7 @@ module.exports = {
 
         const options = {
             url: pfMember.user.displayAvatarURL({"format":"png"}),
-            dest: `temp/${pfMember.id}.png`
+            dest: `../temp/${pfMember.id}.png`
         }
 
         download.image(options).then(({ filename, image }) => {
@@ -45,9 +45,9 @@ module.exports = {
             img.src= fs.readFileSync("images/profile.png");
             pfCtx.drawImage(img,0,0);
 
-            img.src= fs.readFileSync(`./temp/${id}.png`);
+            img.src= fs.readFileSync(`./../temp/${id}.png`);
             pfCtx.drawImage(img,72,296,195,195);
-            fs.unlink(`temp/${id}.png`)
+            fs.unlink(`../temp/${id}.png`)
 
             img.src= fs.readFileSync("images/bar1.png");
             var percent;
