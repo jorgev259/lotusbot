@@ -1,10 +1,10 @@
 var path = require("path");
-const git = require('simple-git')(path.resolve(__dirname,"../"));
 var util = require('../utilities.js');
 
 module.exports = {
     desc:"This is a description",
     execute(client, message, param){
+        const git = require('simple-git')(path.resolve("../", client.user.username.toLowerCase()));
         message.delete();
 
         message.channel.send("Downloading changes.....").then(m=>{
