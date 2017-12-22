@@ -133,7 +133,7 @@ module.exports = {
 
 				exp[msg.author.id].lvl += 1;
 
-				var role=msg.guild.roles.filter(r=>r.name.includes(`Rank - ${exp[msg.author.id].lvl}]`))
+				var role=msg.guild.roles.filter(r=>r.name.includes(`Rank - ${exp[msg.author.id].lvl}]`)).first()
 				msg.member.addRole(role,"Added new level role") //adds new level role
 
 				exp[msg.author.id].money += exp[msg.author.id].lvl * 1000 //adds money reward for leveling up
