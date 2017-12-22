@@ -5,8 +5,8 @@ var json = require('jsonfile');
 module.exports = {
     desc:"This is a description",
     execute(client, message, param){
-        var inventory = json.readFileSync("../../data/inventory.json");
-        var exp = json.readFileSync("../../data/exp.json");
+        var inventory = json.readFileSync("../data/inventory.json");
+        var exp = json.readFileSync("../data/exp.json");
 
         if(param.length > 1){
             var code = param[1].toUpperCase();
