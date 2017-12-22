@@ -6,12 +6,13 @@ module.exports = {
         var commandName = param[1].toLowerCase();
         if(commandName){
             message.delete();
-
-            var modulePath = `${__dirname}/${commandName}.js`;
+            
+            var commandsPath = path.resolve("../", client.user.username.toLowerCase(),"commands")
+            var modulePath = `${commandsPath}/${commandName}.js`;
             if(client.commands.has(commandName) || fs.existsSync(modulePath)){
-                delete require.cache[require.resolve(`./${commandName}.js`)];
+                delete require.cache[require.resolve(modulePath)];
 
-                client.commands.set(commandName, require(`./${commandName}.js`));
+                client.commands.set(commandName, require(modulePath));
                 message.channel.send(`Reloaded ${commandName}!`);
             }
         }
