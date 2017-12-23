@@ -3,48 +3,47 @@ var util = require("./utilities.js");
 var channelID = {};
 
 module.exports = function(client){
-    client.on('raw', data => {
-        if(data.t === 'VOICE_STATE_UPDATE'){
-            try{
-                var guild = client.guilds.get(data.d.guild_id);
-                var channel = null
-                var member = guild.members.get(data.d.user_id);
-                if(data.d.channel_id != null){
-                    channel = guild.channels.get(data.d.channel_id);
-                }
+    client.on("voiceStateUpdate",(oldMember,newMember)=>{
+        var newid = undefined;
+        var oldid = undefined;
+        if(oldMember.voiceChannel != undefined){
+            oldid = oldMember.voiceChannel.id;
+        }
+        if(newMember.voiceChannel != undefined){
+            newid = newMember.voiceChannel.id;
+        }
 
-                if((channel === null || channel.id != channelID[member.id]) && channels[guild.channels.get(channelID[member.id]).name]){
-                    switch(channels[channel.name].type){
+        if(newid != oldid){
+            var guild = oldMember.guild;
+
+            if(oldid != undefined){
+                var oldChannel = guild.channels.get(oldid).name;
+                if(channels[oldChannel]){
+                    switch(channels[oldChannel].type){
                         case "role":
-                            if(member.roles.exists("name",channels[channel.name].name)){
-                                member.removeRole(guild.roles.find("name",channels[channel.name].name))
-                            }
+                            oldMember.removeRole(guild.roles.find("name",channels[oldChannel].name));
                             break;
 
                         case "permission":
-                            guild.channels.find("name",channels[channel.name].name).overwritePermissions(member,{VIEW_CHANNEL:false},"Denied access to channel (voice)")
+                            guild.channels.find("name",channels[oldChannel].name).overwritePermissions(oldMember,{VIEW_CHANNEL:FALSE},"Denied access to channel (voice)")
                             break;
                     }
-                    
-                    delete channelID[member.id];
                 }
+            }
+            if(newid != undefined){
+                var newChannel = guild.channels.get(newid).name;
+ 
+                if(channels[newChannel]){
+                    switch(channels[newChannel].type){
+                        case "role":
+                            newMember.addRole(guild.roles.find("name",channels[newChannel].name));
+                            break;
 
-				if(channel != null){
-					channelID[member.id] = channel.id;
-                    if(channels[channel.name]){
-                        switch(channels[channel.name].type){
-                            case "role":
-                                member.addRole(guild.roles.find("name",channels[channel.name].name));
-                                break;
-    
-                            case "permission":
-                                guild.channels.find("name",channels[channel.name].name).overwritePermissions(member,{VIEW_CHANNEL:true},"Allowed access to channel (voice)")
-                                break;
-                        }
+                        case "permission":
+                            guild.channels.find("name",channels[newChannel].name).overwritePermissions(newMember,{VIEW_CHANNEL:TRUE},"Allowed access to channel (voice)")
+                            break;
                     }
-				}
-            }catch(e){
-                util.log(member,e.message);
+                }
             }
         }
     })
