@@ -4,6 +4,7 @@ var channelID = {};
 
 module.exports = function(client){
     client.on("voiceStateUpdate",(oldMember,newMember)=>{
+        util.log(client,"Status update");
         var newid = undefined;
         var oldid = undefined;
         if(oldMember.voiceChannel != undefined){
