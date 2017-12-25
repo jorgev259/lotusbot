@@ -4,6 +4,16 @@ var fs = require("fs");
 
 var util = require('./utilities.js');
 
+
+const SpoilerBot = require('discord-spoiler-bot');
+ 
+let config = {
+    token: (require("../data/tokens.json").akira),
+};
+ 
+let bot = new SpoilerBot(config);
+bot.connect();
+
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands');
