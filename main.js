@@ -4,16 +4,6 @@ var fs = require("fs");
 
 var util = require('./utilities.js');
 
-
-const SpoilerBot = require('discord-spoiler-bot');
- 
-let config = {
-    token: (require("../data/tokens.json").akira),
-};
- 
-let bot = new SpoilerBot(config);
-bot.connect();
-
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands');
@@ -35,6 +25,7 @@ for (const file of commonCommands) {
 
 var commands = require("../data/commands.json");
 var vc = require("./vc.js")(client);
+var spoiler = require("./spoiler.js")();
 
 client.on('ready', () => {
 	util.log(client,'I am ready!');
