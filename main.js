@@ -24,7 +24,6 @@ for (const file of commonCommands) {
 }
 
 var commands = require("../data/commands.json");
-var vc = require("./vc.js")(client);
 var spoiler = require("./spoiler.js")();
 
 client.on('ready', () => {
