@@ -20,11 +20,17 @@ const commandFiles = fs.readdirSync('./commands');
 const commonCommands = fs.readdirSync('./commonCommands');
 for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
-    client.commands.set(file.split(".js")[0], command);
+	client.commands.set(file.split(".js")[0], command);
+	if(command.alias){
+		command.alias.forEach(alias => client.commands.set(alias, command))
+	}
 }
 for (const file of commonCommands) {
     const command = require(`./commonCommands/${file}`);
-    client.commands.set(file.split(".js")[0], command);
+	client.commands.set(file.split(".js")[0], command);
+	if(command.alias){
+		command.alias.forEach(alias => client.commands.set(alias, command))
+	}
 }
 
 var commands = require("../data/commands.json");
@@ -92,7 +98,6 @@ client.on('message', message => {
 			if(util.permCheck(message,commandName)){
 				if(command == undefined){command = {}; command.type = param[0].toLowerCase()};
 				if (!client.commands.has(command.type)) return;
-				
 				client.commands.get(command.type).execute(client, message, param);
 			}
 		}

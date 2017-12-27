@@ -4,6 +4,7 @@ var json = require('jsonfile');
 
 module.exports = {
     desc:"This is a description",
+    alias:["bg"],
     execute(client, message, param){
         var inventory = json.readFileSync("../data/inventory.json");
         var exp = json.readFileSync("../data/exp.json");
