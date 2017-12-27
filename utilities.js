@@ -55,7 +55,7 @@ module.exports = {
 		var inventory = json.readFileSync("../data/inventory.json");
 		var exp = json.readFileSync("../data/exp.json");
 		if(inventory[id] == undefined) {
-			inventory[id]={badges={},bgs={}};
+			inventory[id]={badges:[],bgs:[]};
 			module.exports.save(inventory,"inventory");
 		}
 		if(exp[id] == undefined){
