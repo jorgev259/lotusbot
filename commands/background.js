@@ -11,7 +11,8 @@ module.exports = {
 
         if(param.length > 1){
             var code = param[1].toUpperCase();
-            if(fs.existsSync(`../images/backgrounds/${code}.png`) || code=="DEFAULT"){
+
+            if(fs.existsSync(`../akira/images/backgrounds/${code}.png`) || code=="DEFAULT"){
                 if(inventory[message.author.id].bgs.includes(code) || code=="DEFAULT"){
                     exp[message.author.id].bg = code;
                     util.save(exp,"exp");
