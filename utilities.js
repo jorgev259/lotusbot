@@ -149,16 +149,16 @@ module.exports = {
 									var nicks = json.readFileSync("../data/nicks.json");
 
 									msg.member.addRole(msg.guild.roles.find("name",reward.name),"Added reward role"); //adds the rewarded role
-									if(reward.name && msg.author.roles.exists("name",reward.remove)){
-										msg.member.removeRole(msg.guild.roles.find("name",reward.remove),"Removed old rank")
+									msg.member.removeRole(msg.guild.roles.find("name",reward.remove),"Removed old rank")
+
+									var nick = msg.member.nickname;
+									if(msg.member.nickname.endsWith(reward.remove.split(" ")[0])){
+										nick = nick.split(reward.remove.split(" ")[0])[0]
 									}
+									nick += reward.name.split(" ")[0]
 
-									var nick = msg.member.nickname.split(" ");
-									nick.pop();
-
-									var newNick = module.exports.stripEmoji(nick.join(" "))[0] + " " + reward.name.split(" ")[0];
-									msg.member.setNickname(newNick,"Changed nickname emoji");
-									nicks[msg.member.id] = newNick;
+									msg.member.setNickname(nick,"Changed nickname emoji");
+									nicks[msg.member.id] = nick;
 									module.exports.save(nicks,"nicks");
 								}
 								break;
