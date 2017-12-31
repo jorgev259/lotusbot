@@ -61,11 +61,14 @@ module.exports = {
 		if(exp[id] == undefined){
 			exp[id] = {"lvl":0,"exp":0,"money":0,"lastDaily":"Not Collected"};
 			module.exports.save(exp,"exp");		
-			client.guilds.first().members.fetch(id).then(member=>{
+		}		
+		client.guilds.first().members.fetch(id).then(member=>{
+			var rankRoles = member.roles.filter(role => role.name.includes(`Rank - ${exp[id].lvl}]`));
+			if(rankRoles.size == 0){
 				var role = member.guild.roles.filter(role => role.name.includes(`Rank - ${exp[id].lvl}]`)).first();
 				member.addRole(role,"Added level role");
-			})
-		}		
+			}		
+		})		
 	},
 
 	reactNumber:function(number,limit,poll){
