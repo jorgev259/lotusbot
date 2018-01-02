@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
-  "canvas": "github:Automattic/node-canvas",
   "scripts": {
     "test": "node inspect main.js",
     "start": "node main.js"
