@@ -11,8 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "bufferutil": "^3.0.3",
-    "canvas": "github:Automattic/node-canvas",
-    "discord-spoiler-bot": "^2.0.5",
+    "canvas": "https://github.com/rikumax25/akirabot/raw/8af116f3903bf6c01c52e98847740dac167067f5/canvas.tar.gz",
     "discord.js": "github:hydrabolt/discord.js",
     "ffmpeg-binaries": "^3.2.2",
     "image-downloader": "^3.3.0",
