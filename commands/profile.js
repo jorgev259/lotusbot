@@ -67,6 +67,21 @@ module.exports = {
             pfCtx.fillText(exp[id].exp.toString() + " / " + levels[exp[id].lvl].exp, 506,530);
             pfCtx.fillText(exp[id].money, 506,568);
 
+            if(exp[id].badges && exp[id].badges.length > 0){
+                for(var i=0;i<exp[id].badges.length;i++){
+                    if(exp[id].badges[i] != undefined){
+                        var row = 0;
+                        if(i>2) row += Math.floor(i>3);
+                        var column = i - (row*3)
+                        var y = 430 + (75*row);
+                        var x = 775 + (80*column);
+
+                        img.src=fs.readFileSync(`images/badges/${exp[id].badges[i]}.png`);
+                        pfCtx.drawImage(img,x,y,70,70);
+                    }
+                }
+            }
+
             message.channel.send(new Discord.MessageAttachment(profile.toBuffer(),"profile.png"))
         })
     }
