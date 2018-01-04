@@ -5,6 +5,7 @@ var util = require('../utilities.js');
 module.exports = {
     desc:"This is a description",
     execute(client, message, param){
+try{
         var command = commands[param[0].toLowerCase()];
 
         message.channel.send(new Discord.MessageAttachment(command.content[0])).then(function(message){
@@ -27,5 +28,9 @@ module.exports = {
             }
         })
     }
+catch(e){
+util.log(client,`${e}
+Source: ${__filename.split('/root/bots/')[1]}`)
 }
-
+}
+}

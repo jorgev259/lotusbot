@@ -5,6 +5,7 @@ var util = require('../utilities.js');
 module.exports = {
     desc:"This is a description",
     execute(client, message, param){
+try{
         var color;
         var thumb;
         var snowflake;
@@ -39,4 +40,9 @@ module.exports = {
             message.guild.channels.find("name","memorabilia").send({embed});
         });
     }
+catch(e){
+util.log(client,`${e}
+Source: ${__filename.split('/root/bots/')[1]}`)
+}
+}
 }

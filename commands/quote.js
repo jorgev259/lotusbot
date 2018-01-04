@@ -4,6 +4,7 @@ var quotes = require("../../data/quotes.json");
 module.exports = {
     desc:"This is a description",
     execute(client, message, param){
+try{
         var quote = quotes[parseInt(param[1])];
         if(quote != undefined && quote != null){
             var embed = new Discord.MessageEmbed()
@@ -17,4 +18,9 @@ module.exports = {
             message.reply("invalid Quote id");
         }
     }
+catch(e){
+util.log(client,`${e}
+Source: ${__filename.split('/root/bots/')[1]}`)
+}
+}
 }

@@ -6,6 +6,7 @@ module.exports = {
     desc:"This is a description",
     alias:["bg"],
     execute(client, message, param){
+try{
         var inventory = json.readFileSync("../data/inventory.json");
         var exp = json.readFileSync("../data/exp.json");
 
@@ -27,4 +28,9 @@ module.exports = {
             message.channel.send("You forgot the background's code. Usage: >background <code>");
         }
     }
+catch(e){
+util.log(client,`${e}
+Source: ${__filename.split('/root/bots/')[1]}`)
+}
+}
 }

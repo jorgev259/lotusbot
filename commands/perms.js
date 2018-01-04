@@ -4,6 +4,7 @@ var util = require('../utilities.js');
 module.exports = {
     desc:"This is a description",
     execute(client, message, param){
+try{
         var name = param[1];
         var type = param[2];
         param = param.slice(3);
@@ -50,4 +51,9 @@ module.exports = {
             }
         }
     }
+catch(e){
+util.log(client,`${e}
+Source: ${__filename.split('/root/bots/')[1]}`)
+}
+}
 }

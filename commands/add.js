@@ -4,6 +4,7 @@ var util = require('../utilities.js');
 module.exports = {
     desc:"This is a description",
     execute(client, message, param){
+try{
         var name = param[2].toLowerCase();
         var type = param[1].toLowerCase();
         param = param.slice(3);
@@ -30,4 +31,9 @@ module.exports = {
             message.reply("That command already exists, choose another name");
         }
     }
+catch(e){
+util.log(client,`${e}
+Source: ${__filename.split('/root/bots/')[1]}`)
+}
+}
 }

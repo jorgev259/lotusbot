@@ -4,6 +4,7 @@ var util = require('../utilities.js');
 module.exports = {
     desc:"This is a description",
     execute(client, message, param){
+try{
         const git = require('simple-git')(path.resolve("../", client.user.username.toLowerCase()));
         message.delete();
 
@@ -22,4 +23,9 @@ module.exports = {
             })
         })      
     }
+catch(e){
+util.log(client,`${e}
+Source: ${__filename.split('/root/bots/')[1]}`)
+}
+}
 }

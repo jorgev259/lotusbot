@@ -3,6 +3,7 @@ var util = require("../utilities.js");
 module.exports = {
     desc:"This is a description",
     execute(client, message, param){
+try{
         message.delete();
         var optionMessage;
         message.reply("type the options for you poll. Example: `option 1|Option 2|Non numbered option`").then(mDelete => optionMessage = mDelete);
@@ -63,4 +64,9 @@ module.exports = {
             });
         });
     }
+catch(e){
+util.log(client,`${e}
+Source: ${__filename.split('/root/bots/')[1]}`)
+}
+}
 }

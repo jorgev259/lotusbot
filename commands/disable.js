@@ -3,6 +3,7 @@ var fs = require("fs");
 module.exports = {
     desc:"This is a description",
     execute(client, message, param){
+try{
         var commandName = param[1].toLowerCase();
         if(commandName){
             message.delete();
@@ -16,4 +17,9 @@ module.exports = {
             }
         }
     }
+catch(e){
+util.log(client,`${e}
+Source: ${__filename.split('/root/bots/')[1]}`)
+}
+}
 }

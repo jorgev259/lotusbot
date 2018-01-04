@@ -12,6 +12,7 @@ Canvas.registerFont("font/Mizo Arial.ttf",{family:"Mizo Arial"})
 module.exports = {
     desc:"This is a description",
     execute(client, message, param){
+try{
         var pfMember
         if(message.mentions.members.size > 0){
             pfMember = message.mentions.members.first()
@@ -170,4 +171,9 @@ module.exports = {
             });
         })     
     });
-}*/
+catch(e){
+util.log(client,`${e}
+Source: ${__filename.split('/root/bots/')[1]}`)
+}
+}
+}
