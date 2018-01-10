@@ -12,7 +12,7 @@ try{
         if(exp[message.author.id].badges == undefined) {exp[message.author.id].badges = [];util.save(exp,"exp")}
 
         if(param.length > 2){
-            if(!Number.isInteger(param[param.length - 1])) return message.channel.send(`Invalid number`)
+            if(isNan(param[param.length - 1])) return message.channel.send(`Invalid number`)
              
             var slot = parseInt(param[param.length - 1] - 1);
             var name = param.splice(1,param.length - 2).join(" ").toUpperCase();
