@@ -17,7 +17,7 @@ try{
             var slot = parseInt(param[param.length - 1] - 1);
             var name = param.splice(1,param.length - 2).join(" ").toUpperCase();
                         
-            if(fs.existsSync(`images/badges/${name}.png`)) return message.channel.send(`The badge ${name} doesnt exist. Check https://www.fandomcircle.com/shop-1#PROFILES for more info`)
+            if(!fs.existsSync(`images/badges/${name}.png`)) return message.channel.send(`The badge ${name} doesnt exist. Check https://www.fandomcircle.com/shop-1#PROFILES for more info`)
             
             if(inventory[message.author.id].badges.includes(name)){
                 exp[message.author.id].badges[slot] = name;
