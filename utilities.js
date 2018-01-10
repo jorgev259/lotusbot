@@ -141,6 +141,8 @@ module.exports = {
 
 				exp[msg.author.id].money += exp[msg.author.id].lvl * 500 //adds money reward for leveling up
 
+				module.exports.save(exp,"exp");
+
 				if(levels[exp[msg.author.id].lvl].rewards != undefined){
 					levels[exp[msg.author.id].lvl].rewards.forEach(function(reward){ //checks every reward
 						switch(reward.type){
@@ -168,12 +170,10 @@ module.exports = {
 
 			}
 
-			module.exports.save(exp,"exp");
-
 			cooldown[msg.author.id] = true; //sets the user on cooldown and will remove it in 60000 ms (1 minute)
-			setTimeout(function(){
-				delete cooldown[msg.author.id];
-			},90000)
+			setTimeout(function(authorID){
+				delete cooldown[authorID];
+			},90000,msg.author.id)
 		}
 	},
 

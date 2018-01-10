@@ -4,7 +4,7 @@ var path = require("path");
 module.exports = {
     desc:"This is a description",
     execute(client, message, param){
-try{
+    try{
         var commandName = param[1].toLowerCase();
         if(commandName){          
             var commandsPath = path.resolve("../", client.user.username.toLowerCase(),"commands")
