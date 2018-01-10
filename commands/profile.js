@@ -76,9 +76,11 @@ module.exports = {
                             var row = 0;
                             if(i>2) row += Math.floor(i>3);
 
+                            var column = i - (row*3)
+
                             console.log(column);
                             console.log(row);
-                            var column = i - (row*3)
+
                             var y = 430 + (75*row);
                             var x = 775 + (80*column);
 
