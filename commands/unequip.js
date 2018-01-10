@@ -12,7 +12,7 @@ try{
         if(exp[message.author.id].badges == undefined) {exp[message.author.id].badges = [];util.save(exp,"exp")}
 
         if(param.length > 1){
-            if(!Number.isInteger(param[1])) return message.channel.send(`Invalid number`) 
+            if(isNaN(param[1])) return message.channel.send(`Invalid number`) 
 
             var slot = parseInt(param[1]);
             if(exp[message.author.id].badges[slot - 1]){
