@@ -24,7 +24,7 @@ module.exports = {
 
                             if(file.startsWith("commands")){ 
                                 commandName = file.split("commands/")[1];     
-                                commandsPath = pth.resolve(commandsPath, "commands");                       
+                                commandsPath = path.resolve(commandsPath, "commands");                       
                             }else if(file.startsWith("commonCommands")){ 
                                 commandName = file.split("commonCommands/")[1];
                                 commandsPath = path.resolve(commandsPath, "commonCommands");
