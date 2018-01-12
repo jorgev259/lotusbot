@@ -126,6 +126,8 @@ module.exports = {
 			var randomExp = Math.floor(Math.random() * ((15-8)+1) + 8);
 			exp[msg.author.id].exp += randomExp;
 
+			module.exports.save(exp,"exp");
+
 			if(exp[msg.author.id].exp > levels[exp[msg.author.id].lvl].exp){ //checks if the user has reached enough exp
 				var levelroles = msg.member.roles.filter(r=>r.name.includes("Rank")) //finds all roles that start with [
 				if(levelroles.size==1){
