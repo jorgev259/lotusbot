@@ -18,6 +18,7 @@ module.exports = {
                     if(res.files.length>0){
                         m.edit(`Git pull successful!\nModified files: ${res.files.join(" ,")}\nSummary: ${JSON.stringify(res.summary).split("{")[1].split("}")[0]}`);
                         res.files.forEach(file => {
+
                             var commandsPath = path.resolve("../", client.user.username.toLowerCase())
                             var modulePath;
                             var commandName;
@@ -41,7 +42,7 @@ module.exports = {
                             if(command.alias){
                                 command.alias.forEach(alias => client.commands.set(alias, command))
                             }
-                            util.log(client, `Reloaded ${commandName}.js`)
+                            util.log(client, `Reloaded ${commandName}`)
 
                         })
                     }else{
