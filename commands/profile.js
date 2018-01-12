@@ -1,5 +1,6 @@
 const Canvas = require('canvas');
 const Discord = require('discord.js');
+var { MessageAttachment } = require('discord.js');
 var json = require('jsonfile');
 var fs = require('fs');
 const download = require('image-downloader');
@@ -87,7 +88,7 @@ module.exports = {
                     }
                 }
 
-                message.channel.send(new Discord.MessageAttachment(profile.toBuffer(),"profile.png"))
+                message.channel.send(new MessageAttachment(profile.toBuffer(),"profile.png"))
             })
         }catch(e){
             util.log(client,`${e}\nSource: ${__filename.split('/root/bots/')[1]}`)
