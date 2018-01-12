@@ -32,12 +32,12 @@ module.exports = {
                                 return;
                             }
 
-                            modulePath = `${commandsPath}/${commandName}.js`;
+                            modulePath = `${commandsPath}/${commandName}`;
                             delete require.cache[require.resolve(modulePath)];
 
                             const command = require(modulePath);
 
-                            client.commands.set(file.split(".js")[0], command);
+                            client.commands.set(commandName.split(".js")[0], command);
                             if(command.alias){
                                 command.alias.forEach(alias => client.commands.set(alias, command))
                             }
