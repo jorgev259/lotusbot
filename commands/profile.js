@@ -78,9 +78,6 @@ module.exports = {
 
                             var column = i - (row*3)
 
-                            console.log(column);
-                            console.log(row);
-
                             var y = 430 + (75*row);
                             var x = 775 + (80*column);
 
