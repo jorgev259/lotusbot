@@ -74,7 +74,7 @@ module.exports = {
                     for(var i=0;i<exp[id].badges.length;i++){
                         if(exp[id].badges[i]){
                             var row = 0;
-                            if(i>2) row += Math.floor(i>3);
+                            if(i>2) row += Math.floor(i/3);
 
                             var column = i - (row*3)
 
