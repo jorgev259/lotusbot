@@ -15,15 +15,15 @@ try{
                     command.content[i-1] = command.content[i];
                 };
                 command.content[command.content.length - 1] = first;
-                commands[commandName] = command;
+                commands[param[0].toLowerCase()] = command;
                 util.save(commands,"commands");
             }
         },function(error){
             util.log(client,param[0] + " failed with " + error + "\n " + command.content[0])
             if(error == "Error: 403 Forbidden"){
-                util.log(client, "removed " + command.content[0] + " from " + commandName);
+                util.log(client, "removed " + command.content[0] + " from " + param[0].toLowerCase());
                 command.content.splice(0,1);
-                commands[commandName] = command;
+                commands[param[0].toLowerCase()] = command;
                 util.save(commands,"commands");
             }
         })
