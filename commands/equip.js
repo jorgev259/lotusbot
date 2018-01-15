@@ -21,8 +21,11 @@ try{
             
             if(inventory[message.author.id].badges.includes(name)){
                 exp[message.author.id].badges[slot] = name;
-                util.save(exp,"exp");
-                message.channel.send("New badge applied!")
+                message.channel.send("Updating your profile...").then(update=>{
+                    util.save(exp,"exp").then(()=>{
+                        update.edit("New badge applied!");
+                    })                   
+                })               
             }else{
                 message.channel.send("Sorry, you dont own this badge ;-;");
             }

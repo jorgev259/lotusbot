@@ -186,7 +186,12 @@ module.exports = {
 	},
 
 	save:function(data,name){
-		writeJsonFile.sync("../data/" + name + ".json", data);
+		return new Promise(function (resolve, reject) {
+			writeJsonFile.sync("../data/" + name + ".json", data, function(err){
+				resolve();
+			});
+		})
+		
 	},
 
 
