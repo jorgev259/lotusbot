@@ -3,9 +3,11 @@ const Discord = require('discord.js');
 var { MessageAttachment } = require('discord.js');
 var json = require('jsonfile');
 var fs = require('fs');
+var glob = require('glob');
 const download = require('image-downloader');
 
 var levels = require("../../data/levels.json")
+var util = require("../utilities.js")
 
 Canvas.registerFont("font/BebasNeue Bold.ttf",{family:"BebasNeue Bold"})
 Canvas.registerFont("font/Mizo Arial.ttf",{family:"Mizo Arial"})
@@ -27,7 +29,7 @@ module.exports = {
             if(exp[pfMember.id] == undefined || exp[pfMember.id].bg == undefined){
                 bg = "images/backgrounds/DEFAULT.png";
             }else{
-                bg = `images/backgrounds/${exp[pfMember.id].bg}.png`;
+                bg = glob.sync(`images/backgrounds/**/${exp[pfMember.id].bg}*`)[0];
             }
             var nick = pfMember.nickname.split(" ");
             nick.pop();
@@ -81,8 +83,8 @@ module.exports = {
 
                             var y = 430 + (75*row);
                             var x = 775 + (80*column);
-
-                            img.src=fs.readFileSync(`images/badges/${exp[id].badges[i]}.png`);
+                           
+                            img.src=fs.readFileSync(glob.sync(`images/badges/**/${exp[id].badges[i]}*`)[0]);
                             pfCtx.drawImage(img,x,y,70,70);
                         }
                     }
