@@ -149,7 +149,7 @@ module.exports = {
 					levels[exp[msg.author.id].lvl].rewards.forEach(function(reward){ //checks every reward
 						switch(reward.type){
 							case "role":
-								if(!(msg.member.nickname.endsWith("🔰") || msg.member.nickname.endsWith("🔧") || msg.member.nickname.endsWith("✨") || msg.member.nickname.endsWith("🔖"))){
+								if(!(msg.member.nickname.endsWith("🔰") || msg.member.nickname.endsWith("🍬") || msg.member.nickname.endsWith("🔧") || msg.member.nickname.endsWith("✨") || msg.member.nickname.endsWith("🔖"))){
 									var nicks = json.readFileSync("../data/nicks.json");
 
 									msg.member.addRole(msg.guild.roles.find("name",reward.name),"Added reward role"); //adds the rewarded role
