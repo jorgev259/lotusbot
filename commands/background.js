@@ -13,7 +13,7 @@ module.exports = {
             if(param.length > 1){
                 var code = param[1].toUpperCase();
                  
-                if(!glob.sync(`images/badges/**/${name}*`) || code=="DEFAULT"){
+                if(!glob.sync(`images/badges/**/${name}*`).length || code=="DEFAULT"){
                     if(inventory[message.author.id].bgs.includes(code) || code=="DEFAULT"){
                         exp[message.author.id].bg = code;
                         util.save(exp,"exp");
