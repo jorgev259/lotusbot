@@ -44,30 +44,6 @@ client.on("guildMemberAdd", (member) => {
 	member.addRole(member.guild.roles.find("name", "☕ - Customers"),"User join");
 });
 
-/*client.on("messageReactionAdd",(reaction,user)=>{
-    if(user.id != client.user.id && reaction.message.channel.name == "art"){
-        art.find({"id":reaction.message.id},function(err,result){
-            if(result.length>0){
-                util.checkReact(reaction,user,result[0])
-            }
-        })
-    }
-});
-
-client.on("messageReactionRemove",(reaction,user)=>{
-    if(reaction.message.channel.name == "art"){
-        var count =  util.emojiCount(reaction,user);
-        if(count == 0){
-            art.find({"id":reaction.message.id},function(err,result){
-                if(result.length>0){
-                    result[0].score = result[0].score - util.findEmoji(reaction.emoji.name);
-                    art.save(result[0]);
-                }
-            })
-        }
-    }
-})*/
-
 client.on('message', message => {
 	try{
 		util.exp(message,client);
@@ -92,18 +68,7 @@ client.on('message', message => {
 			}
 		}
 
-		switch(message.channel.name){
-			case "creations":
-				/*if(message.attachments.size > 0){
-                       art.save({"id":message.id,"score":0,"author":message.author.id});
-                   }*/
-				if(message.attachments.size > 0 || message.embeds.length>0){
-					util.reactNumber(0,5,message);
-				}else{
-
-				}
-				break;
-			
+		switch(message.channel.name){			
 			case "news-n-stuff":
 				util.react(message);
 				break;

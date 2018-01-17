@@ -71,14 +71,6 @@ module.exports = {
 		})		
 	},
 
-	reactNumber:function(number,limit,poll){
-		if(number<limit){
-			poll.react(reactionNumbers[number]).then(function(){
-				module.exports.reactNumber(number+1,limit,poll);
-			})
-		};
-	},
-
 	react:function(msg){
 		reactions.forEach(reaction => {
 			msg.react(reaction);
@@ -92,26 +84,6 @@ module.exports = {
             }
         }
     },*/
-
-	emojiCount:function(reactionR,user){
-		let count = 0;
-		reactionR.message.reactions.forEach(function(reaction){
-			if(reaction.users.has(user.id)){
-				count++;
-			}
-		});
-		return count
-	},
-
-	checkReact:function(reactionR,user,points){
-		var count = module.exports.emojiCount(reactionR,user);
-		if(count>=2){
-			reactionR.remove(user);
-		}else{
-			points.score += module.exports.findEmoji(reactionR.emoji.name);
-			art.save(points);
-		}
-	},
 
 	stripEmoji:function(text){
 		return text.split(emojis[0])[0].split(emojis[1])[0].split(emojis[2])[0].split(emojis[3])[0].split(emojis[4])[0];
