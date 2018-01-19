@@ -2,7 +2,6 @@ var path = require("path");
 var util = require('../utilities.js');
 
 module.exports = {
-	desc:"This is a description",
 	execute(client, message, param){
 		try{
 			const git = require('simple-git')(path.resolve("../", client.user.username.toLowerCase()));

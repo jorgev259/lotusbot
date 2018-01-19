@@ -4,8 +4,8 @@ var json = require('jsonfile');
 var glob = require('glob');
 
 module.exports = {
-    desc:"This is a description",
-    alias:["bg"],
+    desc:"Equips a badge in your profile. Usage <badge> <1-9>",
+    alias:["badge"],
     execute(client, message, param){
         try{
             var inventory = json.readFileSync("../data/inventory.json");

@@ -4,7 +4,7 @@ var json = require('jsonfile');
 var glob = require('glob');
 
 module.exports = {
-    desc:"This is a description",
+    desc:"Equips a background to your profile. Usage: >bg <code>",
     alias:["bg"],
     execute(client, message, param){
         try{
@@ -13,7 +13,6 @@ module.exports = {
 
             if(param.length > 1){
                 var code = param[1].toUpperCase();
-                 //"images/backgrounds/*/FHF*"
                 if(glob.sync(`images/backgrounds/**/${code}*`).length || code=="DEFAULT"){
                     if(inventory[message.author.id].bgs.includes(code) || code=="DEFAULT"){
                         exp[message.author.id].bg = code;

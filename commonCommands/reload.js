@@ -2,7 +2,6 @@ var fs = require("fs");
 var path = require("path");
 
 module.exports = {
-    desc:"This is a description",
     execute(client, message, param){
     try{
         var commandName = param[1].toLowerCase();

@@ -15,7 +15,7 @@ module.exports = {
 	permCheck:function(message, commandName){
 		var perms = json.readFileSync("../data/perms.json");
 
-		if(perms[commandName] == undefined || message.member.roles.exists("name","🍬 Admin") ||  message.member.roles.exists("name","name")){return true}
+		if(perms[commandName] == undefined || message.member.roles.exists("name","🍬 Admin") ||  message.member.roles.exists("name","🍬 Master Developer"))return true;
 		var allowedChannel = true;
 		var allowed = false;
 

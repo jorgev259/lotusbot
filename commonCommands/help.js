@@ -1,5 +1,4 @@
 var util = require("../utilities.js");
-var ignore = ["help","reload","update"];
 
 module.exports = {
     desc:"This command displays information about a command. Usage: >help command",
@@ -13,7 +12,7 @@ module.exports = {
                 var commands = "";
                 var send = false;
                 Array.from(client.commands.keys()).forEach(idName => {
-                    if(util.permCheck(message,idName) && !ignore.includes(idName)){
+                    if(util.permCheck(message,idName) && client.commands.get(idName).desc){
                         send=true;
                         commands += `${idName}: ${client.commands.get(idName).desc}\n`
                     }               

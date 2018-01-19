@@ -13,7 +13,7 @@ Canvas.registerFont("font/BebasNeue Bold.ttf",{family:"BebasNeue Bold"})
 Canvas.registerFont("font/Mizo Arial.ttf",{family:"Mizo Arial"})
 
 module.exports = {
-    desc:"This is a description",
+    desc:"Shows your profile (or other user's if tagged)",
     execute(client, message, param){
         try{
             var pfMember

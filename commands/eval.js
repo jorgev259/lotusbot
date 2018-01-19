@@ -1,8 +1,7 @@
 module.exports = {
-    desc:"This is a description",
+    desc:"Runs the written code (Use with precaution). >eval <code>",
     execute(client, message, param){
-try{
-        try {
+        try{
             /*var exp = json.readFileSync("../data/exp.json");
             var inventory = json.readFileSync("../data/inventory.json");*/
             param = param.slice(1)
@@ -20,9 +19,4 @@ try{
             message.channel.send(`${err}`,{code:"xl"});
         }
     }
-catch(e){
-util.log(client,`${e}
-Source: ${__filename.split('/root/bots/')[1]}`)
-}
-}
 }

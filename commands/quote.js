@@ -3,7 +3,7 @@ var { MessageEmbed } = require('discord.js');
 var quotes = require("../../data/quotes.json");
 
 module.exports = {
-    desc:"This is a description",
+    desc:"Shows a featured qupte. Usage: >quote <number>",
     execute(client, message, param){
         try{
             var quote = quotes[parseInt(param[1])];
