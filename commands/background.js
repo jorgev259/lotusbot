@@ -1,6 +1,7 @@
 var fs = require("fs");
 var util = require("../utilities.js");
 var json = require('jsonfile');
+var glob = require('glob');
 
 module.exports = {
     desc:"This is a description",
