@@ -13,7 +13,7 @@ module.exports = {
                 var commands = "";
                 var send = false;
                 Array.from(client.commands.keys()).forEach(idName => {
-                    if(util.permCheck(message,idName) && ignore.includes(idName)){
+                    if(util.permCheck(message,idName) && !ignore.includes(idName)){
                         send=true;
                         commands += `${idName}: ${client.commands.get(idName).desc}\n`
                     }               
