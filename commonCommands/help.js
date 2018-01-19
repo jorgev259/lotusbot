@@ -17,7 +17,7 @@ module.exports = {
                         commands += `${idName}: ${client.commands.get(idName).desc}\n`
                     }               
                 })
-                if(send) message.author.send(commands, {code:"xl",split:true});
+                if(send) message.author.send(commands, {code:true,split:true});
             }
         }catch(e){
             util.log(client,`${e}\nSource: ${__filename.split('/root/bots/')[1]}`)
