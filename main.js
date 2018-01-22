@@ -69,7 +69,7 @@ client.on('message', message => {
 		}
 
 		switch(message.channel.name){			
-			case "news-n-stuff":
+			case "creative":
 				util.react(message);
 				break;
 
