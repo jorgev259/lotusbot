@@ -69,10 +69,6 @@ client.on('message', message => {
 		}
 
 		switch(message.channel.name){			
-			case "creative":
-				util.react(message);
-				break;
-
 			case "akira":
 				util.talk(client,message);
 				break;
