@@ -62,14 +62,14 @@ module.exports = {
                 }else{
                     percent = ((exp[id].exp) / (levels[0].exp))
                 }
-                pfCtx.drawImage(img,312,461,(435*percent),26);
+                pfCtx.drawImage(img,312,601,(435*percent),26);
 
                 img.src=fs.readFileSync(`images/numbers/${exp[id].lvl}.png`);
                 pfCtx.drawImage(img,80,500);
 
                 pfCtx.font = '30px "Mizo Arial"';
                 pfCtx.fillStyle = '#ffffff';
-                pfCtx.fillText(nick.join(" "), 353,440);
+                pfCtx.fillText(nick.join(" "), 353,540);
                 pfCtx.fillText(exp[id].exp.toString() + " / " + levels[exp[id].lvl].exp, 506,530);
                 pfCtx.fillText(exp[id].money, 506,568);
 
