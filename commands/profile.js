@@ -69,9 +69,9 @@ module.exports = {
 
                 pfCtx.font = '30px "Mizo Arial"';
                 pfCtx.fillStyle = '#ffffff';
-                pfCtx.fillText(nick.join(" "), 353,560);
-                pfCtx.fillText(exp[id].exp.toString() + " / " + levels[exp[id].lvl].exp, 506,730);
-                pfCtx.fillText(exp[id].money, 506,768);
+                pfCtx.fillText(nick.join(" "), 353,580);
+                pfCtx.fillText(exp[id].exp.toString() + " / " + levels[exp[id].lvl].exp, 506,680);
+                pfCtx.fillText(exp[id].money, 506,718);
 
                 if(exp[id].badges && exp[id].badges.length > 0){
                     for(var i=0;i<exp[id].badges.length;i++){
