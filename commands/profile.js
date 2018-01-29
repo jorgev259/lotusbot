@@ -65,13 +65,13 @@ module.exports = {
                 pfCtx.drawImage(img,312,601,(435*percent),26);
 
                 img.src=fs.readFileSync(`images/numbers/${exp[id].lvl}.png`);
-                pfCtx.drawImage(img,80,500);
+                pfCtx.drawImage(img,80,700);
 
                 pfCtx.font = '30px "Mizo Arial"';
                 pfCtx.fillStyle = '#ffffff';
                 pfCtx.fillText(nick.join(" "), 353,540);
                 pfCtx.fillText(exp[id].exp.toString() + " / " + levels[exp[id].lvl].exp, 506,530);
-                pfCtx.fillText(exp[id].money, 506,568);
+                pfCtx.fillText(exp[id].money, 506,768);
 
                 if(exp[id].badges && exp[id].badges.length > 0){
                     for(var i=0;i<exp[id].badges.length;i++){
