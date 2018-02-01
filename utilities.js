@@ -95,7 +95,7 @@ module.exports = {
 
 			var exp = json.readFileSync("../data/exp.json");
 			//adds random amount (15-25) of exp to the user
-			var randomExp = Math.floor(Math.random() * ((15-8)+1) + 8);
+			var randomExp = Math.floor(Math.random() * ((100-40)+1) + 40);
 			exp[msg.author.id].exp += randomExp;
 
 			module.exports.save(exp,"exp");
@@ -113,7 +113,7 @@ module.exports = {
 				var role=msg.guild.roles.filter(r=>r.name.includes(`Rank - ${exp[msg.author.id].lvl}]`)).first()
 				msg.member.addRole(role,"Added new level role") //adds new level role
 
-				exp[msg.author.id].money += exp[msg.author.id].lvl * 500 //adds money reward for leveling up
+				exp[msg.author.id].money += 2000 //adds money reward for leveling up
 
 				module.exports.save(exp,"exp");
 
