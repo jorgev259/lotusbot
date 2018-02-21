@@ -9,7 +9,7 @@ client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands');
 const commonCommands = fs.readdirSync('./commonCommands');
 for (const file of commandFiles) {
-    const command = require(`./commands/${file}`);
+	const command = require(`./commands/${file}`);
 	client.commands.set(file.split(".js")[0], command);
 	if(command.alias){
 		command.alias.forEach(alias => client.commands.set(alias, command))
@@ -24,7 +24,7 @@ for (const file of commonCommands) {
 }
 
 var commands = require("../data/commands.json");
-var spoiler = require("./spoiler.js")();
+//var spoiler = require("./spoiler.js")();
 
 client.on('ready', () => {
 	util.log(client,'I am ready!');
@@ -43,30 +43,6 @@ client.on("guildMemberAdd", (member) => {
 	member.guild.channels.find("name","main-lounge").send(`Welcome to Fandom Circle, <@${member.id}>! Have Fun`);
 	member.addRole(member.guild.roles.find("name", "☕ - Customers"),"User join");
 });
-
-/*client.on("messageReactionAdd",(reaction,user)=>{
-    if(user.id != client.user.id && reaction.message.channel.name == "art"){
-        art.find({"id":reaction.message.id},function(err,result){
-            if(result.length>0){
-                util.checkReact(reaction,user,result[0])
-            }
-        })
-    }
-});
-
-client.on("messageReactionRemove",(reaction,user)=>{
-    if(reaction.message.channel.name == "art"){
-        var count =  util.emojiCount(reaction,user);
-        if(count == 0){
-            art.find({"id":reaction.message.id},function(err,result){
-                if(result.length>0){
-                    result[0].score = result[0].score - util.findEmoji(reaction.emoji.name);
-                    art.save(result[0]);
-                }
-            })
-        }
-    }
-})*/
 
 client.on('message', message => {
 	try{
@@ -92,22 +68,7 @@ client.on('message', message => {
 			}
 		}
 
-		switch(message.channel.name){
-			case "creations":
-				/*if(message.attachments.size > 0){
-                       art.save({"id":message.id,"score":0,"author":message.author.id});
-                   }*/
-				if(message.attachments.size > 0 || message.embeds.length>0){
-					util.reactNumber(0,5,message);
-				}else{
-
-				}
-				break;
-			
-			case "news-n-stuff":
-				util.react(message);
-				break;
-
+		switch(message.channel.name){			
 			case "akira":
 				util.talk(client,message);
 				break;

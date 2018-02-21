@@ -1,7 +1,7 @@
 module.exports = {
-    desc:"This is a description",
+    desc:"Runs the written code (Use with precaution). >eval <code>",
     execute(client, message, param){
-        try {
+        try{
             /*var exp = json.readFileSync("../data/exp.json");
             var inventory = json.readFileSync("../data/inventory.json");*/
             param = param.slice(1)

@@ -15,7 +15,7 @@ module.exports = {
 	permCheck:function(message, commandName){
 		var perms = json.readFileSync("../data/perms.json");
 
-		if(perms[commandName] == undefined || message.member.roles.exists("name","🍬 Admin") ||  message.member.roles.exists("name","name")){return true}
+		if(perms[commandName] == undefined || message.member.roles.exists("name","🍬 Admin") ||  message.member.roles.exists("name","🍬 Master Developer"))return true;
 		var allowedChannel = true;
 		var allowed = false;
 
@@ -71,14 +71,6 @@ module.exports = {
 		})		
 	},
 
-	reactNumber:function(number,limit,poll){
-		if(number<limit){
-			poll.react(reactionNumbers[number]).then(function(){
-				module.exports.reactNumber(number+1,limit,poll);
-			})
-		};
-	},
-
 	react:function(msg){
 		reactions.forEach(reaction => {
 			msg.react(reaction);
@@ -93,26 +85,6 @@ module.exports = {
         }
     },*/
 
-	emojiCount:function(reactionR,user){
-		let count = 0;
-		reactionR.message.reactions.forEach(function(reaction){
-			if(reaction.users.has(user.id)){
-				count++;
-			}
-		});
-		return count
-	},
-
-	checkReact:function(reactionR,user,points){
-		var count = module.exports.emojiCount(reactionR,user);
-		if(count>=2){
-			reactionR.remove(user);
-		}else{
-			points.score += module.exports.findEmoji(reactionR.emoji.name);
-			art.save(points);
-		}
-	},
-
 	stripEmoji:function(text){
 		return text.split(emojis[0])[0].split(emojis[1])[0].split(emojis[2])[0].split(emojis[3])[0].split(emojis[4])[0];
 	},
@@ -123,8 +95,10 @@ module.exports = {
 
 			var exp = json.readFileSync("../data/exp.json");
 			//adds random amount (15-25) of exp to the user
-			var randomExp = Math.floor(Math.random() * ((15-8)+1) + 8);
+			var randomExp = Math.floor(Math.random() * ((100-40)+1) + 40);
 			exp[msg.author.id].exp += randomExp;
+
+			module.exports.save(exp,"exp");
 
 			if(exp[msg.author.id].exp > levels[exp[msg.author.id].lvl].exp){ //checks if the user has reached enough exp
 				var levelroles = msg.member.roles.filter(r=>r.name.includes("Rank")) //finds all roles that start with [
@@ -139,13 +113,15 @@ module.exports = {
 				var role=msg.guild.roles.filter(r=>r.name.includes(`Rank - ${exp[msg.author.id].lvl}]`)).first()
 				await msg.member.addRole(role,"Added new level role") //adds new level role
 
-				exp[msg.author.id].money += exp[msg.author.id].lvl * 500 //adds money reward for leveling up
+				exp[msg.author.id].money += 2000 //adds money reward for leveling up
+
+				module.exports.save(exp,"exp");
 
 				if(levels[exp[msg.author.id].lvl].rewards != undefined){
 					levels[exp[msg.author.id].lvl].rewards.forEach(function(reward){ //checks every reward
 						switch(reward.type){
 							case "role":
-								if(!msg.member.nickname.endsWith("🔰")){
+								if(!(msg.member.nickname.endsWith("🔰") || msg.member.nickname.endsWith("🍬") || msg.member.nickname.endsWith("🔧") || msg.member.nickname.endsWith("✨") || msg.member.nickname.endsWith("🔖"))){
 									var nicks = json.readFileSync("../data/nicks.json");
 
 									await msg.member.addRole(msg.guild.roles.find("name",reward.name),"Added reward role"); //adds the rewarded role
@@ -171,9 +147,9 @@ module.exports = {
 			await module.exports.save(exp,"exp");
 
 			cooldown[msg.author.id] = true; //sets the user on cooldown and will remove it in 60000 ms (1 minute)
-			setTimeout(function(){
-				delete cooldown[msg.author.id];
-			},90000)
+			setTimeout(function(authorID){
+				delete cooldown[authorID];
+			},90000,msg.author.id)
 		}
 	},
 
