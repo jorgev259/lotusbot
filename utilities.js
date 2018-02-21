@@ -51,22 +51,22 @@ module.exports = {
 		return false;
 	},
 
-	userCheck:function(id,client){
+	async userCheck(id,client){
 		var inventory = json.readFileSync("../data/inventory.json");
 		var exp = json.readFileSync("../data/exp.json");
 		if(inventory[id] == undefined) {
 			inventory[id]={badges:[],bgs:[]};
-			module.exports.save(inventory,"inventory");
+			await module.exports.save(inventory,"inventory");
 		}
 		if(exp[id] == undefined){
 			exp[id] = {"lvl":0,"exp":0,"money":0,"lastDaily":"Not Collected"};
-			module.exports.save(exp,"exp");		
+			await module.exports.save(exp,"exp");		
 		}		
 		client.guilds.first().members.fetch(id).then(member=>{
 			var rankRoles = member.roles.filter(role => role.name.includes(`Rank - ${exp[id].lvl}]`));
 			if(rankRoles.size == 0){
 				var role = member.guild.roles.filter(role => role.name.includes(`Rank - ${exp[id].lvl}]`)).first();
-				member.addRole(role,"Added level role");
+				await member.addRole(role,"Added level role");
 			}		
 		})		
 	},
@@ -117,9 +117,9 @@ module.exports = {
 		return text.split(emojis[0])[0].split(emojis[1])[0].split(emojis[2])[0].split(emojis[3])[0].split(emojis[4])[0];
 	},
 
-	exp:function(msg,client){
+	async exp(msg,client){
 		if(cooldown[msg.author.id] == undefined && !msg.author.bot){ //checks if the user is not on cooldown and filters bots out
-			module.exports.userCheck(msg.author.id,client)
+			await module.exports.userCheck(msg.author.id,client)
 
 			var exp = json.readFileSync("../data/exp.json");
 			//adds random amount (15-25) of exp to the user
@@ -129,15 +129,15 @@ module.exports = {
 			if(exp[msg.author.id].exp > levels[exp[msg.author.id].lvl].exp){ //checks if the user has reached enough exp
 				var levelroles = msg.member.roles.filter(r=>r.name.includes("Rank")) //finds all roles that start with [
 				if(levelroles.size==1){
-					msg.member.removeRole(levelroles.first(),"Removed current level role"); //removes current lvl role
+					await msg.member.removeRole(levelroles.first(),"Removed current level role"); //removes current lvl role
 				}else if(levelroles.size>1){
-					msg.member.removeRoles(levelroles,"Removed level roles"); //removes all lvl roles
+					await msg.member.removeRoles(levelroles,"Removed level roles"); //removes all lvl roles
 				}
 
 				exp[msg.author.id].lvl += 1;
 
 				var role=msg.guild.roles.filter(r=>r.name.includes(`Rank - ${exp[msg.author.id].lvl}]`)).first()
-				msg.member.addRole(role,"Added new level role") //adds new level role
+				await msg.member.addRole(role,"Added new level role") //adds new level role
 
 				exp[msg.author.id].money += exp[msg.author.id].lvl * 500 //adds money reward for leveling up
 
@@ -148,8 +148,8 @@ module.exports = {
 								if(!msg.member.nickname.endsWith("🔰")){
 									var nicks = json.readFileSync("../data/nicks.json");
 
-									msg.member.addRole(msg.guild.roles.find("name",reward.name),"Added reward role"); //adds the rewarded role
-									msg.member.removeRole(msg.guild.roles.find("name",reward.remove),"Removed old rank")
+									await msg.member.addRole(msg.guild.roles.find("name",reward.name),"Added reward role"); //adds the rewarded role
+									await msg.member.removeRole(msg.guild.roles.find("name",reward.remove),"Removed old rank")
 
 									var nick = msg.member.nickname;
 									if(msg.member.nickname.endsWith(reward.remove.split(" ")[0])){
@@ -159,7 +159,7 @@ module.exports = {
 
 									msg.member.setNickname(nick,"Changed nickname emoji");
 									nicks[msg.member.id] = nick;
-									module.exports.save(nicks,"nicks");
+									await module.exports.save(nicks,"nicks");
 								}
 								break;
 						}
@@ -168,7 +168,7 @@ module.exports = {
 
 			}
 
-			module.exports.save(exp,"exp");
+			await module.exports.save(exp,"exp");
 
 			cooldown[msg.author.id] = true; //sets the user on cooldown and will remove it in 60000 ms (1 minute)
 			setTimeout(function(){
@@ -183,8 +183,11 @@ module.exports = {
 		}
 	},
 
-	save:function(data,name){
-		writeJsonFile.sync("../data/" + name + ".json", data);
+	async save(data,name){
+		return new Promise(async function (resolve, reject) {
+			await writeJsonFile("../data/" + name + ".json", data)
+			resolve(true)	
+		})		
 	},
 
 

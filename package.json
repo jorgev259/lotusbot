@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
-  "canvas": "github:Automattic/node-canvas",
   "scripts": {
     "test": "node inspect main.js",
     "start": "node main.js"
@@ -12,7 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "bufferutil": "^3.0.3",
-    "canvas": "github:Automattic/node-canvas",
     "discord-spoiler-bot": "^2.0.5",
     "discord.js": "github:hydrabolt/discord.js",
     "ffmpeg-binaries": "^3.2.2",
