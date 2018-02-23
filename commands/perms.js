@@ -3,7 +3,7 @@ var util = require('../utilities.js');
 
 module.exports = {
     desc:"Adds or removes permissions to a command. Usage: perms <command> <add│remove> <#channel│@user│roleName>",
-    execute(client, message, param){
+    async execute(client, message, param){
         try{
             var name = param[1];
             var type = param[2];
@@ -19,7 +19,7 @@ module.exports = {
                         }else{
                             perms[name].role.push(param.join(" "));
                         }
-                        util.save(perms,"perms");
+                        await util.save(perms,"perms");
                         message.reply(param.join(" ") + " is now allowed to use " + name);
                         break;
 
@@ -43,7 +43,7 @@ module.exports = {
                         }
 
                         util.save(perms,"perms");
-                        message.reply(param.join(" ") + " is now allowed to use " + name);
+                        await message.reply(param.join(" ") + " is now allowed to use " + name);
                         break;
 
                     case "delete":

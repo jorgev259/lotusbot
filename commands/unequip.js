@@ -16,8 +16,8 @@ module.exports = {
                 var slot = parseInt(param[1]);
                 if(exp[message.author.id].badges[slot - 1]){
                     exp[message.author.id].badges[slot - 1] = undefined;
-                    message.channel.send(`The slot number ${slot} has been emptied!`)
-                    util.save(exp,"exp");
+                    await util.save(exp,"exp");
+                    message.channel.send(`The slot number ${slot} has been emptied!`)                    
                 }else{
                     message.channel.send(`The slot number ${slot} has nothing equipped on it!`)
                 }

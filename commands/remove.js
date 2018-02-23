@@ -3,12 +3,12 @@ var util = require('../utilities.js');
 
 module.exports = {
     desc:"Deletes an embed command. Usage: >remove <name>",
-    execute(client, message, param){
+    async execute(client, message, param){
         try{
             var exCommand = commands[param[1].toLowerCase()];
             if(exCommand != undefined){
                 delete commands[param[1].toLowerCase()];
-                util.save(commands,"commands");
+                await util.save(commands,"commands");
                 message.reply("Command removed");
             }else{
                 message.reply("Command doesnt exist");

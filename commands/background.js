@@ -16,7 +16,7 @@ module.exports = {
                 if(glob.sync(`images/backgrounds/**/${code}*`).length || code=="DEFAULT"){
                     if(inventory[message.author.id].bgs.includes(code) || code=="DEFAULT"){
                         exp[message.author.id].bg = code;
-                        util.save(exp,"exp");
+                        await util.save(exp,"exp");
                         message.channel.send("New background applied!")
                     }else{
                         message.channel.send("Sorry, you dont own this background ;-;");

@@ -44,7 +44,7 @@ client.on("guildMemberAdd", (member) => {
 	member.addRole(member.guild.roles.find("name", "☕ - Customers"),"User join");
 });
 
-client.on('message', message => {
+client.on('message', async message => {
 	try{
 		util.exp(message,client);
 		var prefix = ">";
@@ -61,7 +61,7 @@ client.on('message', message => {
 			const commandName = param[0].toLowerCase();
 			var command = commands[commandName];
 
-			if(util.permCheck(message,commandName)){
+			if(await util.permCheck(message,commandName)){
 				if(command == undefined){command = {}; command.type = param[0].toLowerCase()};
 				if (!client.commands.has(command.type)) return;
 				client.commands.get(command.type).execute(client, message, param);

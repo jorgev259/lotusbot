@@ -4,7 +4,7 @@ var util = require('../utilities.js');
 
 module.exports = {
     desc:"Adds a quote to the featured list. Usage: >addquote <id> <serious>",
-    execute(client, message, param){
+    async execute(client, message, param){
         try{
             var color;
             var thumb;
@@ -34,10 +34,10 @@ module.exports = {
                     "avatar": quote.author.defaultAvatarURL
                 };
                 //save line
-                util.save(quotes,"quotes");
-                message.reply(" has recorded your message in the books of history <@" + quote.author.id + ">");
+                await util.save(quotes,"quotes");
+                await message.reply(" has recorded your message in the books of history <@" + quote.author.id + ">");
+                await message.guild.channels.find("name","memorabilia").send({embed});
                 message.delete();
-                message.guild.channels.find("name","memorabilia").send({embed});
             });
         }catch(e){
             util.log(client,`${e}\nSource: ${__filename.split('/root/bots/')[1]}`)
