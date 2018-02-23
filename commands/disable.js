@@ -1,7 +1,7 @@
 var fs = require("fs");
 
 module.exports = {
-    execute(client, message, param){
+    async execute(client, message, param){
         try{
             var commandName = param[1].toLowerCase();
             if(commandName){               

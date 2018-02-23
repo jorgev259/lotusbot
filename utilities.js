@@ -62,7 +62,7 @@ module.exports = {
 			exp[id] = {"lvl":0,"exp":0,"money":0,"lastDaily":"Not Collected"};
 			await module.exports.save(exp,"exp");		
 		}		
-		client.guilds.first().members.fetch(id).then(member=>{
+		client.guilds.first().members.fetch(id).then(async member=>{
 			var rankRoles = member.roles.filter(role => role.name.includes(`Rank - ${exp[id].lvl}]`));
 			if(rankRoles.size == 0){
 				var role = member.guild.roles.filter(role => role.name.includes(`Rank - ${exp[id].lvl}]`)).first();
@@ -118,7 +118,7 @@ module.exports = {
 				module.exports.save(exp,"exp");
 
 				if(levels[exp[msg.author.id].lvl].rewards != undefined){
-					levels[exp[msg.author.id].lvl].rewards.forEach(function(reward){ //checks every reward
+					levels[exp[msg.author.id].lvl].rewards.forEach(async reward => { //checks every reward
 						switch(reward.type){
 							case "role":
 								if(!(msg.member.nickname.endsWith("🔰") || msg.member.nickname.endsWith("🍬") || msg.member.nickname.endsWith("🔧") || msg.member.nickname.endsWith("✨") || msg.member.nickname.endsWith("🔖"))){

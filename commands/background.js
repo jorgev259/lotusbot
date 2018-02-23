@@ -6,7 +6,7 @@ var glob = require('glob');
 module.exports = {
     desc:"Equips a background to your profile. Usage: >bg <code>",
     alias:["bg"],
-    execute(client, message, param){
+    async execute(client, message, param){
         try{
             var inventory = json.readFileSync("../data/inventory.json");
             var exp = json.readFileSync("../data/exp.json");

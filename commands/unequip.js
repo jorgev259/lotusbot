@@ -4,7 +4,7 @@ var json = require('jsonfile');
 
 module.exports = {
     desc:"Empties a badge slot from your profile. >unequip <1-9>",
-    execute(client, message, param){
+    async execute(client, message, param){
         try{
             var inventory = json.readFileSync("../data/inventory.json");
             var exp = json.readFileSync("../data/exp.json");
