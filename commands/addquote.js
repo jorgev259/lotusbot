@@ -33,7 +33,7 @@ module.exports = {
                 "author":quote.author.username,
                 "thumb":thumb,
                 "color":color,                    
-                "avatar": quote.author.defaultAvatarURL
+                "avatar": quote.author.displayAvatarURL
             };
             //save line
             await util.save(quotes,"quotes");
