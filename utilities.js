@@ -103,15 +103,15 @@ module.exports = {
 			if(exp[msg.author.id].exp > levels[exp[msg.author.id].lvl].exp){ //checks if the user has reached enough exp
 				var levelroles = msg.member.roles.filter(r=>r.name.includes("Rank")) //finds all roles that start with [
 				if(levelroles.size==1){
-					await msg.member.removeRole(levelroles.first(),"Removed current level role"); //removes current lvl role
+					await msg.member.roles.remove(levelroles.first(),"Removed current level role"); //removes current lvl role
 				}else if(levelroles.size>1){
-					await msg.member.removeRoles(levelroles,"Removed level roles"); //removes all lvl roles
+					await msg.member.roles.remove(levelroles,"Removed level roles"); //removes all lvl roles
 				}
 
 				exp[msg.author.id].lvl += 1;
 
 				var role=msg.guild.roles.filter(r=>r.name.includes(`Rank - ${exp[msg.author.id].lvl}]`)).first()
-				await msg.member.addRole(role,"Added new level role") //adds new level role
+				await msg.member.roles.add("Added new level role") //adds new level role
 
 				exp[msg.author.id].money += 2000 //adds money reward for leveling up
 
@@ -124,8 +124,8 @@ module.exports = {
 								if(!(msg.member.nickname.endsWith("🔰") || msg.member.nickname.endsWith("🍬") || msg.member.nickname.endsWith("🔧") || msg.member.nickname.endsWith("✨") || msg.member.nickname.endsWith("🔖"))){
 									var nicks = json.readFileSync("../data/nicks.json");
 
-									await msg.member.addRole(msg.guild.roles.find("name",reward.name),"Added reward role"); //adds the rewarded role
-									await msg.member.removeRole(msg.guild.roles.find("name",reward.remove),"Removed old rank")
+									await msg.member.roles.add(msg.guild.roles.find("name",reward.name),"Added reward role"); //adds the rewarded role
+									await msg.member.roles.remove(msg.guild.roles.find("name",reward.remove),"Removed old rank")
 
 									var nick = msg.member.nickname;
 									if(msg.member.nickname.endsWith(reward.remove.split(" ")[0])){
