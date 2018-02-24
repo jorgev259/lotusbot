@@ -95,7 +95,7 @@ module.exports = {
 
 			var exp = json.readFileSync("../data/exp.json");
 			//adds random amount (15-25) of exp to the user
-			var randomExp = Math.floor(Math.random() * ((100-40)+1) + 40);
+			var randomExp = Math.floor(Math.random() * ((25-15)+1) + 15);
 			exp[msg.author.id].exp += randomExp;
 
 			module.exports.save(exp,"exp");
