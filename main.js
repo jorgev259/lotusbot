@@ -41,7 +41,7 @@ client.on("guildMemberAdd", async member => {
 
 	var exp = json.readFileSync("../data/exp.json");
 	member.guild.channels.find("name","main-lounge").send(`Welcome to Fandom Circle, <@${member.id}>! Have Fun`);
-	member.roles.add(member.guild.roles.find("name", "☕ - Customers"),"User join");
+	member.roles.add([member.guild.roles.find("name", "☕ - Customers")],"User join");
 });
 
 client.on('message', async message => {
