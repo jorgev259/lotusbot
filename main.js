@@ -24,17 +24,10 @@ for (const file of commonCommands) {
 }
 
 var commands = require("../data/commands.json");
-//var spoiler = require("./spoiler.js")();
 
 client.on('ready', () => {
 	util.log(client,'I am ready!');
 });
-
-client.on('debug',info=>{
-	if(typeof info === 'string' && !info.startsWith("[ws]")){
-		util.log(client,info);
-	}
-})
 
 client.on("guildMemberAdd", async member => {
 	await util.userCheck(member.id,client)
@@ -78,4 +71,5 @@ client.on('message', async message => {
 	}
 });
 
+process.on('unhandledRejection', err => util.log(client,err.stack));
 client.login(require("../data/tokens.json").akira);
