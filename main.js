@@ -24,27 +24,20 @@ for (const file of commonCommands) {
 }
 
 var commands = require("../data/commands.json");
-//var spoiler = require("./spoiler.js")();
 
 client.on('ready', () => {
 	util.log(client,'I am ready!');
 });
 
-client.on('debug',info=>{
-	if(typeof info === 'string' && !info.startsWith("[ws]")){
-		util.log(client,info);
-	}
-})
-
-client.on("guildMemberAdd", (member) => {
-	util.userCheck(member.id,client)
+client.on("guildMemberAdd", async member => {
+	await util.userCheck(member.id,client)
 
 	var exp = json.readFileSync("../data/exp.json");
 	member.guild.channels.find("name","main-lounge").send(`Welcome to Fandom Circle, <@${member.id}>! Have Fun`);
-	member.addRole(member.guild.roles.find("name", "☕ - Customers"),"User join");
+	member.roles.add([member.guild.roles.find("name", "☕ - Customers")],"User join");
 });
 
-client.on('message', message => {
+client.on('message', async message => {
 	try{
 		util.exp(message,client);
 		var prefix = ">";
@@ -61,7 +54,7 @@ client.on('message', message => {
 			const commandName = param[0].toLowerCase();
 			var command = commands[commandName];
 
-			if(util.permCheck(message,commandName)){
+			if(await util.permCheck(message,commandName)){
 				if(command == undefined){command = {}; command.type = param[0].toLowerCase()};
 				if (!client.commands.has(command.type)) return;
 				client.commands.get(command.type).execute(client, message, param);
@@ -78,4 +71,5 @@ client.on('message', message => {
 	}
 });
 
+process.on('unhandledRejection', err => util.log(client,err.stack));
 client.login(require("../data/tokens.json").akira);

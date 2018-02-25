@@ -3,14 +3,14 @@ var util = require('../utilities.js');
 
 module.exports = {
     desc:"Adds a new command to Akira. Usage: >add <type> <name> <link>",
-    execute(client, message, param){
+    async execute(client, message, param){
         try{
             var name = param[2].toLowerCase();
             var type = param[1].toLowerCase();
             param = param.slice(3);
             if(commands[name] != undefined && type === "embed"){
                 commands[name].content.push(param.join(" "));
-                util.save(commands,"commands");
+                await util.save(commands,"commands");
                 message.reply("Command udpated");
             }else if(commands[name] == undefined){
                 if(type === "embed"){
@@ -25,7 +25,7 @@ module.exports = {
                     "perms":[]
                 };
 
-                util.save(commands,"commands");
+                await util.save(commands,"commands");
                 message.reply("Command added");
             }else{
                 message.reply("That command already exists, choose another name");

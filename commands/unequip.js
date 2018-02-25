@@ -4,7 +4,7 @@ var json = require('jsonfile');
 
 module.exports = {
     desc:"Empties a badge slot from your profile. >unequip <1-9>",
-    execute(client, message, param){
+    async execute(client, message, param){
         try{
             var inventory = json.readFileSync("../data/inventory.json");
             var exp = json.readFileSync("../data/exp.json");
@@ -16,8 +16,8 @@ module.exports = {
                 var slot = parseInt(param[1]);
                 if(exp[message.author.id].badges[slot - 1]){
                     exp[message.author.id].badges[slot - 1] = undefined;
-                    message.channel.send(`The slot number ${slot} has been emptied!`)
-                    util.save(exp,"exp");
+                    await util.save(exp,"exp");
+                    message.channel.send(`The slot number ${slot} has been emptied!`)                    
                 }else{
                     message.channel.send(`The slot number ${slot} has nothing equipped on it!`)
                 }

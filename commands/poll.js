@@ -2,11 +2,10 @@ var util = require("../utilities.js");
 
 module.exports = {
     desc:"Creates an automatic poll. Usage: >poll <minutes> <question>",
-    execute(client, message, param){
+    async execute(client, message, param){
         try{
             message.delete();
-            var optionMessage;
-            message.reply("type the options for you poll. Example: `option 1|Option 2|Non numbered option`").then(mDelete => optionMessage = mDelete);
+            var optionMessage = await message.reply("type the options for you poll. Example: `option 1|Option 2|Non numbered option`")
             const collector = message.channel.createMessageCollector(
                 m => m.author.id == message.author.id,
                 { max: 1 }
