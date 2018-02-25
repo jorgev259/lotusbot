@@ -66,11 +66,7 @@ module.exports = {
 			var rankRoles = member.roles.filter(role => role.name.includes(`Rank - ${exp[id].lvl}]`));
 			if(rankRoles.size == 0){
 				var role = member.guild.roles.filter(role => role.name.includes(`Rank - ${exp[id].lvl}]`)).first();
-<<<<<<< HEAD
 				member.roles.add(role,"Added level role");
-=======
-				await member.addRole(role,"Added level role");
->>>>>>> 9d06f194f03678fad22d103bbe31ed9e87dcbe04
 			}		
 		})		
 	},
