@@ -110,7 +110,7 @@ module.exports = {
 
 				exp[msg.author.id].lvl += 1;
 
-				var role=msg.guild.roles.filter(r=>r.name.includes(`Rank - ${exp[msg.author.id].lvl}]`))
+				var role=msg.guild.roles.filter(r=>r.name.includes(`[${exp[msg.author.id].lvl}]`))
 				
 				await msg.member.roles.add(role, "Added new level role") //adds new level role
 
