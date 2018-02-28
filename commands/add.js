@@ -4,7 +4,6 @@ var util = require('../utilities.js');
 module.exports = {
     desc:"Adds a new command to Akira. Usage: >add <type> <name> <link>",
     async execute(client, message, param){
-        try{
             var name = param[2].toLowerCase();
             var type = param[1].toLowerCase();
             param = param.slice(3);
@@ -30,8 +29,5 @@ module.exports = {
             }else{
                 message.reply("That command already exists, choose another name");
             }
-        }catch(e){
-            util.log(client,`${e}\nSource: ${__filename.split('/root/bots/')[1]}`)
-        }
     }
 }
