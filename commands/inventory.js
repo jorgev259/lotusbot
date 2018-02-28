@@ -4,7 +4,6 @@ const Discord = require('discord.js');
 module.exports = {
     desc:"Displays your bought items",
     execute(client, message, param){
-        try{
             var inventory = json.readFileSync("../data/inventory.json");
             var exp = json.readFileSync("../data/exp.json");
             var items = json.readFileSync("../shiro/Storage/items.json");
@@ -81,8 +80,5 @@ module.exports = {
             if(packs.length>0) inventoryEmbed.addField("Embed Packs",packs);
 
             message.author.send(inventoryEmbed);
-        }catch(e){
-            util.log(client,`${e}\nSource: ${__filename.split('/root/bots/')[1]}`)
-        }
     }
 }
