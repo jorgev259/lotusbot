@@ -66,8 +66,8 @@ module.exports = {
 		client.guilds.first().members.fetch(id).then(async member=>{
 			var rankRoles = member.roles.filter(role => role.name.includes(`Rank - ${exp[id].lvl}]`));
 			if(rankRoles.size == 0){
-				var role = member.guild.roles.filter(role => role.name.includes(`Rank - ${exp[id].lvl}]`)).first();
-				await member.addRole(role,"Added level role");
+				var role = member.guild.roles.filter(role => role.name.includes(`[${exp[id].lvl}]`)).first();
+				member.roles.add(role,"Added level role");
 			}		
 		})		
 	},
@@ -111,7 +111,7 @@ module.exports = {
 
 				exp[msg.author.id].lvl += 1;
 
-				var role=msg.guild.roles.filter(r=>r.name.includes(`Rank - ${exp[msg.author.id].lvl}]`))
+				var role=msg.guild.roles.filter(r=>r.name.includes(`[${exp[msg.author.id].lvl}]`))
 				
 				await msg.member.roles.add(role, "Added new level role") //adds new level role
 

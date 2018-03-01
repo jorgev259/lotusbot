@@ -7,7 +7,6 @@ module.exports = {
     desc:"Equips a background to your profile. Usage: >bg <code>",
     alias:["bg"],
     async execute(client, message, param){
-        try{
             var inventory = json.readFileSync("../data/inventory.json");
             var exp = json.readFileSync("../data/exp.json");
 
@@ -27,8 +26,5 @@ module.exports = {
             }else{
                 message.channel.send("You forgot the background's code. Usage: >background <code>");
             }
-        }catch(e){
-            util.log(client,`${e}\nSource: ${__filename.split('/root/bots/')[1]}`)
-        }
     }
 }

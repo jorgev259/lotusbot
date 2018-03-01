@@ -7,7 +7,6 @@ module.exports = {
     desc:"Equips a badge in your profile. Usage <badge> <1-9>",
     alias:["badge"],
     execute(client, message, param){
-        try{
             var inventory = json.readFileSync("../data/inventory.json");
             var exp = json.readFileSync("../data/exp.json");
             if(exp[message.author.id].badges == undefined) {exp[message.author.id].badges = [];util.save(exp,"exp")}
@@ -33,8 +32,5 @@ module.exports = {
             }else{
                 message.channel.send("You forgot the name of the badge or the number of the slot. Usage: >equip <name> <slot>");
             }
-        }catch(e){
-            util.log(client,`${e}\nSource: ${__filename.split('/root/bots/')[1]}`)
-        }
     }
 }

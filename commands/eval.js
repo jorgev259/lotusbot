@@ -1,7 +1,6 @@
 module.exports = {
     desc:"Runs the written code (Use with precaution). >eval <code>",
     execute(client, message, param){
-        try{
             /*var exp = json.readFileSync("../data/exp.json");
             var inventory = json.readFileSync("../data/inventory.json");*/
             param = param.slice(1)
@@ -15,8 +14,5 @@ module.exports = {
                 evaled = evaled.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
 
             message.channel.send(evaled, {code:"xl",split:true});
-        } catch (err) {
-            message.channel.send(`${err}`,{code:"xl"});
-        }
     }
 }

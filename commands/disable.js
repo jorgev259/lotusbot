@@ -2,7 +2,6 @@ var fs = require("fs");
 
 module.exports = {
     async execute(client, message, param){
-        try{
             var commandName = param[1].toLowerCase();
             if(commandName){               
                 var modulePath = `${__dirname}/${commandName}.js`;
@@ -15,8 +14,5 @@ module.exports = {
 
                 message.delete();
             }
-        }catch(e){
-            util.log(client,`${e}\nSource: ${__filename.split('/root/bots/')[1]}`)
-        }
     }
 }

@@ -3,7 +3,6 @@ var util = require("../utilities.js");
 module.exports = {
     desc:"Creates an automatic poll. Usage: >poll <minutes> <question>",
     async execute(client, message, param){
-        try{
             message.delete();
             var optionMessage = await message.reply("type the options for you poll. Example: `option 1|Option 2|Non numbered option`")
             const collector = message.channel.createMessageCollector(
@@ -62,8 +61,5 @@ module.exports = {
                     });
                 });
             });
-        }catch(e){
-            util.log(client,`${e}\nSource: ${__filename.split('/root/bots/')[1]}`)
-        }
     }
 }
