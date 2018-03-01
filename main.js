@@ -38,7 +38,6 @@ client.on("guildMemberAdd", async member => {
 });
 
 client.on('message', async message => {
-	try{
 		util.exp(message,client);
 		var prefix = ">";
 
@@ -66,9 +65,6 @@ client.on('message', async message => {
 				util.talk(client,message);
 				break;
 		}
-	}catch(e){
-		util.log(client,`${e}\nSource: ${__filename.split("/root/bots/")[1]}`);
-	}
 });
 
 process.on('unhandledRejection', err => util.log(client,err.stack));
