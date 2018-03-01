@@ -12,8 +12,9 @@ var json = require("jsonfile");
 
 
 module.exports = {
-	permCheck:function(message, commandName){
+	async permCheck(message, commandName, client){
 		var perms = json.readFileSync("../data/perms.json");
+		if(!message.member) message.member = await client.guilds.first().members.fetch(message.author.id)
 
 		if(perms[commandName] == undefined || message.member.roles.exists("name","🍬 Admin") ||  message.member.roles.exists("name","🍬 Master Developer"))return true;
 		var allowedChannel = true;
