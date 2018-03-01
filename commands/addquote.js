@@ -5,7 +5,6 @@ var util = require('../utilities.js');
 module.exports = {
     desc:"Adds a quote to the featured list. Usage: >addquote <id> <serious>",
     async execute(client, message, param){
-        try{
             var color;
             var thumb;
             var snowflake;
@@ -40,8 +39,5 @@ module.exports = {
             await message.reply(" has recorded your message in the books of history <@" + quote.author.id + ">");
             await message.guild.channels.find("name","memorabilia").send({embed});
             message.delete();
-        }catch(e){
-            util.log(client,`${e}\nSource: ${__filename.split('/root/bots/')[1]}`)
-        }
     }
 }

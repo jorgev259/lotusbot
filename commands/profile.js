@@ -15,7 +15,6 @@ Canvas.registerFont("font/Mizo Arial.ttf",{family:"Mizo Arial"})
 module.exports = {
     desc:"Shows your profile (or other user's if tagged)",
     execute(client, message, param){
-        try{
             var pfMember
             if(message.mentions.members.size > 0){
                 pfMember = message.mentions.members.first()
@@ -92,9 +91,6 @@ module.exports = {
 
                 message.channel.send(new MessageAttachment(profile.toBuffer(),"profile.png"))
             })
-        }catch(e){
-            util.log(client,`${e}\nSource: ${__filename.split('/root/bots/')[1]}`)
-        }
     }
 };
 

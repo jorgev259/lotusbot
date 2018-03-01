@@ -5,7 +5,6 @@ var quotes = require("../../data/quotes.json");
 module.exports = {
     desc:"Shows a featured qupte. Usage: >quote <number>",
     execute(client, message, param){
-        try{
             var quote = quotes[parseInt(param[1])];
             if(quote != undefined && quote != null){
                 var embed = new MessageEmbed()
@@ -18,8 +17,5 @@ module.exports = {
             }else{
                 message.reply("invalid Quote id");
             }
-        }catch(e){
-            util.log(client,`${e}\nSource: ${__filename.split('/root/bots/')[1]}`)
-        }
     }
 }
