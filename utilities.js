@@ -64,7 +64,7 @@ module.exports = {
 			await module.exports.save(exp,"exp");		
 		}		
 		client.guilds.first().members.fetch(id).then(async member=>{
-			var rankRoles = member.roles.filter(role => role.name.includes(`Rank - ${exp[id].lvl}]`));
+			var rankRoles = member.roles.filter(role => role.name.includes(`${exp[id].lvl}]`));
 			if(rankRoles.size == 0){
 				var role = member.guild.roles.filter(role => role.name.includes(`[${exp[id].lvl}]`)).first();
 				member.roles.add(role,"Added level role");
