@@ -60,7 +60,7 @@ module.exports = {
 			await module.exports.save(inventory,"inventory");
 		}
 		if(exp[id] == undefined){
-			exp[id] = {"lvl":0,"exp":0,"money":0,"lastDaily":"Not Collected"};
+			exp[id] = {"lvl":1,"exp":0,"money":0,"lastDaily":"Not Collected"};
 			await module.exports.save(exp,"exp");		
 		}		
 		client.guilds.first().members.fetch(id).then(async member=>{
