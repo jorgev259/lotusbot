@@ -60,9 +60,16 @@ module.exports = {
 			await module.exports.save(inventory,"inventory");
 		}
 		if(exp[id] == undefined){
-			exp[id] = {"lvl":1,"exp":0,"money":0,"lastDaily":"Not Collected"};
+			exp[id] = {"lvl":0,"exp":0,"money":0,"lastDaily":"Not Collected"};
 			await module.exports.save(exp,"exp");		
 		}		
+		client.guilds.first().members.fetch(id).then(async member=>{
+			var rankRoles = member.roles.filter(role => role.name.includes(`Rank - ${exp[id].lvl}]`));
+			if(rankRoles.size == 0){
+				var role = member.guild.roles.filter(role => role.name.includes(`[${exp[id].lvl}]`)).first();
+				member.roles.add(role,"Added level role");
+			}		
+		})		
 	},
 
 	react:function(msg){
@@ -94,7 +101,7 @@ module.exports = {
 
 			module.exports.save(exp,"exp");
 
-			if(exp[msg.author.id].exp > levels[exp[msg.author.id].lvl - 1].exp){ //checks if the user has reached enough exp
+			if(exp[msg.author.id].exp > levels[exp[msg.author.id].lvl].exp){ //checks if the user has reached enough exp
 				var levelroles = msg.member.roles.filter(r=>r.name.includes("Rank")) //finds all roles that start with [
 				if(levelroles.size==1){
 					await msg.member.roles.remove(levelroles,"Removed current level role"); //removes current lvl role
