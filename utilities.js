@@ -12,9 +12,8 @@ var json = require("jsonfile");
 
 
 module.exports = {
-	async permCheck(message, commandName, client){
+	permCheck:function(message, commandName){
 		var perms = json.readFileSync("../data/perms.json");
-		if(!message.member) message.member = await client.guilds.first().members.fetch(message.author.id)
 
 		if(perms[commandName] == undefined || message.member.roles.exists("name","🍬 Admin") ||  message.member.roles.exists("name","🍬 Master Developer"))return true;
 		var allowedChannel = true;
@@ -66,7 +65,7 @@ module.exports = {
 		client.guilds.first().members.fetch(id).then(async member=>{
 			var rankRoles = member.roles.filter(role => role.name.includes(`Rank - ${exp[id].lvl}]`));
 			if(rankRoles.size == 0){
-				var role = member.guild.roles.filter(role => role.name.includes(`[${exp[id].lvl}]`)).first();
+				var role = member.guild.roles.filter(role => role.name.includes(`Rank - ${exp[id].lvl}]`)).first();
 				member.roles.add(role,"Added level role");
 			}		
 		})		
@@ -111,7 +110,7 @@ module.exports = {
 
 				exp[msg.author.id].lvl += 1;
 
-				var role=msg.guild.roles.filter(r=>r.name.includes(`[${exp[msg.author.id].lvl}]`))
+				var role=msg.guild.roles.filter(r=>r.name.includes(`Rank - ${exp[msg.author.id].lvl}]`))
 				
 				await msg.member.roles.add(role, "Added new level role") //adds new level role
 
