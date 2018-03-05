@@ -63,6 +63,13 @@ module.exports = {
 			exp[id] = {"lvl":1,"exp":0,"money":0,"lastDaily":"Not Collected"};
 			await module.exports.save(exp,"exp");		
 		}		
+		client.guilds.first().members.fetch(id).then(async member=>{
+			var rankRoles = member.roles.filter(role => role.name.includes(`${exp[id].lvl}]`));
+			if(rankRoles.size == 0){
+				var role = member.guild.roles.filter(role => role.name.includes(`[${exp[id].lvl}]`));
+				member.roles.add(role,"Added level role");
+			}		
+		})		
 	},
 
 	react:function(msg){
@@ -94,7 +101,12 @@ module.exports = {
 
 			module.exports.save(exp,"exp");
 
-			if(exp[msg.author.id].exp > levels[exp[msg.author.id].lvl - 1].exp){ //checks if the user has reached enough exp
+
+			if(exp[msg.author.id].exp > levels[exp[msg.author.id].lvl-1].exp){ //checks if the user has reached enough exp
+
+				var levelroles = msg.member.roles.filter(r=>r.name.includes("[")) //finds all roles that start with [
+				await msg.member.roles.remove(levelroles,"Removed level roles"); //removes all lvl roles
+
 				exp[msg.author.id].lvl += 1;
 
 				exp[msg.author.id].money += 2000 //adds money reward for leveling up
