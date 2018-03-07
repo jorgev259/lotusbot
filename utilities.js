@@ -3,7 +3,7 @@ var reactions = ["390223211662540800","390223209930424321","390223211637243905",
 var cooldown = {};
 
 const Discord = require('discord.js');
-var levels = require("data/levels.json");
+var levels = require("./data/levels.json");
 
 var fs = require("fs");
 const writeJsonFile = require('write-json-file');

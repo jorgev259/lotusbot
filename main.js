@@ -24,9 +24,25 @@ for (const file of commonCommands) {
 }
 
 var commands = require("../data/commands.json");
+var colors = [];
+var colorRoles = {};
+client.on('ready', async () => {
+	await util.log(client,'I am ready!');
+	let guild = client.guilds.first();
+	let roles = guild.roles.filter(role  => role.position < guild.roles.find('name','// Colors').position && role.position > guild.roles.find('name','//End Colors').position).sort(function (a, b) {return a.position- b.position})
+	console.log(roles);
+	roles.forEach(role => {
+		let section = [];
+		
+		if(role.name == "--------"){
+			colorRoles[colors[Object.keys(colorRoles).length]] = section;
+			section = [];
+		}else{
+			section.push(role);
+		}
+	})
 
-client.on('ready', () => {
-	util.log(client,'I am ready!');
+	console.log(colorRoles);
 });
 
 client.on("guildMemberAdd", async member => {
@@ -35,6 +51,7 @@ client.on("guildMemberAdd", async member => {
 	var exp = json.readFileSync("../data/exp.json");
 	member.guild.channels.find("name","main-lounge").send(`Welcome to Fandom Circle, <@${member.id}>! Have Fun`);
 	member.roles.add([member.guild.roles.find("name", "☕ - Customers")],"User join");
+
 });
 
 client.on('message', async message => {
