@@ -63,7 +63,7 @@ module.exports = {
 			await module.exports.save(exp,"exp");		
 		}		
 		client.guilds.first().members.fetch(id).then(async member=>{
-			var rankRoles = member.roles.filter(role => role.name.includes(`${exp[id].lvl}]`));
+			var rankRoles = member.roles.filter(role => role.name.includes(`[${exp[id].lvl}]`));
 			if(rankRoles.size == 0){
 				var role = member.guild.roles.filter(role => role.name.includes(`[${exp[id].lvl}]`));
 				member.roles.add(role,"Added level role");
@@ -101,8 +101,10 @@ module.exports = {
 
 				var levelroles = msg.member.roles.filter(r=>r.name.includes("[")) //finds all roles that start with [
 				await msg.member.roles.remove(levelroles,"Removed level roles"); //removes all lvl roles
-
+				
 				exp[msg.author.id].lvl += 1;
+
+				await msg.member.roles.add(msg.guild.roles.find("name",`[${exp[msg.author.id].lvl}]`));
 
 				exp[msg.author.id].money += 2000 //adds money reward for leveling up
 
