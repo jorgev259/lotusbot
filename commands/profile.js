@@ -6,7 +6,7 @@ var fs = require('fs');
 var glob = require('glob');
 const download = require('image-downloader');
 
-var levels = require("../../data/levels.json")
+var levels = require("../data/levels.json")
 var util = require("../utilities.js")
 
 Canvas.registerFont("font/BebasNeue Bold.ttf",{family:"BebasNeue Bold"})
