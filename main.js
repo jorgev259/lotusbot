@@ -24,35 +24,35 @@ for (const file of commonCommands) {
 }
 
 var commands = require("../data/commands.json");
-var colors = [];
+//Megumin, Akira, Tohru, Shiro, Miu, Rem
 var colorRoles = {};
+var groupRoles = {};
+
 client.on('ready', async () => {
 	await util.log(client,'I am ready!');
-	let guild = client.guilds.first();
-	let roles = guild.roles.filter(role  => role.position < guild.roles.find('name','// Colors').position && role.position > guild.roles.find('name','//End Colors').position).sort(function (a, b) {return a.position- b.position})
-	console.log(roles);
-	roles.forEach(role => {
-		let section = [];
-		
-		if(role.name == "--------"){
-			colorRoles[colors[Object.keys(colorRoles).length]] = section;
-			section = [];
-		}else{
-			section.push(role);
-		}
-	})
 
-	console.log(colorRoles);
+	let result = util.getRoles(client);
+	colorRoles = result[0];
+	groupRoles = result[1];
 });
 
 client.on("guildMemberAdd", async member => {
 	await util.userCheck(member.id,client)
 
-	var exp = json.readFileSync("../data/exp.json");
-	member.guild.channels.find("name","main-lounge").send(`Welcome to Fandom Circle, <@${member.id}>! Have Fun`);
-	member.roles.add([member.guild.roles.find("name", "☕ - Customers")],"User join");
+	let exp = json.readFileSync("../data/exp.json");
+	member.guild.channels.find("name","main-lounge").send(`Welcome to Fandom Circle, ${member}! Have Fun`);
 
+	let roles = [colorRoles[exp[member.id].color][exp[member.id].rank], groupRoles[exp[member.id].color]];
+	member.roles.add(roles,"User join");
 });
+
+client.on("guildMemberUpdate", async (oldMember,newMember) => {
+	if(oldMember.nickname != newMember.nickname){
+		var nicks = json.readFileSync("../data/nicks.json");
+		nicks[newMember.id] = newMember.nickname;
+		await util.save(nicks,"nicks");
+	}
+})
 
 client.on('message', async message => {
 		util.exp(message,client);

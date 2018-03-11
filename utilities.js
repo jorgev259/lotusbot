@@ -4,11 +4,14 @@ var cooldown = {};
 
 const Discord = require('discord.js');
 var levels = require("./data/levels.json");
+var colors = ["pink","d-blue","purple","l-blue","green","orange","red"];
+var colorRoles = {};
+var groupRoles = {};
 
+var random = require("random-number-csprng");
 var fs = require("fs");
 const writeJsonFile = require('write-json-file');
 var json = require("jsonfile");
-
 
 module.exports = {
 	async permCheck(message, commandName, client){
@@ -59,7 +62,7 @@ module.exports = {
 			await module.exports.save(inventory,"inventory");
 		}
 		if(exp[id] == undefined){
-			exp[id] = {"lvl":1,"exp":0,"money":0,"lastDaily":"Not Collected"};
+			exp[id] = {"color": colors[await random(0,colors.length-1)],"rank":0,"lvl":1,"exp":0,"money":0,"lastDaily":"Not Collected",};
 			await module.exports.save(exp,"exp");		
 		}		
 		client.guilds.first().members.fetch(id).then(async member=>{
@@ -68,7 +71,7 @@ module.exports = {
 				var role = member.guild.roles.filter(role => role.name.includes(`[${exp[id].lvl}]`));
 				member.roles.add(role,"Added level role");
 			}		
-		})		
+		})	
 	},
 
 	react:function(msg){
@@ -104,7 +107,7 @@ module.exports = {
 				
 				exp[msg.author.id].lvl += 1;
 
-				await msg.member.roles.add(msg.guild.roles.find("name",`[${exp[msg.author.id].lvl}]`));
+				await msg.member.roles.add([msg.guild.roles.find("name",`[${exp[msg.author.id].lvl}]`)]);
 
 				exp[msg.author.id].money += 2000 //adds money reward for leveling up
 
@@ -114,6 +117,11 @@ module.exports = {
 					levels[exp[msg.author.id].lvl].rewards.forEach(async reward => { //checks every reward
 						switch(reward.type){
 							case "role":
+								/*{
+									"type": "role",
+									"name": "🍧 - Members",
+									"remove":"☕ - Customers"
+								}*/
 								if(!(msg.member.nickname.endsWith("🔰") || msg.member.nickname.endsWith("🍬") || msg.member.nickname.endsWith("🔧") || msg.member.nickname.endsWith("✨") || msg.member.nickname.endsWith("🔖"))){
 									var nicks = json.readFileSync("../data/nicks.json");
 
@@ -131,6 +139,31 @@ module.exports = {
 									await module.exports.save(nicks,"nicks");
 								}
 								break;
+
+							case "rankUP":
+								/*{
+									"type": "rankUP"
+								}*/								
+								if(Object.keys(colorRoles) != 0) {
+									let result = util.getRoles(client);
+									colorRoles = result[0];
+									groupRoles = result[1];
+								}
+
+								let rank = exp[msg.author.id].rank;
+								let color = exp[msg.author.id].color;
+								let oldRoles = [colorRoles[color][rank]];
+								let newRoles = [colorRoles[color][rank + 1]];
+
+								await msg.member.remove(oldRoles);
+								await msg.member.add(newRoles);
+
+								var nick = msg.member.nickname.split(' ');
+								nick[nick.length - 1] = newRoles[1].name.split(' ')[0];
+								msg.member.setNickname(nick.join(' '), 'Changed nickname emoji');
+
+								exp[msg.author.id].rank += 1;
+								break;
 						}
 					})
 				}
@@ -146,9 +179,34 @@ module.exports = {
 		}
 	},
 
+	getRoles: function(client){
+		var colorRoles = {};
+		var groupRoles = {};
+
+		let guild = client.guilds.first();
+		let roles = guild.roles.filter(role  => role.position < guild.roles.find('name','// Colors').position && role.position > guild.roles.find('name','//End Colors').position).sort(function (a, b) {return a.position- b.position})
+		let roles2 = guild.roles.filter(role  => role.position < guild.roles.find('name','// Groups').position && role.position > guild.roles.find('name','//End Groups').position && !role.name.startsWith('🔮') && (!role.name != "--------")).sort(function (a, b) {return a.position- b.position})
+		let section = [];
+		roles.forEach(role => {	
+			if(role.name == "--------"){
+				colorRoles[colors[Object.keys(colorRoles).length]] = section;
+				section = [];
+			}else{
+				section.push(role);
+			}
+		})
+		colorRoles[colors[Object.keys(colorRoles).length]] = section;
+
+		roles2.forEach(role => {	
+			groupRoles[colors[Object.keys(groupRoles).length]] = role;
+		})
+
+		return [colorRoles,groupRoles];
+	},
+
 	talk:function(client,msg){
 		if(msg.mentions.channels.size>0){
-			client.channels.resolve(msg.mentions.channels.first()).send(msg.content.split(`<#${msg.mentions.channels.first().id}>`).join(""));
+			client.channels.resolve(msg.mentions.channels.first()).send(msg.content.split(msg.mentions.channels.first()).join(""));
 		}
 	},
 
