@@ -77,8 +77,8 @@ module.exports = {
 				module.exports.getRoles(client);
 
 				exp[id].color = colors[await random(0,colors.length-1)] 
-				if(prof.lvl > 25) exp[id].rank = 2;
-				else if (prof.lvl > 5) exp[id].rank = 1;
+				if(exp[id].lvl > 25) exp[id].rank = 2;
+				else if (exp[id].lvl > 5) exp[id].rank = 1;
 				else exp[id].rank = 0;
 	
 				let roles = [colorRoles[exp[member.id].color][exp[member.id].rank], groupRoles[exp[member.id].color]];
