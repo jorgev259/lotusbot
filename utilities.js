@@ -62,9 +62,14 @@ module.exports = {
 			await module.exports.save(inventory,"inventory");
 		}
 		if(exp[id] == undefined){
-			exp[id] = {"color": colors[await random(0,colors.length-1)],"rank":0,"lvl":1,"exp":0,"money":0,"lastDaily":"Not Collected",};
+			exp[id] = {"rank":0,"lvl":1,"exp":0,"money":0,"lastDaily":"Not Collected",};
 			await module.exports.save(exp,"exp");		
 		}		
+		if(exp[id].color == undefined){
+			exp[id].color = colors[await random(0,colors.length-1)] 
+			exp[id].rank = 0;
+			await module.exports.save(exp,"exp");
+		}
 		client.guilds.first().members.fetch(id).then(async member=>{
 			var rankRoles = member.roles.filter(role => role.name.includes(`[${exp[id].lvl}]`));
 			if(rankRoles.size == 0){
