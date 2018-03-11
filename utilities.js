@@ -65,17 +65,26 @@ module.exports = {
 			exp[id] = {"rank":0,"lvl":1,"exp":0,"money":0,"lastDaily":"Not Collected",};
 			await module.exports.save(exp,"exp");		
 		}		
-		if(exp[id].color == undefined){
-			exp[id].color = colors[await random(0,colors.length-1)] 
-			exp[id].rank = 0;
-			await module.exports.save(exp,"exp");
-		}
+		
 		client.guilds.first().members.fetch(id).then(async member=>{
 			var rankRoles = member.roles.filter(role => role.name.includes(`[${exp[id].lvl}]`));
 			if(rankRoles.size == 0){
 				var role = member.guild.roles.filter(role => role.name.includes(`[${exp[id].lvl}]`));
 				member.roles.add(role,"Added level role");
-			}		
+			}
+			
+			if(exp[id].color == undefined){
+				module.exports.getRoles(client);
+
+				exp[id].color = colors[await random(0,colors.length-1)] 
+				if(prof.lvl > 25) exp[id].rank = 2;
+				else if (prof.lvl > 5) exp[id].rank = 1;
+				else exp[id].rank = 0;
+	
+				let roles = [colorRoles[exp[member.id].color][exp[member.id].rank], groupRoles[exp[member.id].color]];
+				member.roles.add(roles,"User join");
+				await module.exports.save(exp,"exp");
+			}
 		})	
 	},
 
@@ -185,8 +194,8 @@ module.exports = {
 	},
 
 	getRoles: function(client){
-		var colorRoles = {};
-		var groupRoles = {};
+		colorRoles = {};
+		groupRoles = {};
 
 		let guild = client.guilds.first();
 		let roles = guild.roles.filter(role  => role.position < guild.roles.find('name','// Colors').position && role.position > guild.roles.find('name','//End Colors').position).sort(function (a, b) {return a.position- b.position})
