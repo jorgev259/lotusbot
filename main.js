@@ -38,12 +38,7 @@ client.on('ready', async () => {
 
 client.on("guildMemberAdd", async member => {
 	await util.userCheck(member.id,client)
-
-	let exp = json.readFileSync("../data/exp.json");
 	member.guild.channels.find("name","main-lounge").send(`Welcome to Fandom Circle, ${member}! Have Fun`);
-
-	let roles = [colorRoles[exp[member.id].color][exp[member.id].rank], groupRoles[exp[member.id].color]];
-	member.roles.add(roles,"User join");
 });
 
 client.on("guildMemberUpdate", async (oldMember,newMember) => {
