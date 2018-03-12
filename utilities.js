@@ -81,9 +81,12 @@ module.exports = {
 				else if (exp[id].lvl > 5) exp[id].rank = 1;
 				else exp[id].rank = 0;
 	
+				await module.exports.save(exp,"exp");
+			}
+
+			if(member.roles.find("name","☕ Customers") == undefined){
 				let roles = [colorRoles[exp[member.id].color][exp[member.id].rank], groupRoles[exp[member.id].color]];
 				member.roles.add(roles,"User join");
-				await module.exports.save(exp,"exp");
 			}
 		})	
 	},
