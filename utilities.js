@@ -64,26 +64,15 @@ module.exports = {
 				await module.exports.save(inventory,"inventory");
 			}
 			if(exp[id] == undefined){
-				exp[id] = {"rank":0,"lvl":1,"exp":0,"money":0,"lastDaily":"Not Collected",};
+				exp[id] = {"color":colors[await random(0,colors.length-1)], "rank":0,"lvl":1,"exp":0,"money":0,"lastDaily":"Not Collected",};
 				await module.exports.save(exp,"exp");		
 			}		
-		
-		
-			var rankRoles = member.roles.filter(role => role.name.includes(`[${exp[id].lvl}]`));
-			if(rankRoles.size == 0){
+				
+			var rankRoles = member.roles.filter(role => role.name.startsWith(`[`));
+			if(rankRoles.size>1 || rankRoles.size == 0){
+				if (rankRoles.size>1) member.roles.remove(rankRoles);
 				var role = member.guild.roles.filter(role => role.name.includes(`[${exp[id].lvl}]`));
 				member.roles.add(role,"Added level role");
-			}
-			
-			if(exp[id].color == undefined){
-				module.exports.getRoles(client);
-
-				exp[id].color = colors[await random(0,colors.length-1)] 
-				if(exp[id].lvl > 25) exp[id].rank = 2;
-				else if (exp[id].lvl > 5) exp[id].rank = 1;
-				else exp[id].rank = 0;
-	
-				await module.exports.save(exp,"exp");
 			}
 
 			if(member.roles.find("name","☕ Customers") == undefined){
