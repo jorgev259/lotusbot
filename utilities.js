@@ -55,18 +55,20 @@ module.exports = {
 	},
 
 	async userCheck(id,client){
-		var inventory = json.readFileSync("../data/inventory.json");
-		var exp = json.readFileSync("../data/exp.json");
-		if(inventory[id] == undefined) {
-			inventory[id]={badges:[],bgs:[]};
-			await module.exports.save(inventory,"inventory");
-		}
-		if(exp[id] == undefined){
-			exp[id] = {"rank":0,"lvl":1,"exp":0,"money":0,"lastDaily":"Not Collected",};
-			await module.exports.save(exp,"exp");		
-		}		
-		
 		client.guilds.first().members.fetch(id).then(async member=>{
+			if(member.user.bot) return;
+			var inventory = json.readFileSync("../data/inventory.json");
+			var exp = json.readFileSync("../data/exp.json");
+			if(inventory[id] == undefined) {
+				inventory[id]={badges:[],bgs:[]};
+				await module.exports.save(inventory,"inventory");
+			}
+			if(exp[id] == undefined){
+				exp[id] = {"rank":0,"lvl":1,"exp":0,"money":0,"lastDaily":"Not Collected",};
+				await module.exports.save(exp,"exp");		
+			}		
+		
+		
 			var rankRoles = member.roles.filter(role => role.name.includes(`[${exp[id].lvl}]`));
 			if(rankRoles.size == 0){
 				var role = member.guild.roles.filter(role => role.name.includes(`[${exp[id].lvl}]`));
