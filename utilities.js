@@ -199,7 +199,7 @@ module.exports = {
 
 		let guild = client.guilds.first();
 		let roles = guild.roles.filter(role  => role.position < guild.roles.find('name','//Colors').position && role.position > guild.roles.find('name','//End Colors').position).sort(function (a, b) {return a.position- b.position})
-		let roles2 = guild.roles.filter(role  => role.position < guild.roles.find('name','//Groups').position && role.position > guild.roles.find('name','//End Groups').position && !role.name.startsWith('🔮') && (!role.name != "--------")).sort(function (a, b) {return a.position- b.position})
+		let roles2 = guild.roles.filter(role  => role.position < guild.roles.find('name','//Groups').position && role.position > guild.roles.find('name','//End Groups').position && !role.name.startsWith('🔮') && role.name != "--------").sort(function (a, b) {return a.position- b.position})
 		let section = [];
 		roles.forEach(role => {	
 			if(role.name == "--------"){
