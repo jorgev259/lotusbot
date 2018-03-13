@@ -153,7 +153,7 @@ module.exports = {
 									"type": "rankUP"
 								}*/								
 								if(Object.keys(colorRoles) != 0) {
-									let result = util.getRoles(client);
+									let result = module.exports.getRoles(client);
 									colorRoles = result[0];
 									groupRoles = result[1];
 								}
