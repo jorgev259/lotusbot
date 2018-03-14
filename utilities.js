@@ -163,8 +163,8 @@ module.exports = {
 								let oldRoles = [colorRoles[color][rank]];
 								let newRoles = [colorRoles[color][rank + 1]];
 
-								await msg.member.remove(oldRoles);
-								await msg.member.add(newRoles);
+								await msg.member.roles.remove(oldRoles);
+								await msg.member.roles.add(newRoles);
 
 								var nick = msg.member.nickname.split(' ');
 								nick[nick.length - 1] = newRoles[1].name.split(' ')[0];
