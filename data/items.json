@@ -1,0 +1,68 @@
+{
+    "Nichijou Pack": {
+        "name": "Nichijou Pack",
+        "type": "Packs",
+        "price": "35000",
+        "role":  "🎫Nichijou",
+		"channel":"nichijou",
+        "desc": ""
+    },
+	"Dragon Maid Pack": {
+        "name": "Dragon Maid Pack",
+        "type": "Packs",
+        "price": "35000",
+        "role":  "🎫Maid Dragon",
+		"channel":"dragon-maid",
+        "desc": ""
+    },
+    "LWA Pack": {
+        "name": "LWA Pack",
+        "type": "Packs",
+        "price": "35000",
+        "desc": "Coming Soon!"
+    },
+    "JOJO Pack": {
+        "name": "JOJO Pack",
+        "type": "Packs",
+        "price": "35000",
+        "desc": "Coming Soon!"
+    },
+    "Noragami Pack": {
+        "name": "Noragami Pack",
+        "type": "Packs",
+        "price": "35000",
+        "desc": "Coming Soon!"
+    },
+    "Gabriel dropout": {
+        "name": "Gabriel dropout",
+        "type": "Packs",
+        "price": "35000",
+        "desc": "Coming Soon!"
+    },
+    "Monogatari Pack": {
+        "name": "Monogatari Pack",
+        "type": "Packs",
+        "price": "35000",
+        "desc": "Coming Soon!"
+    },
+	"Nickname Change":{
+		"name":"Nickname Change",
+		"type":"Utilities",
+		"price":"1000",
+		"desc":"Allows you to change your nickname",
+		"channel":"nickname-change",
+		"role":"⭕ Nickname Change"
+	},
+	"Background":{
+		"name":"Background",
+		"type":"Utilities",
+		"price":"Depends on the background",
+		"desc":"http://bit.ly/2i3A2Lw for info on how to use it"
+    },
+    "Badges":{
+		"name":"Badges",
+		"type":"Utilities",
+		"price":"Depends on the badge",
+		"desc":"http://bit.ly/2i3A2Lw for info on how to use it"
+	}
+}
