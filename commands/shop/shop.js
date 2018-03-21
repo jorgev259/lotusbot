@@ -138,7 +138,7 @@ module.exports = {
                                 message.author.send("Write the code of the desired badge (You can see them here https://www.fandomcircle.com/shop-1#PROFILES)").then(proposal => {
                                     var filter = m => m.author.id == message.author.id;
                                     proposal.channel.awaitMessages(filter, { max: 1 })
-                                    .then(collected => {
+                                    .then(async collected => {
                                         var m = collected.first();
                                         var unavailable = client.data.unavailable.badges;
                                         var number = m.content.toUpperCase();
