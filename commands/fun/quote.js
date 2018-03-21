@@ -13,6 +13,8 @@ module.exports = {
                 .setTitle(quote.title)
                 .setThumbnail(quote.thumb)
                 .setAuthor(quote.author, quote.avatar);
+
+                if(quote.attach) embed.setImage(quote.attach);
                 message.channel.send({embed});
             }else{
                 message.reply("invalid Quote id");

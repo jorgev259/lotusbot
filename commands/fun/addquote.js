@@ -24,6 +24,8 @@ module.exports = {
                 .setTitle("#" + quote.channel.name)
                 .setThumbnail(thumb)
                 .setAuthor(quote.author.username, quote.author.avatarURL());
+ 
+            if(quote.attachments.size>0) embed.setImage(quote.attachments.first().url);
 
             client.data.quotes[client.data.quotes.length] = {
                 "desc":quote.content,
@@ -31,8 +33,10 @@ module.exports = {
                 "author":quote.author.username,
                 "thumb":thumb,
                 "color":color,                    
-                "avatar": quote.author.displayAvatarURL
+                "avatar": quote.author.displayAvatarURL,
+                "attach": undefined
             };
+            if(quote.attachments.size>0) client.data.quotes[client.data.quotes.length - 1].attach = quote.attachments.first().url;
 
             await util.save(client.data.quotes,"quotes");
             await message.reply(" has recorded your message in the books of history <@" + quote.author.id + ">");
