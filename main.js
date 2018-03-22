@@ -66,7 +66,7 @@ client.on("guildMemberAdd", async member => {
 	if(client.data.nicks[member.id] == undefined) {
 		member.setNickname(name + " ☕");
 		client.data.nicks [member.id] = name + " ☕";
-		util.save(nicks,"nicks");
+		util.save(client.data.nicks,"nicks");
 	}else{
 		member.setNickname(client.data.nicks[member.id],"Locked nickname");
 	}
