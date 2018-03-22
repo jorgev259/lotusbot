@@ -15,12 +15,11 @@
     "discord.js": "github:hydrabolt/discord.js",
     "glob": "^7.1.2",
     "image-downloader": "^3.3.0",
-    "jsonfile": "^4.0.0",
+    "moment": "^2.21.0",
     "random-number-csprng": "^1.0.2",
     "simple-git": "^1.85.0",
     "streamifier": "^0.1.1",
     "uws": "^8.14.0",
-    "valid-url": "^1.0.9",
-    "write-json-file": "^2.3.0"
+    "valid-url": "^1.0.9"
   }
 }
