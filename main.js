@@ -125,6 +125,10 @@ client.on('message', async message => {
 					}
 				}
 				break;
+
+			case "shop":
+				message.delete();
+				break;
 						
 			case "akira":
 				util.talk(client,message);
