@@ -16,6 +16,7 @@ module.exports = {
                 console.log(res);
                 if(res.files.length>0){
                     m.edit(`Git pull successful!\nModified files: ${res.files.join(" ,")}\nSummary: ${JSON.stringify(res.summary).split("{")[1].split("}")[0]}`);
+                    process.exit();
                 }else{
                     m.edit("Already up to date!");
                 }
