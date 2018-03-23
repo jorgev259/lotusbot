@@ -29,8 +29,10 @@ for (const file of commandFiles) {
 	client.commands.set(name, command);
 	client.commands.get(name).type = path_array[path_array.length-2];
 	if(command.alias){
-		command.alias.forEach(alias => client.commands.set(alias, command))
-		client.data.perms[alias] = client.data.perms[name];
+		command.alias.forEach(alias => {
+			client.commands.set(alias, command)
+			client.data.perms[alias] = client.data.perms[name];
+		})		
 	}	
 }
 
