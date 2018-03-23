@@ -17,6 +17,8 @@ module.exports = {
                 if(!glob.sync(`images/badges/**/${name}*`).length) return message.channel.send(`The badge ${name} doesnt exist. Check https://www.fandomcircle.com/shop-1#PROFILES for more info`)
                 
                 if(client.data.inventory[message.author.id].badges.includes(name)){
+                    if(client.data.exp[message.author.id].badges.includes(name)) return message.channel.send('You already have that badge equipped');
+                    
                     client.data.exp[message.author.id].badges[slot] = name;
                     message.channel.send("Updating your profile...").then(update=>{
                         util.save(client.data.exp,"exp").then(()=>{
