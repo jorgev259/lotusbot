@@ -18,9 +18,7 @@ module.exports = {
 
 		if(client.data.perms[commandName].channel.length>0){
 			allowedChannel = false;
-			client.data.perms[commandName].channel.forEach(function(channel){
-				if(channel == message.channel.name){allowedChannel = true}
-			})
+			if(client.data.perms[commandName].channel.includes(message.channel.name)) allowedChannel = true;
 		}
 		if(allowedChannel){
 			if(client.data.perms[commandName].role.length==0 && client.data.perms[commandName].user.length==0){return true};

@@ -11,6 +11,15 @@ client.commands = new Discord.Collection();
 let commandFiles = glob.sync(`commands/**/*`);
 let dataFiles = glob.sync(`data/*`);
 
+client.data = {};
+for (const file of dataFiles) {	
+	const data = require(`./${file}`);
+
+	let path_array = file.split("/");
+	let name = path_array[path_array.length - 1].split(".json")[0];
+	client.data[name] = data
+}
+
 for (const file of commandFiles) {
 	if(!file.endsWith(".js")) continue;	
 	const command = require(`./${file}`);
@@ -21,16 +30,8 @@ for (const file of commandFiles) {
 	client.commands.get(name).type = path_array[path_array.length-2];
 	if(command.alias){
 		command.alias.forEach(alias => client.commands.set(alias, command))
+		client.data.perms[alias] = client.data.perms[name];
 	}	
-}
-
-client.data = {};
-for (const file of dataFiles) {	
-	const data = require(`./${file}`);
-
-	let path_array = file.split("/");
-	let name = path_array[path_array.length - 1].split(".json")[0];
-	client.data[name] = data
 }
 
 client.on('ready', async () => {
