@@ -1,6 +1,6 @@
 module.exports = {
     desc:"Runs the written code (Use with precaution). >eval <code>",
-    execute(client, message, param){
+    async execute(client, message, param){
             param = param.slice(1)
             const code = param.join(" ");
             let evaled = eval(code);
