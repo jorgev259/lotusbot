@@ -2,5 +2,6 @@
 **/node_modules/
 package-lock.json
 /data/**
+/images/**
 !/data/levels.json
 !/data/items.json
