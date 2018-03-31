@@ -67,7 +67,7 @@ module.exports = {
 			}
 
 			if(member.roles.find("name","☕ Customers") == undefined){
-				let roles = [client.data.colorRoles[client.data.exp[member.id].color][client.data.exp[member.id].rank], client.data.groupRoles[client.data.exp[member.id].color]];
+				let roles = [client.data.colorRoles[client.data.exp[member.id].color][client.data.exp[member.id].rank].id, client.data.groupRoles[client.data.exp[member.id].color].id];
 				member.roles.add(roles,"User join");
 			}
 		})	
