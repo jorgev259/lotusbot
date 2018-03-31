@@ -6,8 +6,8 @@ module.exports = {
     desc:"This is a description",
     async execute(client, message, param){
         await message.delete();
-        message.channel.send("Downloading changes.....").then(m=>{
-            git.pull((err,res)=>{               
+        message.channel.send("Downloading changes.....").then(async m=>{
+            git.pull(async (err,res)=>{               
                 if(err){
                     util.log(client,err);
                     return m.edit("Git pull failed!")
