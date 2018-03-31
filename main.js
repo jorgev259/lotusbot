@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 var fs = require("fs");
 var glob = require('glob');
+var moment = require('moment')
 
 var colors = ["pink","d-blue","purple","l-blue","green","orange","red"];
 var util = require('./utilities.js');
@@ -61,6 +62,15 @@ client.on('ready', async () => {
 
 	client.data.colorRoles = colorRoles;
 	client.data.groupRoles = groupRoles;
+
+	if(moment().isSame(client.data.info.lastPFP,'day')){
+		var nextDay = moment(client.data.info.lastPFP).add(1, 'day').format('YYYY-MM-DD');
+
+		util.log(client, `Next profile pic change is scheduled to happen ${moment().to(nextDay)}`)
+		setTimeout(util.swapPFP, moment(nextDay).diff(moment()))
+	}else{
+		util.swapPFP();
+	}
 });
 
 client.on("guildMemberAdd", async member => {

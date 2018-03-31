@@ -4,7 +4,7 @@ var cooldown = {};
 var colors = ["pink","d-blue","purple","l-blue","green","orange","red"];
 const Discord = require('discord.js');
 
-
+var moment = require("moment");
 var random = require("random-number-csprng");
 var fs = require("fs");
 
@@ -179,6 +179,21 @@ module.exports = {
 		if(msg.mentions.channels.size>0){
 			client.channels.resolve(msg.mentions.channels.first()).send(msg.content.split(msg.mentions.channels.first()).join(""));
 		}
+	},
+
+	async swapPFP(client){
+		var day = moment().date();
+		var month = moment().month();
+
+		client.guilds.first().setIcon(`./images/serverpics/${day}.${month}.png`)
+		.then(updated => {
+			client.data.info.lastPFP = moment().format('YYYY-MM-DD');
+			module.exports.save(client.data.info, 'info');
+
+			var nextDay = moment().add(1, 'day').format('YYYY-MM-DD');
+			setTimeout(module.exports.swapPFP, moment(nextDay).diff(moment()))
+			module.exports.log(client, `Next profile pic change is scheduled to happen ${moment().to(nextDay)}`)]
+		})
 	},
 
 	async save(data,name){
