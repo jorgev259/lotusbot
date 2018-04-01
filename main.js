@@ -67,9 +67,10 @@ client.on('ready', async () => {
 		var nextDay = moment(client.data.info.lastPFP).add(1, 'day').format('YYYY-MM-DD');
 
 		util.log(client, `Next profile pic change is scheduled to happen ${moment().to(nextDay)}`)
-		setTimeout(util.swapPFP, moment(nextDay).diff(moment()))
+		setTimeout(util.swapPFP, moment(nextDay).diff(moment()), client)
 	}else{
-		util.swapPFP();
+		util.log(client, `Starting profile change`)
+		util.swapPFP(client);
 	}
 });
 
