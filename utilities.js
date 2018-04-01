@@ -183,7 +183,7 @@ module.exports = {
 
 	async swapPFP(client){
 		var day = moment().date();
-		var month = moment().month();
+		var month = moment().month() + 1;
 
 		client.guilds.first().setIcon(`./images/serverpics/${day}.${month}.png`)
 		.then(updated => {
