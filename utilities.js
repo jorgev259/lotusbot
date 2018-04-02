@@ -100,8 +100,7 @@ module.exports = {
 
 			module.exports.save(client.data.exp,"exp");
 
-
-			if(client.data.exp[msg.author.id].exp > client.data.levels[client.data.inventory[msg.author.id].lvl-1].exp){ //checks if the user has reached enough exp
+			if(client.data.exp[msg.author.id].exp > client.data.levels[client.data.exp[msg.author.id].lvl-1].exp){ //checks if the user has reached enough exp
 
 				var levelroles = msg.member.roles.filter(r=>r.name.includes("[")) //finds all roles that start with [
 				await msg.member.roles.remove(levelroles,"Removed level roles"); //removes all lvl roles

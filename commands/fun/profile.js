@@ -54,7 +54,7 @@ module.exports = {
 
                 img.src= fs.readFileSync("images/bar1.png");
                 var percent;
-                if(exp[id].lvl > 0) {
+                if(exp[id].lvl > 1) {
                     percent = ((exp[id].exp - levels[exp[id].lvl -1].exp) / (levels[exp[id].lvl].exp - levels[exp[id].lvl -1].exp))
                 }else{
                     percent = ((exp[id].exp) / (levels[0].exp))
