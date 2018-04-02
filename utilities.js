@@ -49,26 +49,29 @@ module.exports = {
 	async userCheck(id,client){
 		client.guilds.first().members.fetch(id).then(async member=>{
 			if(member.user.bot) return;
+			var template = {"color":colors[await random(0,colors.length-1)], "rank":0,"lvl":1,"exp":0,"money":0,"lastDaily":"Not Collected"}
+
+			if(!client.data.exp[id]) client.data.exp[id] = {};
+			template.keys.forEach(key => {
+				if(!client.data.exp[id][key]) client.data.exp[id][key] = template[key];
+			})
+			await module.exports.save(client.data.exp,"exp");
 
 			if(client.data.inventory[id] == undefined) {
 				client.data.inventory[id]={badges:[],bgs:[]};
 				await module.exports.save(client.data.inventory,"inventory");
-			}
-			if(client.data.exp[id] == undefined){
-				client.data.exp[id] = {"color":colors[await random(0,colors.length-1)], "rank":0,"lvl":1,"exp":0,"money":0,"lastDaily":"Not Collected",};
-				await module.exports.save(client.data.exp,"exp");		
-			}		
+			}	
 				
-			var rankRoles = member.roles.filter(role => role.name.startsWith(`[`));
+			var rankRoles = member.roles.filter(role => role.name.startsWith('['));
 			if(rankRoles.size>1 || rankRoles.size == 0){
 				if (rankRoles.size>1) member.roles.remove(rankRoles);
 				var role = member.guild.roles.filter(role => role.name.includes(`[${client.data.exp[id].lvl}]`));
-				member.roles.add(role,"Added level role");
+				await member.roles.add(role,"Added level role");
 			}
 
-			if(member.roles.find("name","☕ Customers") == undefined){
+			if(!member.roles.exists("name","☕ Customers")){
 				let roles = [client.data.colorRoles[client.data.exp[member.id].color][client.data.exp[member.id].rank].id, client.data.groupRoles[client.data.exp[member.id].color].id];
-				member.roles.add(roles,"User join");
+				await member.roles.add(roles,"User join");
 			}
 		})	
 	},
