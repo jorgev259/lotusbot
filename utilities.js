@@ -52,7 +52,7 @@ module.exports = {
 			var template = {"color":colors[await random(0,colors.length-1)], "rank":0,"lvl":1,"exp":0,"money":0,"lastDaily":"Not Collected"}
 
 			if(!client.data.exp[id]) client.data.exp[id] = {};
-			template.keys.forEach(key => {
+			Object.keys(template).forEach(key => {
 				if(!client.data.exp[id][key]) client.data.exp[id][key] = template[key];
 			})
 			await module.exports.save(client.data.exp,"exp");
