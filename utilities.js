@@ -106,16 +106,16 @@ module.exports = {
 				var levelroles = msg.member.roles.filter(r=>r.name.includes("[")) //finds all roles that start with [
 				await msg.member.roles.remove(levelroles,"Removed level roles"); //removes all lvl roles
 				
-				client.data.inventory[msg.author.id].lvl += 1;
+				client.data.exp[msg.author.id].lvl += 1;
 
-				await msg.member.roles.add([msg.guild.roles.find("name",`[${client.data.inventory[msg.author.id].lvl}]`)]);
+				await msg.member.roles.add([msg.guild.roles.find("name",`[${client.data.exp[msg.author.id].lvl}]`)]);
 
-				client.data.inventory[msg.author.id].money += 2000 //adds money reward for leveling up
+				client.data.exp[msg.author.id].money += 2000 //adds money reward for leveling up
 
-				module.exports.save(client.data.inventory,"exp");
+				module.exports.save(client.data.exp,"exp");
 
-				if(client.data.levels[client.data.inventory[msg.author.id].lvl].rewards != undefined){
-					client.data.levels[client.data.inventory[msg.author.id].lvl].rewards.forEach(async reward => { //checks every reward
+				if(client.data.levels[client.data.exp[msg.author.id].lvl].rewards != undefined){
+					client.data.levels[client.data.exp[msg.author.id].lvl].rewards.forEach(async reward => { //checks every reward
 						switch(reward.type){
 							case "role":
 								/*{
@@ -149,8 +149,8 @@ module.exports = {
 									groupRoles = result[1];
 								}
 
-								let rank = client.data.inventory[msg.author.id].rank;
-								let color = client.data.inventory[msg.author.id].color;
+								let rank = client.data.exp[msg.author.id].rank;
+								let color = client.data.exp[msg.author.id].color;
 								let oldRoles = [colorRoles[color][rank]];
 								let newRoles = [colorRoles[color][rank + 1]];
 
@@ -161,7 +161,7 @@ module.exports = {
 								nick[nick.length - 1] = newRoles[1].name.split(' ')[0];
 								msg.member.setNickname(nick.join(' '), 'Changed nickname emoji');
 
-								client.data.inventory[msg.author.id].rank += 1;
+								client.data.exp[msg.author.id].rank += 1;
 								break;
 						}
 					})
@@ -169,7 +169,7 @@ module.exports = {
 
 			}
 
-			await module.exports.save(client.data.inventory,"exp");
+			await module.exports.save(client.data.exp,"exp");
 
 			cooldown[msg.author.id] = true; //sets the user on cooldown and will remove it in 60000 ms (1 minute)
 			setTimeout(function(authorID){
