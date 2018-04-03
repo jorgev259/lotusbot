@@ -3,7 +3,7 @@ var util = require("../../utilities.js")
 
 module.exports = {
     desc:"Displays your bought items",
-    execute(client, message, param){
+    async execute(client, message, param){
             await util.userCheck(message.author.id,client);
 
             var inventoryEmbed = new Discord.MessageEmbed();
