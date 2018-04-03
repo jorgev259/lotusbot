@@ -50,7 +50,7 @@ module.exports = {
         }*/
 
         switch(itemName){
-            case "Packs":
+            case "embed pack":
                 var proposal = await message.author.send("Write the name of the desired pack (You can see them here https://www.fandomcircle.com/shop-1#PROFILES)")
                 var filter = m => m.author.id == message.author.id;
                 proposal.channel.awaitMessages(filter, { max: 1 })
@@ -73,7 +73,7 @@ module.exports = {
                 })                              
                 break;
 
-            case "Nickname Change":
+            case "nickname change":
                 if(!message.member.roles.exists("name",item.role)){
                     client.data.exp[message.author.id].money += -itemPrice;
                     message.member.roles.add(message.guild.roles.find("name", item.role),"Purchase from the shop");
@@ -85,7 +85,7 @@ module.exports = {
                 }
                 break;
 
-            case "Background":
+            case "background":
                 var proposal = await message.author.send("Write the code of the desired background (You can see them here https://www.fandomcircle.com/shop-1#PROFILES)")
                 var filter = m => m.author.id == message.author.id;
                 proposal.channel.awaitMessages(filter, { max: 1 })
@@ -118,7 +118,7 @@ module.exports = {
                 })                                                                                          
                 break;
 
-            case "Badges":
+            case "badges":
                 message.author.send("Write the code of the desired badge (You can see them here https://www.fandomcircle.com/shop-1#PROFILES)").then(proposal => {
                     var filter = m => m.author.id == message.author.id;
                     proposal.channel.awaitMessages(filter, { max: 1 })
