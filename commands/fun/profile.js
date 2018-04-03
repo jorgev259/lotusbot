@@ -67,7 +67,7 @@ module.exports = {
                 pfCtx.font = '30px "Mizo Arial"';
                 pfCtx.fillStyle = '#ffffff';
                 pfCtx.fillText(nick.join(" "), 353,570);
-                pfCtx.fillText(exp[id].exp.toString() + " / " + levels[exp[id].lvl].exp, 516,670);
+                pfCtx.fillText(exp[id].exp.toString() + " / " + levels[exp[id].lvl - 1].exp, 516,670);
                 pfCtx.fillText(exp[id].money, 516,708);
 
                 if(exp[id].badges && exp[id].badges.length > 0){
