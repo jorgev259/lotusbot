@@ -58,7 +58,7 @@ module.exports = {
                     var m = collected.first();
                     if(!client.data.items["embed pack"].hasOwnProperty(m.content.toLowerCase())) return m.channel.send(`Couldnt find the pack ${m.content}`);
 
-                    var item = client.data.items["embed pack"][m.content.toLowerCase()];
+                    var item = client.data.items["embed pack"].packs[m.content.toLowerCase()];
                     //if(unavailable.includes(number)) return m.author.send(`The background code ${number} is no longer available for purchase. Check https://www.fandomcircle.com/shop-1#PROFILES for more info`)                                                  
                     if(client.data.exp[m.author.id].money < item.price) return m.author.send("You cant afford this embed pack");
 

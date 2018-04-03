@@ -4,14 +4,14 @@
         "desc": "Lots of embeds or something",
         "price":"35000",
         "packs":{
-            "Nichijou": {
+            "nichijou": {
                 "name": "Nichijou Pack",
                 "type": "Packs",
                 "price": "35000",
                 "role":  "🎫Nichijou",
                 "channel":"nichijou"
             },
-            "Dragon Maid": {
+            "dragon maid": {
                 "name": "Dragon Maid Pack",
                 "type": "Packs",
                 "price": "35000",
