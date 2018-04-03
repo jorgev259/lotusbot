@@ -99,7 +99,7 @@ module.exports = {
 			var randomExp = Math.floor(Math.random() * ((25-15)+1) + 15);
 			client.data.exp[msg.author.id].exp += randomExp;
 
-			module.exports.save(client.data.exp,"exp");
+			await module.exports.save(client.data.exp,"exp");
 
 			if(client.data.exp[msg.author.id].exp > client.data.levels[client.data.exp[msg.author.id].lvl-1].exp){ //checks if the user has reached enough exp
 
