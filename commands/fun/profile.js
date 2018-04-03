@@ -59,7 +59,7 @@ module.exports = {
                 }else{
                     percent = ((exp[id].exp) / (levels[0].exp))
                 }
-                pfCtx.drawImage(img, 312 - (percent*435), 601, (435*percent), 26);
+                pfCtx.drawImage(img, 312, 601, (435*percent), 26);
 
                 img.src=fs.readFileSync(`images/numbers/${exp[id].lvl}.png`);
                 pfCtx.drawImage(img,80,500);
