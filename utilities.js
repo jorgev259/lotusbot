@@ -64,13 +64,14 @@ module.exports = {
 				
 			var rankRoles = member.roles.filter(role => role.name.startsWith('['));
 			if(rankRoles.size>1 || rankRoles.size == 0){
-				if (rankRoles.size>1) member.roles.remove(rankRoles);
+				if (rankRoles.size>1) await member.roles.remove(rankRoles);
 				var role = member.guild.roles.filter(role => role.name.includes(`[${client.data.exp[id].lvl}]`));
 				await member.roles.add(role,"Added level role");
 			}
 
-			if(!member.roles.exists("name","☕ Customers")){
-				let roles = [client.data.colorRoles[client.data.exp[member.id].color][client.data.exp[member.id].rank].id, client.data.groupRoles[client.data.exp[member.id].color].id];
+			if(!member.roles.exists(r => r.name.includes("Customers"))){
+				let allRoles = [client.data.colorRoles[client.data.exp[member.id].color][client.data.exp[member.id].rank].id, client.data.groupRoles[client.data.exp[member.id].color].id];
+				let roles = allRoles.filter(id => !member.roles.has(id))
 				await member.roles.add(roles,"User join");
 			}
 		})	
