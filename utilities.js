@@ -143,16 +143,11 @@ module.exports = {
 								/*{
 									"type": "rankUP"
 								}*/								
-								if(Object.keys(colorRoles) != 0) {
-									let result = module.exports.getRoles(client);
-									colorRoles = result[0];
-									groupRoles = result[1];
-								}
 
 								let rank = client.data.exp[msg.author.id].rank;
 								let color = client.data.exp[msg.author.id].color;
-								let oldRoles = [colorRoles[color][rank]];
-								let newRoles = [colorRoles[color][rank + 1]];
+								let oldRoles = [client.data.colorRoles[color][rank]];
+								let newRoles = [client.data.colorRoles[color][rank + 1]];
 
 								await msg.member.roles.remove(oldRoles);
 								await msg.member.roles.add(newRoles);
