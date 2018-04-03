@@ -56,7 +56,7 @@ module.exports = {
                 proposal.channel.awaitMessages(filter, { max: 1 })
                 .then(collected => {
                     var m = collected.first();
-                    if(!client.data.items["embed pack"].hasOwnProperty(m.content.toLowerCase())) return m.channel.send(`Couldnt find the pack ${m.content}`);
+                    if(!client.data.items["embed pack"].packs.hasOwnProperty(m.content.toLowerCase())) return m.channel.send(`Couldnt find the pack ${m.content}`);
 
                     var item = client.data.items["embed pack"].packs[m.content.toLowerCase()];
                     //if(unavailable.includes(number)) return m.author.send(`The background code ${number} is no longer available for purchase. Check https://www.fandomcircle.com/shop-1#PROFILES for more info`)                                                  
