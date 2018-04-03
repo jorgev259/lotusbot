@@ -51,14 +51,26 @@ module.exports = {
 
         switch(itemName){
             case "Packs":
-                if(!message.member.roles.exists("name",item.role)){
-                    client.data.exp[message.author.id].money += -itemPrice;
-                    message.member.roles.add(message.guild.roles.find("name", item.role));
-                    message.author.send('**You bought ' + itemName + '!**');
-                    //message.guild.channels.find("name",item.channel).send(`<@${message.author.id}>`).then(m=>m.delete({"reason":"New channel ping"}))
-                }else{
-                    message.author.send('**You already have ' + itemName + '!**')
-                }
+                var proposal = await message.author.send("Write the name of the desired pack (You can see them here https://www.fandomcircle.com/shop-1#PROFILES)")
+                var filter = m => m.author.id == message.author.id;
+                proposal.channel.awaitMessages(filter, { max: 1 })
+                .then(collected => {
+                    var m = collected.first();
+                    if(!client.data.items["embed pack"].hasOwnProperty(m.content.toLowerCase())) return m.channel.send(`Couldnt find the pack ${m.content}`);
+
+                    var item = client.data.items["embed pack"][m.content.toLowerCase()];
+                    //if(unavailable.includes(number)) return m.author.send(`The background code ${number} is no longer available for purchase. Check https://www.fandomcircle.com/shop-1#PROFILES for more info`)                                                  
+                    if(client.data.exp[m.author.id].money < item.price) return m.author.send("You cant afford this embed pack");
+
+                    if(!message.member.roles.exists("name",item.role)){
+                        client.data.exp[message.author.id].money += -item.price;
+                        message.member.roles.add(message.guild.roles.find("name", item.role));
+                        message.author.send('**You bought ' + itemName + '!**');
+                        //message.guild.channels.find("name",item.channel).send(`<@${message.author.id}>`).then(m=>m.delete({"reason":"New channel ping"}))
+                    }else{
+                        message.author.send('**You already have this embed pack!**')
+                    }
+                })                              
                 break;
 
             case "Nickname Change":
