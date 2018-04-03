@@ -69,11 +69,11 @@ module.exports = {
 				await member.roles.add(role,"Added level role");
 			}
 
-			if(!member.roles.exists(r => r.name.includes("Customers"))){
+			/*if(!member.roles.exists(r => r.name.includes("Customers"))){
 				let allRoles = [client.data.colorRoles[client.data.exp[member.id].color][client.data.exp[member.id].rank].id, client.data.groupRoles[client.data.exp[member.id].color].id];
 				let roles = allRoles.filter(id => !member.roles.has(id))
 				await member.roles.add(roles,"User join");
-			}
+			}*/
 		})	
 	},
 
