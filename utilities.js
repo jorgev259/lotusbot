@@ -112,7 +112,7 @@ module.exports = {
 
 				client.data.exp[msg.author.id].money += 2000 //adds money reward for leveling up
 
-				module.exports.save(client.data.exp,"exp");
+				await module.exports.save(client.data.exp,"exp");
 
 				if(client.data.levels[client.data.exp[msg.author.id].lvl].rewards != undefined){
 					client.data.levels[client.data.exp[msg.author.id].lvl].rewards.forEach(async reward => { //checks every reward
@@ -133,7 +133,7 @@ module.exports = {
 									}
 									nick += reward.name.split(" ")[0]
 
-									msg.member.setNickname(nick,"Changed nickname emoji");
+									await msg.member.setNickname(nick,"Changed nickname emoji");
 									client.data.nicks[msg.member.id] = nick;
 									await module.exports.save(client.data.nicks,"nicks");
 								}

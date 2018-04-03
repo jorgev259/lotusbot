@@ -96,7 +96,7 @@ client.on("guildMemberUpdate", async (oldMember,newMember) => {
 })
 
 client.on('message', async message => {
-		util.exp(message,client);
+		await util.exp(message,client);
 		var prefix = ">";
 
 		if(message.content.startsWith(prefix) || message.content.startsWith("<@!" + client.user.id + ">")){			
