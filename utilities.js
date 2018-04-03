@@ -1,7 +1,7 @@
 var reactionNumbers = ["1⃣","2⃣","3⃣","4⃣","5⃣","6⃣","7⃣","8⃣","9⃣", "🔟"];
 var reactions = ["390223211662540800","390223209930424321","390223211637243905","390223211616534577","390223211456888835","390223210240540683"];
 var cooldown = {};
-var colors = ["pink","d-blue","purple","l-blue","green","orange","red"];
+var colors = ["pink","d-blue","purple","l-blue","green","red"];
 const Discord = require('discord.js');
 
 var moment = require("moment");

@@ -3,7 +3,7 @@ var fs = require("fs");
 var glob = require('glob');
 var moment = require('moment')
 
-var colors = ["pink","d-blue","purple","l-blue","green","orange","red"];
+var colors = ["pink","d-blue","purple","l-blue","green","red"];
 var util = require('./utilities.js');
 
 const client = new Discord.Client();
