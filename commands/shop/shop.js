@@ -76,7 +76,7 @@ module.exports = {
             case "nickname change":
                 if(!message.member.roles.exists("name",item.role)){
                     client.data.exp[message.author.id].money += -itemPrice;
-                    message.member.roles.add(message.guild.roles.find("name", item.role),"Purchase from the shop");
+                    message.member.roles.add([message.guild.roles.find("name", item.role)],"Purchase from the shop");
                     message.author.send('**You bought ' + itemName + '!**');
                     message.guild.channels.find("name",item.channel).send(`<@${message.author.id}>`).then(m=>m.delete({"reason":"New channel ping"}))
                     util.save(client.data.exp,"exp");

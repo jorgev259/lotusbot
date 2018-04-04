@@ -93,7 +93,7 @@ module.exports = {
     },*/
 
 	async exp(msg,client){
-		if(cooldown[msg.author.id] == undefined && !msg.author.bot){ //checks if the user is not on cooldown and filters bots out
+		if(cooldown[msg.author.id] == undefined && !msg.author.bot && msg.member){ //checks if the user is not on cooldown and filters bots out
 			await module.exports.userCheck(msg.author.id,client)
 
 			//adds random amount (15-25) of exp to the user
@@ -103,7 +103,6 @@ module.exports = {
 			await module.exports.save(client.data.exp,"exp");
 
 			if(client.data.exp[msg.author.id].exp > client.data.levels[client.data.exp[msg.author.id].lvl-1].exp){ //checks if the user has reached enough exp
-
 				var levelroles = msg.member.roles.filter(r=>r.name.includes("[")) //finds all roles that start with [
 				await msg.member.roles.remove(levelroles,"Removed level roles"); //removes all lvl roles
 				
