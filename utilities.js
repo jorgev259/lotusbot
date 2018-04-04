@@ -152,9 +152,11 @@ module.exports = {
 								await msg.member.roles.remove(oldRoles);
 								await msg.member.roles.add(newRoles);
 
-								var nick = msg.member.nickname.split(' ');
-								nick[nick.length - 1] = newRoles[1].name.split(' ')[0];
-								msg.member.setNickname(nick.join(' '), 'Changed nickname emoji');
+								if(!(msg.member.nickname.endsWith("🔰") || msg.member.nickname.endsWith("🍬") || msg.member.nickname.endsWith("🔧") || msg.member.nickname.endsWith("✨") || msg.member.nickname.endsWith("🧣") || msg.member.nickname.endsWith("🎬") || msg.member.nickname.endsWith("💎"))){
+									var nick = msg.member.nickname.split(' ');
+									nick[nick.length - 1] = newRoles[0].name.split(' ')[0];
+									msg.member.setNickname(nick.join(' '), 'Changed nickname emoji');
+								}
 
 								client.data.exp[msg.author.id].rank += 1;
 								break;
