@@ -130,7 +130,7 @@ client.on('message', async message => {
 						message.member.setNickname(namechange,"Name Change sponsored by Monokuma").then(()=>{
 							util.save(client.data.nicks,"nicks").then(()=>{
 								message.delete(namechange);
-								message.member.roles.remove(message.guild.roles.find("name","⭕ Nickname Change"),"Nickname change")
+								message.member.roles.remove([message.guild.roles.find("name","⭕ Nickname Change")],"Nickname change")
 							})							
 						})
 					}else{
