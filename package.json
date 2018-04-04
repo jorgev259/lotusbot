@@ -20,6 +20,7 @@
     "simple-git": "^1.85.0",
     "streamifier": "^0.1.1",
     "uws": "^8.14.0",
-    "valid-url": "^1.0.9"
+    "valid-url": "^1.0.9",
+    "zip-dir": "^1.0.2"
   }
 }

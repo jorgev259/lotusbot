@@ -7,6 +7,7 @@ const Discord = require('discord.js');
 var moment = require("moment");
 var random = require("random-number-csprng");
 var fs = require("fs");
+var zipdir = require('zip-dir');
 
 module.exports = {
 	async permCheck(message, commandName, client){
@@ -181,9 +182,13 @@ module.exports = {
 		}
 	},
 
-	async swapPFP(client){
-		var day = moment().date();
-		var month = moment().month() + 1;
+	async swapPFP(client){		  
+		let day = moment().date();
+		let month = moment().month() + 1;
+
+		zipdir('../data', { saveTo: `../data/${day}.${month}.zip` }, async(err, buffer) => {
+			module.exports.log(client, `${day}.${month}.zip created`)
+		});
 
 		client.guilds.first().setIcon(`./images/serverpics/${day}.${month}.png`)
 		.then(updated => {
@@ -192,7 +197,7 @@ module.exports = {
 
 			var nextDay = moment().add(1, 'day').format('YYYY-MM-DD');
 			setTimeout(module.exports.swapPFP, moment(nextDay).diff(moment()))
-			module.exports.log(client, `Next profile pic change is scheduled to happen ${moment().to(nextDay)}`)
+			module.exports.log(client, `Next profile pic change and backup scheduled to happen ${moment().to(nextDay)}`)
 		})
 	},
 
