@@ -66,7 +66,7 @@ client.on('ready', async () => {
 	if(moment().isSame(client.data.info.lastPFP,'day')){
 		var nextDay = moment(client.data.info.lastPFP).add(1, 'day').format('YYYY-MM-DD');
 
-		util.log(client, `Next profile pic change is scheduled to happen ${moment().to(nextDay)}`)
+		util.log(client, `Next profile pic change and backups scheduled to happen ${moment().to(nextDay)}`)
 		setTimeout(util.swapPFP, moment(nextDay).diff(moment()), client)
 	}else{
 		util.log(client, `Starting profile change`)
