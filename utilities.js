@@ -185,7 +185,7 @@ module.exports = {
 		let day = moment().date();
 		let month = moment().month() + 1;
 
-		zipdir('../data', { saveTo: `../data/${day}.${month}.zip` }, async(err, buffer) => {
+		zipdir('../data', { saveTo: `data/${day}.${month}.zip` }, async(err, buffer) => {
 			module.exports.log(client, `${day}.${month}.zip created`)
 		});
 
