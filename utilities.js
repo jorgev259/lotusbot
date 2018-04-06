@@ -186,7 +186,10 @@ module.exports = {
 		let month = moment().month() + 1;
 
 		zipdir('../data', { saveTo: `./data/${day}.${month}.zip` }, async(err, buffer) => {
-			module.exports.log(client, `${day}.${month}.zip created`)
+			if(err)
+				module.exports.log(client, `Failed backup: ${err}`)
+			else
+				module.exports.log(client, `${day}.${month}.zip created`)
 		});
 
 		client.guilds.first().setIcon(`./images/serverpics/${day}.${month}.png`)
