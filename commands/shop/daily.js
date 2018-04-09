@@ -1,10 +1,13 @@
 const moment = require('moment');
-
-var util = require("../../utilities.js")
+var sqlite = require("sqlite");
+var util = require("../../utilities.js");
 
 module.exports = {
     desc:"This is a description",
     async execute(client, message, param){
+        const db = await sql.open("./database.sqlite");
+        var userInfo = await db.get(`SELECT money,lastDaily FROM exp WHERE id = ${msg.author.id}`);
+
         var embed = {
             timestamp: message.createdTimestamp, 
             author: {
@@ -16,21 +19,21 @@ module.exports = {
             }
         }
 
-        if(client.data.exp[message.author.id].lastDaily == "Not Collected" || moment.duration(moment().diff(moment(client.data.exp[message.author.id].lastDaily,"YYYY-MM-DD kk:mm"))).asHours() >= 24){
-            client.data.exp[message.author.id].lastDaily = moment().format("YYYY-MM-DD kk:mm");
-            client.data.exp[message.author.id].money += 2000;
-            await util.save(client.data.exp,"exp"); 
+        if(userInfo.lastDaily == "Not Collected" || moment.duration(moment().diff(moment(userInfo.lastDaily,"YYYY-MM-DD kk:mm"))).asHours() >= 24){
+            userInfo.money += 2000
+            await db.run(`UPDATE exp SET money = ${userInfo.money} WHERE id = ${msg.author.id}`);
+            await db.run(`UPDATE exp SET lastDaily = ${moment().format("YYYY-MM-DD kk:mm")} WHERE id = ${msg.author.id}`);
             
             embed.fields= [{
                 name: "Daily collection",
-                value: `**You got 💴 2000! New Balance:** ${client.data.exp[message.author.id].money}`
+                value: `**You got 💴 2000! New Balance:** ${userInfo.money}`
             }]
             embed.color= 3446302
             embed.footer.icon_url= "https://i.imgur.com/OWk7t7b.png"
         }else{ 
             embed.footer.icon_url= "https://i.imgur.com/6zXSNu5.png"
             embed.color= 0                                                              
-            embed.title= `**You already collected your daily reward! Collect your next reward** in ${24 - Math.floor(moment.duration(moment().diff(moment(client.data.exp[message.author.id].lastDaily,"YYYY-MM-DD kk:mm"))).asHours())} hours.`;                     
+            embed.title= `**You already collected your daily reward! Collect your next reward** in ${24 - Math.floor(moment.duration(moment().diff(moment(userInfo.lastDaily,"YYYY-MM-DD kk:mm"))).asHours())} hours.`;                     
         }
 
         return message.channel.send({embed:embed})

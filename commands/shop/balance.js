@@ -1,9 +1,13 @@
+var sqlite = require("sqlite");
+
 module.exports = {
     alias:["money"],
     desc:"This is a description",
-    execute(client, message, param){
+    async execute(client, message, param){
+        var db = await sqlite.open('./database.sqlite');
+        var { money } = await db.get(`SELECT money FROM exp WHERE id = ${message.author.id}`);
         var embed = {
-            title: `**Account Balance:** ${client.data.exp[message.author.id].money} 💴`,
+            title: `**Account Balance:** ${money} 💴`,
             timestamp: message.createdTimestamp, 
             author: {
                 name: message.member.displayName,

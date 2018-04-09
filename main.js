@@ -1,8 +1,15 @@
 const Discord = require('discord.js');
-var fs = require("fs");
-var glob = require('glob');
-var moment = require('moment')
-
+const fs = require("fs");
+const glob = require('glob');
+const moment = require('moment')
+const sqlite = require("sqlite");
+let db;
+startDB();
+async function startDB(){
+	db = await sqlite.open('./database.sqlite');
+	await db.run(`CREATE TABLE IF NOT EXISTS exp (id TEXT, color TEXT, exp, lastDaily TEXT, lvl INT, money INT, rank INT, bg TEXT, UNIQUE(id));
+				CREATE TABLE IF NOT EXISTS nicks (id TEXT, nick TEXT, UNIQUE(id));`)
+}
 var colors = ["pink","d-blue","purple","l-blue","green","red"];
 var util = require('./utilities.js');
 
@@ -14,6 +21,7 @@ let dataFiles = glob.sync(`data/*`);
 
 client.data = {};
 for (const file of dataFiles) {	
+	if(!file.endsWith(".json")) continue;	
 	const data = require(`./${file}`);
 
 	let path_array = file.split("/");
@@ -79,8 +87,7 @@ client.on("guildMemberAdd", async member => {
 	var name = member.user.username;
 	if(client.data.nicks[member.id] == undefined) {
 		member.setNickname(name + " ☕");
-		client.data.nicks [member.id] = name + " ☕";
-		util.save(client.data.nicks,"nicks");
+		await sql.run("INSERT OR REPLACE INTO nicks (id,nick) VALUES (?,?)", [member.id, name + " ☕"]);
 	}else{
 		member.setNickname(client.data.nicks[member.id],"Locked nickname");
 	}
@@ -89,9 +96,7 @@ client.on("guildMemberAdd", async member => {
 
 client.on("guildMemberUpdate", async (oldMember,newMember) => {
 	if(oldMember.nickname != newMember.nickname){
-		console.log("hello")
-		client.data.nicks[newMember.id] = newMember.nickname;
-		await util.save(client.data.nicks,"nicks");
+		await sql.run("INSERT OR REPLACE INTO nicks (id,nick) VALUES (?,?)", [member.id, newMember.nickname]);
 	}
 })
 

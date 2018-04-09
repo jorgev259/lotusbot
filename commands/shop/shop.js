@@ -2,7 +2,8 @@ const Discord = require('discord.js');
 var path = require("path")
 var util = require("../../utilities.js")
 const fs = require('fs');
-var glob = require('glob')
+var glob = require('glob');
+var sql = require("sqlite");
 
 module.exports = {
     desc:"This is a description",

@@ -8,6 +8,7 @@ var moment = require("moment");
 var random = require("random-number-csprng");
 var fs = require("fs");
 var zipdir = require('zip-dir');
+const sql = require('sqlite');
 
 module.exports = {
 	async permCheck(message, commandName, client){
@@ -48,34 +49,25 @@ module.exports = {
 	},
 
 	async userCheck(id,client){
-		client.guilds.first().members.fetch(id).then(async member=>{
-			if(member.user.bot) return;
-			var template = {"color":colors[await random(0,colors.length-1)], "rank":0,"lvl":1,"exp":0,"money":0,"lastDaily":"Not Collected"}
+		const db = await sql.open("./database.sqlite");
+		let member = await client.guilds.first().members.fetch(id);
+		if(member.user.bot) return;
 
-			if(!client.data.exp[id]) client.data.exp[id] = {};
-			Object.keys(template).forEach(key => {
-				if(!client.data.exp[id][key]) client.data.exp[id][key] = template[key];
-			})
-			await module.exports.save(client.data.exp,"exp");
-
-			if(client.data.inventory[id] == undefined) {
-				client.data.inventory[id]={badges:[],bgs:[]};
-				await module.exports.save(client.data.inventory,"inventory");
-			}	
+		await db.run("INSERT OR IGNORE INTO exp (id,color,rank,lvl,exp,money,lastDaily,bg) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [member.id, colors[await random(0,colors.length-1)], 0, 1, 0, 0, "Not Collected", "DEFAULT"])		
+		const userInfo = await db.get(`SELECT * FROM exp WHERE id = ${member.id}`);
 				
-			var rankRoles = member.roles.filter(role => role.name.startsWith('['));
-			if(rankRoles.size>1 || rankRoles.size == 0){
-				if (rankRoles.size>1) await member.roles.remove(rankRoles);
-				var role = member.guild.roles.filter(role => role.name.includes(`[${client.data.exp[id].lvl}]`));
-				await member.roles.add(role,"Added level role");
-			}
+		var rankRoles = member.roles.filter(role => role.name.startsWith('['));
+		if(rankRoles.size>1 || rankRoles.size == 0){
+			if (rankRoles.size>1) await member.roles.remove(rankRoles);
+			var role = member.guild.roles.filter(role => role.name.includes(`[${userInfo.lvl}]`));
+			await member.roles.add(role,"Added level role");
+		}
 
-			if(!member.roles.exists(r => r.name.includes("Customers"))){
-				let allRoles = [client.data.colorRoles[client.data.exp[member.id].color][client.data.exp[member.id].rank].id, client.data.groupRoles[client.data.exp[member.id].color].id];
-				let roles = allRoles.filter(id => !member.roles.has(id))
-				await member.roles.add(roles,"User join");
-			}
-		})	
+		if(!member.roles.exists(r => r.name.includes("Customers"))){
+			let allRoles = [client.data.colorRoles[userInfo.color][userInfo.rank].id, client.data.groupRoles[userInfo.color].id];
+			let roles = allRoles.filter(id => !member.roles.has(id))
+			await member.roles.add(roles,"User join");
+		}
 	},
 
 	react:function(msg){
@@ -95,27 +87,29 @@ module.exports = {
 	async exp(msg,client){
 		if(cooldown[msg.author.id] == undefined && !msg.author.bot && msg.member){ //checks if the user is not on cooldown and filters bots out
 			await module.exports.userCheck(msg.author.id,client)
+			const db = await sql.open("./database.sqlite");
+
+			var userInfo = await db.get(`SELECT id,lvl,rank,money,exp FROM exp WHERE id = ${msg.author.id}`);
 
 			//adds random amount (15-25) of exp to the user
 			var randomExp = Math.floor(Math.random() * ((25-15)+1) + 15);
-			client.data.exp[msg.author.id].exp += randomExp;
+			userInfo.exp += randomExp;
+			await db.run(`UPDATE exp SET exp = ${userInfo.exp} WHERE id = ${msg.author.id}`);
 
-			await module.exports.save(client.data.exp,"exp");
-
-			if(client.data.exp[msg.author.id].exp > client.data.levels[client.data.exp[msg.author.id].lvl-1].exp){ //checks if the user has reached enough exp
+			if(userInfo.exp > client.data.levels[userInfo.lvl-1].exp){ //checks if the user has reached enough exp
 				var levelroles = msg.member.roles.filter(r=>r.name.includes("[")) //finds all roles that start with [
 				await msg.member.roles.remove(levelroles,"Removed level roles"); //removes all lvl roles
 				
-				client.data.exp[msg.author.id].lvl += 1;
+				userInfo.lvl += 1;
+				await db.run(`UPDATE exp SET lvl = ${userInfo.lvl} WHERE id = ${msg.author.id}`);
 
-				await msg.member.roles.add([msg.guild.roles.find("name",`[${client.data.exp[msg.author.id].lvl}]`)]);
+				await msg.member.roles.add([msg.guild.roles.find("name",`[${userInfo.lvl}]`)]);
 
-				client.data.exp[msg.author.id].money += 2000 //adds money reward for leveling up
+				userInfo.money += 2000
+				await db.run(`UPDATE exp SET money = ${userInfo.money} WHERE id = ${msg.author.id}`);
 
-				await module.exports.save(client.data.exp,"exp");
-
-				if(client.data.levels[client.data.exp[msg.author.id].lvl].rewards != undefined){
-					client.data.levels[client.data.exp[msg.author.id].lvl].rewards.forEach(async reward => { //checks every reward
+				if(client.data.levels[userInfo.lvl].rewards != undefined){
+					client.data.levels[userInfo.lvl].rewards.forEach(async reward => { //checks every reward
 						switch(reward.type){
 							case "role":
 								/*{
@@ -134,8 +128,6 @@ module.exports = {
 									nick += reward.name.split(" ")[0]
 
 									await msg.member.setNickname(nick,"Changed nickname emoji");
-									client.data.nicks[msg.member.id] = nick;
-									await module.exports.save(client.data.nicks,"nicks");
 								}
 								break;
 
@@ -144,8 +136,8 @@ module.exports = {
 									"type": "rankUP"
 								}*/								
 
-								let rank = client.data.exp[msg.author.id].rank;
-								let color = client.data.exp[msg.author.id].color;
+								let rank = userInfo.rank;
+								let color = userInfo.color;
 								let oldRoles = [client.data.colorRoles[color][rank]];
 								let newRoles = [client.data.colorRoles[color][rank + 1]];
 
@@ -158,15 +150,13 @@ module.exports = {
 									msg.member.setNickname(nick.join(' '), 'Changed nickname emoji');
 								}
 
-								client.data.exp[msg.author.id].rank += 1;
+								await db.run(`UPDATE exp SET rank = ${userInfo.rank + 1} WHERE id = ${msg.author.id}`);
 								break;
 						}
 					})
 				}
 
 			}
-
-			await module.exports.save(client.data.exp,"exp");
 
 			cooldown[msg.author.id] = true; //sets the user on cooldown and will remove it in 60000 ms (1 minute)
 			setTimeout(function(authorID){
