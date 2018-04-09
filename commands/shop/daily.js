@@ -22,7 +22,7 @@ module.exports = {
         if(userInfo.lastDaily == "Not Collected" || moment.duration(moment().diff(moment(userInfo.lastDaily,"YYYY-MM-DD kk:mm"))).asHours() >= 24){
             userInfo.money += 2000
             await db.run(`UPDATE exp SET money = ${userInfo.money} WHERE id = ${message.author.id}`);
-            await db.run(`UPDATE exp SET lastDaily = ${moment().format("YYYY-MM-DD kk:mm")} WHERE id = ${message.author.id}`);
+            await db.run(`UPDATE exp SET lastDaily = "${moment().format("YYYY-MM-DD kk:mm")}" WHERE id = ${message.author.id}`);
             
             embed.fields= [{
                 name: "Daily collection",
