@@ -1,5 +1,5 @@
 const moment = require('moment');
-var sqlite = require("sqlite");
+var sql = require("sqlite");
 var util = require("../../utilities.js");
 
 module.exports = {
