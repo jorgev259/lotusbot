@@ -6,7 +6,7 @@ module.exports = {
     desc:"This is a description",
     async execute(client, message, param){
         const db = await sql.open("./database.sqlite");
-        var userInfo = await db.get(`SELECT money,lastDaily FROM exp WHERE id = ${msg.author.id}`);
+        var userInfo = await db.get(`SELECT money,lastDaily FROM exp WHERE id = ${message.author.id}`);
 
         var embed = {
             timestamp: message.createdTimestamp, 
@@ -21,8 +21,8 @@ module.exports = {
 
         if(userInfo.lastDaily == "Not Collected" || moment.duration(moment().diff(moment(userInfo.lastDaily,"YYYY-MM-DD kk:mm"))).asHours() >= 24){
             userInfo.money += 2000
-            await db.run(`UPDATE exp SET money = ${userInfo.money} WHERE id = ${msg.author.id}`);
-            await db.run(`UPDATE exp SET lastDaily = ${moment().format("YYYY-MM-DD kk:mm")} WHERE id = ${msg.author.id}`);
+            await db.run(`UPDATE exp SET money = ${userInfo.money} WHERE id = ${message.author.id}`);
+            await db.run(`UPDATE exp SET lastDaily = ${moment().format("YYYY-MM-DD kk:mm")} WHERE id = ${message.author.id}`);
             
             embed.fields= [{
                 name: "Daily collection",
