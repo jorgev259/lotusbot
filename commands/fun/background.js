@@ -10,7 +10,7 @@ module.exports = {
             var code = param[1].toUpperCase();
             if(glob.sync(`images/backgrounds/**/${code}*`).length || code=="DEFAULT"){
                 if(client.data.inventory[message.author.id].bgs.includes(code) || code=="DEFAULT"){
-                    await db.run(`UPDATE exp SET bg = ${code} WHERE id = ${message.author.id}`);
+                    await db.run(`UPDATE exp SET bg = "${code}" WHERE id = ${message.author.id}`);
                     message.channel.send("New background applied!")
                 }else{
                     message.channel.send("Sorry, you dont own this background ;-;");
