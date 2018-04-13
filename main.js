@@ -101,6 +101,7 @@ client.on("guildMemberUpdate", async (oldMember,newMember) => {
 })
 
 client.on('message', async message => {
+		await util.userCheck(message.author.id,client,db);
 		await util.exp(message,client, db);
 		var prefix = ">";
 
