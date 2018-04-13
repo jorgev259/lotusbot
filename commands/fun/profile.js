@@ -19,6 +19,7 @@ module.exports = {
             pfMember = message.member;
         }
 
+        await util.userCheck(pfMember.id,client,db);
         var exp = await db.get(`SELECT * FROM exp WHERE id = ${message.author.id}`);
         var levels = client.data.levels;
 
