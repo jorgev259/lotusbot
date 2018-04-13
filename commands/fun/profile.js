@@ -23,10 +23,10 @@ module.exports = {
         var levels = client.data.levels;
 
         var bg = "";
-        if(exp[pfMember.id] == undefined || exp[pfMember.id].bg == undefined){
+        if(exp.bg == undefined){
             bg = "images/backgrounds/DEFAULT.png";
         }else{
-            bg = glob.sync(`images/backgrounds/**/${exp[pfMember.id].bg}*`)[0];
+            bg = glob.sync(`images/backgrounds/**/${exp.bg}*`)[0];
         }
         var nick = pfMember.nickname.split(" ");
         nick.pop();
@@ -54,33 +54,33 @@ module.exports = {
 
             img.src= fs.readFileSync("images/bar1.png");
             var percent;
-            if(exp[id].lvl > 1) {
-                percent = ((exp[id].exp - levels[exp[id].lvl -1].exp) / (levels[exp[id].lvl].exp - levels[exp[id].lvl -1].exp))
+            if(exp.lvl > 1) {
+                percent = ((exp.exp - levels[exp.lvl -1].exp) / (levels[exp.lvl].exp - levels[exp.lvl -1].exp))
                 pfCtx.drawImage(img, 312 - (percent*435), 601, (435*percent), 26);
             }else{
-                percent = ((exp[id].exp) / (levels[0].exp))
+                percent = ((exp.exp) / (levels[0].exp))
                 pfCtx.drawImage(img, 312, 601, (435*percent), 26);
             }                
 
-            img.src=fs.readFileSync(`images/numbers/${exp[id].lvl}.png`);
+            img.src=fs.readFileSync(`images/numbers/${exp.lvl}.png`);
             pfCtx.drawImage(img,80,500);
 
             pfCtx.font = '30px "Mizo Arial"';
             pfCtx.fillStyle = '#ffffff';
             pfCtx.fillText(nick.join(" "), 353,570);
-            pfCtx.fillText(exp[id].exp.toString() + " / " + levels[exp[id].lvl - 1].exp, 516,670);
-            pfCtx.fillText(exp[id].money, 516,708);
+            pfCtx.fillText(exp.exp.toString() + " / " + levels[exp.lvl - 1].exp, 516,670);
+            pfCtx.fillText(exp.money, 516,708);
 
-            /*if(exp[id].badges && exp[id].badges.length > 0){
-                for(var i=0;i<exp[id].badges.length;i++){
-                    if(exp[id].badges[i]){
+            /*if(exp.badges && exp.badges.length > 0){
+                for(var i=0;i<exp.badges.length;i++){
+                    if(exp.badges[i]){
                         var row = 0;
                         if(i>2) row += Math.floor(i/3);
                         var column = i - (row*3)
                         var y = 430 + (75*row);
                         var x = 775 + (80*column);
                            
-                        img.src=fs.readFileSync(glob.sync(`images/badges/**//*${exp[id].badges[i]}*`)[0]);
+                        img.src=fs.readFileSync(glob.sync(`images/badges/**//*${exp.badges[i]}*`)[0]);
                         pfCtx.drawImage(img,x,y,70,70);
                     }
                 }
