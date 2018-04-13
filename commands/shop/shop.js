@@ -3,13 +3,12 @@ var path = require("path")
 var util = require("../../utilities.js")
 const fs = require('fs');
 var glob = require('glob');
-var sql = require("sqlite");
 
 module.exports = {
     desc:"This is a description",
     alias:["buy"],
-    async execute(client, message, param){
-        util.userCheck(message.author.id,client);
+    async execute(client, message, param, db){
+        await util.userCheck(message.author.id,client);
         let items = client.data.items;
 
         if (!param[1]){               
@@ -38,8 +37,8 @@ module.exports = {
         let item = items[itemName];
         let itemPrice = item.price;
         let itemDesc = item.desc;
-        
-        var user = client.data.exp[message.author.id];        
+          
+        var user = await db.get(`SELECT money,lastDaily FROM exp WHERE id = ${message.author.id}`);     
         /*if (Number.isInteger(itemPrice) && user.money < itemPrice) {
                 return message.author.send({embed: {
                     color: 16727113,
@@ -55,16 +54,17 @@ module.exports = {
                 var proposal = await message.author.send("Write the name of the desired pack (You can see them here https://www.fandomcircle.com/shop-1#PROFILES)")
                 var filter = m => m.author.id == message.author.id;
                 proposal.channel.awaitMessages(filter, { max: 1 })
-                .then(collected => {
+                .then(async collected => {
                     var m = collected.first();
                     if(!client.data.items["embed pack"].packs.hasOwnProperty(m.content.toLowerCase())) return m.channel.send(`Couldnt find the pack ${m.content}`);
 
                     var item = client.data.items["embed pack"].packs[m.content.toLowerCase()];
                     //if(unavailable.includes(number)) return m.author.send(`The background code ${number} is no longer available for purchase. Check https://www.fandomcircle.com/shop-1#PROFILES for more info`)                                                  
-                    if(client.data.exp[m.author.id].money < item.price) return m.author.send("You cant afford this embed pack");
+                    if(user.money < item.price) return m.author.send("You cant afford this embed pack");
 
                     if(!message.member.roles.exists("name",item.role)){
-                        client.data.exp[message.author.id].money += -item.price;
+                        user.money += -item.price;
+                        await db.run(`UPDATE exp SET money =${user.money} WHERE id = ${message.author.id}`);
                         message.member.roles.add(message.guild.roles.find("name", item.role));
                         message.author.send('**You bought ' + itemName + '!**');
                         //message.guild.channels.find("name",item.channel).send(`<@${message.author.id}>`).then(m=>m.delete({"reason":"New channel ping"}))
@@ -76,11 +76,11 @@ module.exports = {
 
             case "nickname change":
                 if(!message.member.roles.exists("name",item.role)){
-                    client.data.exp[message.author.id].money += -itemPrice;
+                    user.money += -itemPrice;
                     message.member.roles.add([message.guild.roles.find("name", item.role)],"Purchase from the shop");
                     message.author.send('**You bought ' + itemName + '!**');
                     message.guild.channels.find("name",item.channel).send(`<@${message.author.id}>`).then(m=>m.delete({"reason":"New channel ping"}))
-                    util.save(client.data.exp,"exp");
+                    await db.run(`UPDATE exp SET money =${user.money} WHERE id = ${message.author.id}`);
                 }else{
                     message.author.send('**You already have a ' + itemName + ' active!**')
                 }
@@ -105,13 +105,13 @@ module.exports = {
                         if(files[number] == undefined) return m.author.send(`The background code ${number} doesnt exist or is no longer available for purchase. Check https://www.fandomcircle.com/shop-1#PROFILES for more info`)
                         if(unavailable.includes(number)) return m.author.send(`The background code ${number} is no longer available for purchase. Check https://www.fandomcircle.com/shop-1#PROFILES for more info`)
                         if(client.data.inventory[m.author.id].bgs.includes(number)) return m.author.send("You already have this background. Set it using >background <code>")                                                    
-                        if(client.data.exp[m.author.id].money < files[number]) return m.author.send("You cant afford this background");
+                        if(user.money < files[number]) return m.author.send("You cant afford this background");
 
-                        client.data.exp[m.author.id].money += -files[number];
+                        user.money += -files[number];
                         client.data.inventory[m.author.id].bgs.push(number);
                                             
                         var msg = await message.author.send("Updating your profile (0/2)")
-                        await util.save(client.data.exp,"exp")
+                        await db.run(`UPDATE exp SET money =${user.money} WHERE id = ${message.author.id}`);
                         msg.edit("Updating your profile (1/2)");
                         await util.save(client.data.inventory,"inventory")
                         msg.edit("Thanks for buying this background ^.^. Set it using >background <code>");
@@ -139,13 +139,13 @@ module.exports = {
                         if(unavailable.includes(number)) return m.author.send(`The badge ${number} is no longer available for purchase. Check https://www.fandomcircle.com/shop-1#PROFILES for more info`)
                         if(client.data.inventory[m.author.id].badges.includes(number)) return m.author.send("You already have this badge. Set it using >equip <position> <badge>")
                                                     
-                        if(client.data.exp[m.author.id].money < files[number]) return m.author.send("You cant afford this badge");
+                        if(user.money < files[number]) return m.author.send("You cant afford this badge");
 
-                        client.data.exp[m.author.id].money += -files[number];
+                        user.money += -files[number];
                         client.data.inventory[m.author.id].badges.push(number);
 
                         var msg = await message.author.send("Updating your profile (0/2)")
-                        await util.save(client.data.exp,"exp")
+                        await db.run(`UPDATE exp SET money =${user.money} WHERE id = ${message.author.id}`);
                         await msg.edit("Updating your profile (1/2)");
                         await util.save(client.data.inventory,"inventory")
                         msg.edit("Thanks for buying this badge ^.^. Set it using >equip <badge> <position>");

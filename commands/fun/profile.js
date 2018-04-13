@@ -5,15 +5,13 @@ var fs = require('fs');
 var glob = require('glob');
 const download = require('image-downloader');
 var util = require('../../utilities.js');
-const sqlite = require('sqlite');
 
 Canvas.registerFont("font/BebasNeue Bold.ttf",{family:"BebasNeue Bold"})
 Canvas.registerFont("font/Mizo Arial.ttf",{family:"Mizo Arial"})
 
 module.exports = {
     desc:"Shows your profile (or other user's if tagged)",
-    async execute(client, message, param){
-        var db = await sqlite.open('./database.sqlite');
+    async execute(client, message, param, db){
         var pfMember
         if(message.mentions.members.size > 0){
             pfMember = message.mentions.members.first()

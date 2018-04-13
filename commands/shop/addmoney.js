@@ -1,12 +1,11 @@
 var path = require("path")
-var sqlite = require("sqlite");
 var util = require("../../utilities.js")
 const modRole = '🍬 Admin';
 const devRole = '🍬 Master Developer';
 
 module.exports = {
     desc:"This is a description",
-    async execute(client, message, param){
+    async execute(client, message, param, db){
         if (!message.member.roles.exists("name", modRole) && !message.member.roles.exists("name", devRole)) {
             message.channel.send({embed: {
                 color: 10181046,
@@ -55,8 +54,6 @@ module.exports = {
         }
         var id = message.author.id;
         if(message.mentions.users.size > 0) id = message.mentions.users.first().id;
-
-        var db = await sqlite.open('./database.sqlite');
         await db.run(`UPDATE exp SET money = money + ${parseInt(param[1])} WHERE id = ${id}`);
 
         message.channel.send(`**User defined had ${param[1]} added/subtraction from their account.**`)

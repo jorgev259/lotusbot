@@ -6,7 +6,7 @@ const sqlite = require("sqlite");
 let db;
 startDB();
 async function startDB(){
-	db = await sqlite.open('./database.sqlite');
+	db = await sqlite.open('../data/database.sqlite');
 	await db.run(`CREATE TABLE IF NOT EXISTS exp (id TEXT, color TEXT, exp, lastDaily TEXT, lvl INT, money INT, rank INT, bg TEXT, UNIQUE(id));
 				CREATE TABLE IF NOT EXISTS nicks (id TEXT, nick TEXT, UNIQUE(id));`)
 }
@@ -119,7 +119,7 @@ client.on('message', async message => {
 			if(await util.permCheck(message,commandName, client)){				
 				if(command == undefined){command = {}; command.type = param[0].toLowerCase()};
 				if (!client.commands.has(command.type)) return;				
-				client.commands.get(command.type).execute(client, message, param);
+				client.commands.get(command.type).execute(client, message, param, db);
 			}
 		}
 

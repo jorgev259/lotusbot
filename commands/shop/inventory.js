@@ -1,12 +1,10 @@
 const Discord = require('discord.js');
 var util = require("../../utilities.js")
-var sqlite = require("sqlite");
 
 module.exports = {
     desc:"Displays your bought items",
-    async execute(client, message, param){
+    async execute(client, message, param, db){
             await util.userCheck(message.author.id,client);
-            const db = await sqlite.open("./database.sqlite");
             var userInfo = await db.get(`SELECT bg FROM exp WHERE id = ${message.author.id}`);
 
             var inventoryEmbed = new Discord.MessageEmbed();

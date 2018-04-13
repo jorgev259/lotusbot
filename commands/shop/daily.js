@@ -1,11 +1,9 @@
 const moment = require('moment');
-var sql = require("sqlite");
 var util = require("../../utilities.js");
 
 module.exports = {
     desc:"This is a description",
-    async execute(client, message, param){
-        const db = await sql.open("./database.sqlite");
+    async execute(client, message, param, db){
         var userInfo = await db.get(`SELECT money,lastDaily FROM exp WHERE id = ${message.author.id}`);
 
         var embed = {

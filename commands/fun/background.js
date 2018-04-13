@@ -1,13 +1,11 @@
 var fs = require("fs");
 var util = require('../../utilities.js');
 var glob = require('glob');
-const sql = require("sqlite");
 
 module.exports = {
     desc:"Equips a background to your profile. Usage: >bg <code>",
     alias:["bg"],
-    async execute(client, message, param){
-        var db = await sqlite.open('./database.sqlite');
+    async execute(client, message, param, db){
         if(param.length > 1){
             var code = param[1].toUpperCase();
             if(glob.sync(`images/backgrounds/**/${code}*`).length || code=="DEFAULT"){
