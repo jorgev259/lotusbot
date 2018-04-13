@@ -48,8 +48,7 @@ module.exports = {
 		return false;
 	},
 
-	async userCheck(id,client){
-		const db = await sql.open("./database.sqlite");
+	async userCheck(id,client,db){
 		let member = await client.guilds.first().members.fetch(id);
 		if(member.user.bot) return;
 
@@ -84,10 +83,9 @@ module.exports = {
         }
     },*/
 
-	async exp(msg,client){
+	async exp(msg,client,db){
 		if(cooldown[msg.author.id] == undefined && !msg.author.bot && msg.member){ //checks if the user is not on cooldown and filters bots out
-			await module.exports.userCheck(msg.author.id,client)
-			const db = await sql.open("./database.sqlite");
+			await module.exports.userCheck(msg.author.id,client,db)
 
 			var userInfo = await db.get(`SELECT id,lvl,rank,money,exp FROM exp WHERE id = ${msg.author.id}`);
 

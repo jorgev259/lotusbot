@@ -4,7 +4,7 @@ var util = require("../../utilities.js")
 module.exports = {
     desc:"Displays your bought items",
     async execute(client, message, param, db){
-            await util.userCheck(message.author.id,client);
+            await util.userCheck(message.author.id,client,db);
             var userInfo = await db.get(`SELECT bg FROM exp WHERE id = ${message.author.id}`);
 
             var inventoryEmbed = new Discord.MessageEmbed();

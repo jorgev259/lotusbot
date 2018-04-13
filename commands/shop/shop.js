@@ -8,7 +8,7 @@ module.exports = {
     desc:"This is a description",
     alias:["buy"],
     async execute(client, message, param, db){
-        await util.userCheck(message.author.id,client);
+        await util.userCheck(message.author.id,client,db);
         let items = client.data.items;
 
         if (!param[1]){               

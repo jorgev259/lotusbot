@@ -83,7 +83,7 @@ client.on('ready', async () => {
 });
 
 client.on("guildMemberAdd", async member => {
-	await util.userCheck(member.id,client)
+	await util.userCheck(member.id,client,db)
 	var name = member.user.username;
 	if(client.data.nicks[member.id] == undefined) {
 		member.setNickname(name + " ☕");
@@ -101,7 +101,7 @@ client.on("guildMemberUpdate", async (oldMember,newMember) => {
 })
 
 client.on('message', async message => {
-		await util.exp(message,client);
+		await util.exp(message,client, db);
 		var prefix = ">";
 
 		if(message.content.startsWith(prefix) || message.content.startsWith("<@!" + client.user.id + ">")){			
