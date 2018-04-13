@@ -8,7 +8,8 @@ startDB();
 async function startDB(){
 	db = await sqlite.open('data/database.sqlite');
 	await db.run(`CREATE TABLE IF NOT EXISTS exp (id TEXT, color TEXT, exp, lastDaily TEXT, lvl INT, money INT, rank INT, bg TEXT, UNIQUE(id));
-				CREATE TABLE IF NOT EXISTS nicks (id TEXT, nick TEXT, UNIQUE(id));`)
+				CREATE TABLE IF NOT EXISTS nicks (id TEXT, nick TEXT, UNIQUE(id));
+				CREATE TABLE IF NOT EXISTS inventory (id TEXT, type TEXT, item TEXT;`)
 }
 var colors = ["pink","d-blue","purple","l-blue","green","red"];
 var util = require('./utilities.js');
