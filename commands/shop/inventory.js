@@ -11,7 +11,7 @@ module.exports = {
             name: message.member.displayName,
             icon_url: message.author.displayAvatarURL(),
         }
-
+        let userInfo = await db.get(`SELECT bg FROM exp WHERE id = ${message.author.id}`);
 
         var bgs = "";
         var bgsArray = (await db.all(`SELECT item from inventory WHERE id=${message.author.id} AND type="bgs"`)).map(e=>e.item);
