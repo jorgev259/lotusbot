@@ -80,7 +80,7 @@ module.exports = {
                     var y = 430 + (75*row);
                     var x = 775 + (80*column);
                        
-                    img.src=fs.readFileSync(glob.sync(`images/badges/**//*${badge.item}*`)[0]);
+                    img.src=fs.readFileSync(glob.sync(`images/badges/**/*${badge.item}*`)[0]);
                     pfCtx.drawImage(img,x,y,70,70);
                 })
             }
