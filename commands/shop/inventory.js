@@ -17,9 +17,9 @@ module.exports = {
         var bgsArray = (await db.all(`SELECT item from inventory WHERE id=${message.author.id} AND type="bgs"`)).map(e=>e.item);
         bgsArray.forEach(element => {
             if(element.item == userInfo.bg){
-                bgs += `**${element.item}**\n`
+                bgs += `**${element}**\n`
             }else{
-                bgs += `${element.item}\n`
+                bgs += `${element}\n`
             }
         });
         if(bgsArray.length>0) inventoryEmbed.addField("Backgrounds",bgs);
@@ -28,10 +28,10 @@ module.exports = {
         let invArray = (await db.all(`SELECT item from inventory WHERE id=${message.author.id} AND type="badges"`)).map(e=>e.item);
         let badgesArray = (await db.all(`SELECT item from badges WHERE id=${message.author.id}`)).map(e=>e.item);
         invArray.forEach(element => {
-            if(badgesArray.includes(element.type)){
-                badges += `**${element.type}**\n`
+            if(badgesArray.includes(element)){
+                badges += `**${element}**\n`
             }else{
-                badges += `${element.type}\n`
+                badges += `${element}\n`
             }
         });
         if(badges.length>0) inventoryEmbed.addField("Badges",badges);
