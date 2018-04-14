@@ -8,7 +8,7 @@ module.exports = {
         if(isNaN(param[1])) return message.channel.send(`Invalid number`) 
 
         var slot = parseInt(param[1]) - 1;
-        await db.run(`DELETE FROM badges WHERE EXISTS (SELECT * FROM badges WHERE id = ${message.author.id} AND number=${slot});`)
+        await db.run(`DELETE FROM badges WHERE id = ${message.author.id} AND number=${slot});`)
         message.channel.send(`The slot number ${slot + 1} has been emptied!`);                    
     }
 }
