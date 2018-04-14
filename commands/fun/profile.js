@@ -36,7 +36,7 @@ module.exports = {
             dest: `../temp/${pfMember.id}.png`
         }
 
-        download.image(options).then(({ filename, image }) => {
+        download.image(options).then(async ({ filename, image }) => {
             var id = pfMember.id
             var profile = Canvas.createCanvas(1059,787);
             var pfCtx = profile.getContext('2d');
@@ -71,20 +71,19 @@ module.exports = {
             pfCtx.fillText(exp.exp.toString() + " / " + levels[exp.lvl - 1].exp, 516,670);
             pfCtx.fillText(exp.money, 516,708);
 
-            /*if(exp.badges && exp.badges.length > 0){
-                for(var i=0;i<exp.badges.length;i++){
-                    if(exp.badges[i]){
-                        var row = 0;
-                        if(i>2) row += Math.floor(i/3);
-                        var column = i - (row*3)
-                        var y = 430 + (75*row);
-                        var x = 775 + (80*column);
-                           
-                        img.src=fs.readFileSync(glob.sync(`images/badges/**//*${exp.badges[i]}*`)[0]);
-                        pfCtx.drawImage(img,x,y,70,70);
-                    }
-                }
-            }*/
+            let badges = (await db.all(`SELECT item from inventory WHERE id=${message.author,id} AND type="badges"`)).map(e=>e.item);
+            if(badges.length > 0){
+                badges.forEach(badge => {
+                    var row = 0;
+                    if(badge.number > 2) row += Math.floor(i/3);
+                    var column = badge.number - (row*3)
+                    var y = 430 + (75*row);
+                    var x = 775 + (80*column);
+                       
+                    img.src=fs.readFileSync(glob.sync(`images/badges/**//*${badge.item}*`)[0]);
+                    pfCtx.drawImage(img,x,y,70,70);
+                })
+            }
             message.channel.send(new MessageAttachment(profile.toBuffer(),"profile.png"))
         })
     }

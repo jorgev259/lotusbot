@@ -7,9 +7,10 @@ let db;
 startDB();
 async function startDB(){
 	db = await sqlite.open('data/database.sqlite');
-	await db.run(`CREATE TABLE IF NOT EXISTS exp (id TEXT, color TEXT, exp, lastDaily TEXT, lvl INT, money INT, rank INT, bg TEXT, UNIQUE(id);`);
+	await db.run(`CREATE TABLE IF NOT EXISTS exp (id TEXT, color TEXT, exp, lastDaily TEXT, lvl INT, money INT, rank INT, bg TEXT, UNIQUE(id));`);
 	await db.run(`CREATE TABLE IF NOT EXISTS nicks (id TEXT, nick TEXT, UNIQUE(id));`);
 	await db.run(`CREATE TABLE IF NOT EXISTS inventory (id TEXT, type TEXT, item TEXT);`);
+	await db.run(`CREATE TABLE IF NOT EXISTS badges (id TEXT, number INTEGER, item TEXT);`);
 }
 var colors = ["pink","d-blue","purple","l-blue","green","red"];
 var util = require('./utilities.js');
@@ -88,7 +89,7 @@ client.on("guildMemberAdd", async member => {
 	var name = member.user.username;
 	if(client.data.nicks[member.id] == undefined) {
 		member.setNickname(name + " ☕");
-		//await db.run("INSERT OR REPLACE INTO nicks (id,nick) VALUES (?,?)", [member.id, name + " ☕"]);
+		await db.run("INSERT OR REPLACE INTO nicks (id,nick) VALUES (?,?)", [member.id, name + " ☕"]);
 	}else{
 		member.setNickname(client.data.nicks[member.id],"Locked nickname");
 	}
