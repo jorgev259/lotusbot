@@ -71,7 +71,7 @@ module.exports = {
             pfCtx.fillText(exp.exp.toString() + " / " + levels[exp.lvl - 1].exp, 516,670);
             pfCtx.fillText(exp.money, 516,708);
 
-            let badges = (await db.all(`SELECT item from inventory WHERE id=${id} AND type="badges"`)).map(e=>e.item);
+            let badges = (await db.all(`SELECT item,number from badges WHERE id=${id}`)).map(e=>e.item);
             if(badges.length > 0){
                 badges.forEach(badge => {
                     var row = 0;
