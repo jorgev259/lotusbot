@@ -14,8 +14,10 @@ module.exports = {
                          
         if(!glob.sync(`images/badges/**/${name}*`).length) return message.channel.send(`The badge ${name} doesnt exist. Check https://www.fandomcircle.com/shop-1#PROFILES for more info`)
         
-        let badges = (await db.all(`SELECT item from inventory WHERE id=${message.author.id} AND type="badges"`)).map(e=>e.item);
-        if(!badges.includes(name)) return message.channel.send("Sorry, you dont own this badge ;-;");
+        let badgesInv = (await db.all(`SELECT item from inventory WHERE id=${message.author.id} AND type="badges"`)).map(e=>e.item);
+        let badges = (await db.all(`SELECT item from badges WHERE id=${message.author.id}`)).map(e=>e.item);
+        
+        if(!badgesInv.includes(name)) return message.channel.send("Sorry, you dont own this badge ;-;");
         if(badges.includes(name)) return message.channel.send('You already have that badge equipped');
                     
         await db.run("INSERT OR REPLACE INTO badges (id,number,item) VALUES (?,?)", [message.author.id,slot,name]);
