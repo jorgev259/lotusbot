@@ -14,7 +14,7 @@ module.exports = {
 
 
         var bgs = "";
-        var bgsArray = (await db.all(`SELECT item from inventory WHERE id=${message.author,id} AND type="bgs"`)).map(e=>e.item);
+        var bgsArray = (await db.all(`SELECT item from inventory WHERE id=${message.author.id} AND type="bgs"`)).map(e=>e.item);
         bgsArray.forEach(element => {
             if(element.item == userInfo.bg){
                 bgs += `**${element.item}**\n`
