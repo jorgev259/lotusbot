@@ -98,7 +98,7 @@ client.on("guildMemberAdd", async member => {
 
 client.on("guildMemberUpdate", async (oldMember,newMember) => {
 	if(oldMember.nickname != newMember.nickname){
-		//await db.run("INSERT OR REPLACE INTO nicks (id,nick) VALUES (?,?)", [member.id, newMember.nickname]);
+		await db.run("INSERT OR REPLACE INTO nicks (id,nick) VALUES (?,?)", [member.id, newMember.nickname]);
 	}
 })
 
