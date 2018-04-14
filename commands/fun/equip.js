@@ -5,7 +5,7 @@ var glob = require('glob');
 module.exports = {
     desc:"Equips a badge in your profile. Usage <badge> <1-9>",
     alias:["badge"],
-    async execute(client, message, param){
+    async execute(client, message, param, db){
         if(param.length <= 2) return message.channel.send("You forgot the name of the badge or the number of the slot. Usage: >equip <name> <slot>");
         if(isNaN(param[param.length - 1])) return message.channel.send(`Invalid number`)
                 
