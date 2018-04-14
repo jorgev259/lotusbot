@@ -25,8 +25,8 @@ module.exports = {
         if(bgsArray.length>0) inventoryEmbed.addField("Backgrounds",bgs);
             
         var badges = "";
-        let invArray = (await db.all(`SELECT item from inventory WHERE id=${message.author,id} AND type="badges"`)).map(e=>e.item);
-        let badgesArray = (await db.all(`SELECT item from badges WHERE id=${message.author,id}`)).map(e=>e.item);
+        let invArray = (await db.all(`SELECT item from inventory WHERE id=${message.author.id} AND type="badges"`)).map(e=>e.item);
+        let badgesArray = (await db.all(`SELECT item from badges WHERE id=${message.author.id}`)).map(e=>e.item);
         invArray.forEach(element => {
             if(badgesArray.includes(element.type)){
                 badges += `**${element.type}**\n`
