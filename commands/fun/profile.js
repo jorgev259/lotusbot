@@ -75,7 +75,7 @@ module.exports = {
             if(badges.length > 0){
                 badges.forEach(badge => {
                     var row = 0;
-                    if(badge.number > 2) row += Math.floor(i/3);
+                    if(badge.number > 2) row += Math.floor(badge.number/3);
                     var column = badge.number - (row*3)
                     var y = 430 + (75*row);
                     var x = 775 + (80*column);
