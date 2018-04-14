@@ -9,6 +9,6 @@ module.exports = {
 
         var slot = parseInt(param[1]) - 1;
         await db.run(`DELETE FROM badges WHERE EXISTS (SELECT * FROM badges WHERE id = ${message.author.id} AND number=${slot});`)
-        message.channel.send(`The slot number ${slot} has been emptied!`);                    
+        message.channel.send(`The slot number ${slot + 1} has been emptied!`);                    
     }
 }
