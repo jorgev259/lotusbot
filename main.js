@@ -49,8 +49,8 @@ for (const file of commandFiles) {
 
 client.on('ready', async () => {
 	await util.log(client,'I am ready!');
-	let colorRoles = {};
-	let groupRoles = {};
+	let colorRoles = {}; //colorRoles[color][rank]
+	let groupRoles = {}; //groupRoles[color]
 
 	let guild = client.guilds.first();
 	let roles = guild.roles.filter(role  => role.position < guild.roles.find('name','//Colors').position && role.position > guild.roles.find('name','//End Colors').position).sort(function (a, b) {return a.position- b.position})
@@ -61,13 +61,13 @@ client.on('ready', async () => {
 			colorRoles[colors[Object.keys(colorRoles).length]] = section;
 			section = [];
 		}else{
-			section.push(role);
+			section.push(role.id);
 		}
 	})
 	colorRoles[colors[Object.keys(colorRoles).length]] = section;
 
 	roles2.forEach(role => {	
-		groupRoles[colors[Object.keys(groupRoles).length]] = role;
+		groupRoles[colors[Object.keys(groupRoles).length]] = role.id;
 	})
 
 	client.data.colorRoles = colorRoles;
@@ -138,7 +138,7 @@ client.on('message', async message => {
 						message.member.setNickname(namechange,"Name Change sponsored by Monokuma").then(()=>{
 							util.save(client.data.nicks,"nicks").then(()=>{
 								message.delete(namechange);
-								message.member.roles.remove([message.guild.roles.find("name","⭕ Nickname Change")],"Nickname change")
+								message.member.roles.remove([message.guild.roles.find("name","⭕")],"Nickname change")
 							})							
 						})
 					}else{

@@ -63,7 +63,7 @@ module.exports = {
 		}
 
 		if(!member.roles.exists(r => r.name.includes("Customers"))){
-			let allRoles = [client.data.colorRoles[userInfo.color][userInfo.rank].id, client.data.groupRoles[userInfo.color].id];
+			let allRoles = [client.data.colorRoles[userInfo.color][userInfo.rank], client.data.groupRoles[userInfo.color]];
 			let roles = allRoles.filter(id => !member.roles.has(id))
 			await member.roles.add(roles,"User join");
 		}
