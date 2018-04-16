@@ -11,6 +11,7 @@ Canvas.registerFont("font/Mizo Arial.ttf",{family:"Mizo Arial"})
 
 module.exports = {
     desc:"Shows your profile (or other user's if tagged)",
+    alias:["balance"],
     async execute(client, message, param, db){
         var pfMember
         if(message.mentions.members.size > 0){
