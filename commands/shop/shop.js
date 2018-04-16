@@ -57,32 +57,24 @@ module.exports = {
                     var m = collected.first();
                     if(!client.data.items["embed pack"].packs.hasOwnProperty(m.content.toLowerCase())) return m.channel.send(`Couldnt find the pack ${m.content}`);
 
-                    var item = client.data.items["embed pack"].packs[m.content.toLowerCase()];
-                    //if(unavailable.includes(number)) return m.author.send(`The background code ${number} is no longer available for purchase. Check https://www.fandomcircle.com/shop-1#PROFILES for more info`)                                                  
+                    var item = client.data.items["embed pack"].packs[m.content.toLowerCase()];                               
                     if(user.money < item.price) return m.author.send("You cant afford this embed pack");
 
-                    if(!message.member.roles.exists("name",item.role)){
-                        user.money += -item.price;
-                        await db.run(`UPDATE exp SET money =${user.money} WHERE id = ${message.author.id}`);
-                        message.member.roles.add(message.guild.roles.find("name", item.role));
-                        message.author.send('**You bought ' + itemName + '!**');
-                        //message.guild.channels.find("name",item.channel).send(`<@${message.author.id}>`).then(m=>m.delete({"reason":"New channel ping"}))
-                    }else{
-                        message.author.send('**You already have this embed pack!**')
-                    }
+                    if(message.member.roles.exists("name",item.role)) message.author.send('**You already have this embed pack!**');
+                        
+                    await db.run(`UPDATE exp SET money = money - ${item.price} WHERE id = ${message.author.id}`);
+                    message.member.roles.add(message.guild.roles.find("name", item.role));
+                    message.author.send('**You bought ' + itemName + '!**');
+                    //message.guild.channels.find("name",item.channel).send(`<@${message.author.id}>`).then(m=>m.delete({"reason":"New channel ping"}))
                 })                              
                 break;
 
             case "nickname change":
-                if(!message.member.roles.exists("name",item.role)){
-                    user.money += -itemPrice;
-                    message.member.roles.add([message.guild.roles.find("name", item.role)],"Purchase from the shop");
-                    message.author.send('**You bought ' + itemName + '!**');
-                    message.guild.channels.find("name",item.channel).send(`<@${message.author.id}>`).then(m=>m.delete({"reason":"New channel ping"}))
-                    await db.run(`UPDATE exp SET money =${user.money} WHERE id = ${message.author.id}`);
-                }else{
-                    message.author.send('**You already have a ' + itemName + ' active!**')
-                }
+                if(message.member.roles.exists("name",item.role)) message.author.send('**You already have a ' + itemName + ' active!**');
+                    await message.member.roles.add([message.guild.roles.find("name", item.role)],"Purchase from the shop");
+                    await db.run(`UPDATE exp SET money = money - ${itemPrice} WHERE id = ${message.author.id}`);
+                    await message.author.send('**You bought ' + itemName + '!**');
+                    message.guild.channels.find("name",item.channel).send(`<@${message.author.id}>`).then(m=>m.delete({"reason":"New channel ping"}))                   
                 break;
 
             case "background":
@@ -94,27 +86,23 @@ module.exports = {
                     var unavailable = client.data.unavailable.bgs;
                     var number = m.content.split(" ")[0].toUpperCase();
 
-                    glob('../akira/images/backgrounds/**/*', async (err,fileArray) => {
-                        var files = {};
-                        fileArray.forEach(function(i){                                        
-                            var splitFile = i.split("/")
-                            files[splitFile[splitFile.length - 1].split(".")[0]] = parseInt(splitFile[splitFile.length - 2]);
-                        }) 
+                    var fileArray = glob.sync("images/backgrounds/**/*");
+                    var files = {};
+                    fileArray.forEach(function(i){                                        
+                        var splitFile = i.split("/")
+                        files[splitFile[splitFile.length - 1].split(".")[0]] = parseInt(splitFile[splitFile.length - 2]);
+                    }) 
 
-                        if(files[number] == undefined) return m.author.send(`The background code ${number} doesnt exist or is no longer available for purchase. Check https://www.fandomcircle.com/shop-1#PROFILES for more info`)
-                        if(unavailable.includes(number)) return m.author.send(`The background code ${number} is no longer available for purchase. Check https://www.fandomcircle.com/shop-1#PROFILES for more info`)
-                        if(client.data.inventory[m.author.id].bgs.includes(number)) return m.author.send("You already have this background. Set it using >background <code>")                                                    
-                        if(user.money < files[number]) return m.author.send("You cant afford this background");
+                    if(files[number] == undefined) return m.author.send(`The background code ${number} doesnt exist or is no longer available for purchase. Check https://www.fandomcircle.com/shop-1#PROFILES for more info`)
+                    if(unavailable.includes(number)) return m.author.send(`The background code ${number} is no longer available for purchase. Check https://www.fandomcircle.com/shop-1#PROFILES for more info`)
+                    
+                    let bgs = (await db.all(`SELECT item from inventory WHERE id=${message.author.id} AND type="bgs"`)).map(e=>e.item);
+                    if(bgs.includes(number)) return m.author.send("You already have this background. Set it using >background <code>")                                                    
+                    if(user.money < files[number]) return m.author.send("You cant afford this background");
 
-                        user.money += -files[number];
-                        client.data.inventory[m.author.id].bgs.push(number);
-                                            
-                        var msg = await message.author.send("Updating your profile (0/2)")
-                        await db.run(`UPDATE exp SET money =${user.money} WHERE id = ${message.author.id}`);
-                        msg.edit("Updating your profile (1/2)");
-                        await util.save(client.data.inventory,"inventory")
-                        msg.edit("Thanks for buying this background ^.^. Set it using >background <code>");
-                    })
+                    await db.run("INSERT INTO inventory (id,type,item) VALUES (?,?,?)", [message.author.id, "bgs", number])
+                    await db.run(`UPDATE exp SET money = money - ${files[number]} WHERE id = ${message.author.id}`);
+                    message.channel.send("Thanks for buying this background ^.^. Set it using >background <code>");
                 })                                                                                          
                 break;
 
@@ -132,22 +120,20 @@ module.exports = {
                         fileArray.forEach(function(i){
                             var splitFile = i.split("/")
                             files[splitFile[splitFile.length - 1].split(".")[0]] = parseInt(splitFile[splitFile.length - 2]);
-                        }) 
+                        })
+                        
+                        let badges = (await db.all(`SELECT item from inventory WHERE id=${message.author.id} AND type="badges"`)).map(e=>e.item);
 
                         if(files[number] == undefined) return m.author.send(`The badge ${number} doesnt exist or is no longer available for purchase. Check https://www.fandomcircle.com/shop-1#PROFILES for more info`)
                         if(unavailable.includes(number)) return m.author.send(`The badge ${number} is no longer available for purchase. Check https://www.fandomcircle.com/shop-1#PROFILES for more info`)
-                        if(client.data.inventory[m.author.id].badges.includes(number)) return m.author.send("You already have this badge. Set it using >equip <position> <badge>")
+                        if(badges.includes(number)) return m.author.send("You already have this badge. Set it using >equip <position> <badge>")
                                                     
                         if(user.money < files[number]) return m.author.send("You cant afford this badge");
 
-                        user.money += -files[number];
-                        client.data.inventory[m.author.id].badges.push(number);
+                        await db.run("INSERT INTO inventory (id,type,item) VALUES (?,?,?)", [message.author.id, "bgs", number]);
+                        await db.run(`UPDATE exp SET money = money - ${files[number]} WHERE id = ${message.author.id}`);
 
-                        var msg = await message.author.send("Updating your profile (0/2)")
-                        await db.run(`UPDATE exp SET money =${user.money} WHERE id = ${message.author.id}`);
-                        await msg.edit("Updating your profile (1/2)");
-                        await util.save(client.data.inventory,"inventory")
-                        msg.edit("Thanks for buying this badge ^.^. Set it using >equip <badge> <position>");
+                        message.channel.send("Thanks for buying this badge ^.^. Set it using >equip <badge> <position>");
                     })
                 })
                 break;
