@@ -3,6 +3,7 @@ var path = require("path")
 var util = require("../../utilities.js")
 const fs = require('fs');
 var glob = require('glob');
+var colors = ["pink","d-blue","purple","l-blue","green","red"];
 
 module.exports = {
     desc:"This is a description",
@@ -81,7 +82,7 @@ module.exports = {
                 var proposal = await message.author.send("Write the code of the desired background (You can see them here https://www.fandomcircle.com/shop-1#PROFILES)")
                 var filter = m => m.author.id == message.author.id;
                 proposal.channel.awaitMessages(filter, { max: 1 })
-                .then(collected => {
+                .then(async collected => {
                     var m = collected.first();
                     var unavailable = client.data.unavailable.bgs;
                     var number = m.content.split(" ")[0].toUpperCase();
@@ -135,6 +136,30 @@ module.exports = {
 
                         message.channel.send("Thanks for buying this badge ^.^. Set it using >equip <badge> <position>");
                     })
+                })
+                break;
+
+            case "color change":
+                //var colors = ["pink","d-blue","purple","l-blue","green","red"];
+                message.author.send("React with the desired color").then(proposal => {
+                    const reacts = [(await proposal.react("")).emoji.id, 
+                                    (await proposal.react("")).emoji.id, 
+                                    (await proposal.react("")).emoji.id, 
+                                    (await proposal.react("")).emoji.id, 
+                                    (await proposal.react("")).emoji.id, 
+                                    (await proposal.react("")).emoji.id];
+                    
+                    const filter = (reaction, user) => user.id === message.author.id;
+                    let reactions = await message.awaitReactions(filter, { max: 1 });
+
+                    let newColor = colors[reacts.indexOf(reactions.first().emoji.id)]
+                    const { rank, color } = await db.get(`SELECT rank,color FROM exp WHERE id = ${message.author.id}`);
+
+                    await message.member.roles.remove([client.data.colorRoles[color][rank], client.data.groupRoles[color]]);
+                    await message.member.roles.add([client.data.colorRoles[newColor][rank], client.data.groupRoles[newColor]]);
+                    await db.run(`UPDATE exp SET money = money - ${itemPrice}, color = ${color} WHERE id = ${message.author.id}`);
+                    await proposal.channel.send("Color change successful!");
+                    proposal.delete();
                 })
                 break;
         }    

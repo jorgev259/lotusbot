@@ -26,6 +26,11 @@
 		"desc":"Allows you to change your nickname",
 		"channel":"nickname-change",
 		"role":"⭕"
+    },
+    "color change":{
+		"name":"Color Change",
+		"price":"3000",
+		"desc":"Allows you to change the color of your name"
 	},
 	"background":{
 		"name":"Background",
