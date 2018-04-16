@@ -1,6 +1,6 @@
-function deletem(msg){
+function deletem(param, msg){
     msg.delete(); 
-    return "";
+    return param.slice(1,param.length);
 };
 
 module.exports = {
