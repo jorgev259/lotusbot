@@ -1,5 +1,5 @@
 function deletem(msg){
-    message.delete(); 
+    msg.delete(); 
     return "";
 };
 
