@@ -1,4 +1,7 @@
-//var commands = require("../../data/commands.json");
+function deletem(msg){
+    message.delete(); 
+    return "";
+};
 
 module.exports = {
     execute(client, message, param){
