@@ -85,7 +85,7 @@ module.exports = {
 
 	async exp(msg,client,db){
 		if(cooldown[msg.author.id] == undefined && !msg.author.bot && msg.member){ //checks if the user is not on cooldown and filters bots out
-			var userInfo = await db.get(`SELECT id,lvl,rank,money,exp FROM exp WHERE id = ${msg.author.id}`);
+			var userInfo = await db.get(`SELECT id,lvl,rank,money,exp,color FROM exp WHERE id = ${msg.author.id}`);
 
 			//adds random amount (15-25) of exp to the user
 			var randomExp = Math.floor(Math.random() * ((25-15)+1) + 15);
