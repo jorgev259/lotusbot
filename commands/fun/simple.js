@@ -11,7 +11,7 @@ module.exports = {
         else await hook.edit({'avatar': message.author.displayAvatarURL()}) 
         message.delete();     
         hook.sendSlackMessage({
-            'username': message.author.username,
+            'username': message.member.nickname,
             'text': eval("`" + command.content + "`")
         }).catch(console.error);   
     }
