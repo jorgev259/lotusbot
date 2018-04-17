@@ -1,16 +1,18 @@
-function deletem(msg){
-    msg.delete(); 
-    return "";
-};
-
 function params(param){
     return param.slice(1,param.length).join(" ");
 };
 
 module.exports = {
-    execute(client, message, param){
+    async execute(client, message, param){
         var commands = client.data.commands;
         var command = commands[param[0].toLowerCase()];
-        message.channel.send(eval("`" + command.content + "`"));
+
+        let hook = await message.channel.createWebhook("simple", { avatar: message.author.displayAvatarURL()});        
+        await hook.sendSlackMessage({
+            'username': message.member.nickname,
+            'text': eval("`" + command.content + "`")
+        });
+        message.delete();
+        hook.delete();
     }
 }
