@@ -1,7 +1,10 @@
-function deletem(param, msg, flag){
+function deletem(msg){
     msg.delete(); 
-    if(flag) return param.slice(1,param.length).join(" ");
-    else return "";
+    return "";
+};
+
+function params(param){
+    return param.slice(1,param.length).join(" ");
 };
 
 module.exports = {
