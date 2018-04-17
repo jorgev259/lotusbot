@@ -51,7 +51,7 @@ module.exports = {
 
         switch(itemName){
             case "embed pack":
-                var proposal = await message.author.send("Write the name of the desired pack (You can see them here https://www.fandomcircle.com/shop-1#PROFILES)")
+                var proposal = await message.author.send("Write the name of the desired pack (You can see them here https://fandomcircle.com/shop")
                 var filter = m => m.author.id == message.author.id;
                 proposal.channel.awaitMessages(filter, { max: 1 })
                 .then(async collected => {
@@ -79,7 +79,7 @@ module.exports = {
                 break;
 
             case "background":
-                var proposal = await message.author.send("Write the code of the desired background (You can see them here https://www.fandomcircle.com/shop-1#PROFILES)")
+                var proposal = await message.author.send("Write the code of the desired background (You can see them here https://fandomcircle.com/backgrounds)")
                 var filter = m => m.author.id == message.author.id;
                 proposal.channel.awaitMessages(filter, { max: 1 })
                 .then(async collected => {
@@ -94,8 +94,8 @@ module.exports = {
                         files[splitFile[splitFile.length - 1].split(".")[0]] = parseInt(splitFile[splitFile.length - 2]);
                     }) 
 
-                    if(files[number] == undefined) return m.author.send(`The background code ${number} doesnt exist or is no longer available for purchase. Check https://www.fandomcircle.com/shop-1#PROFILES for more info`)
-                    if(unavailable.includes(number)) return m.author.send(`The background code ${number} is no longer available for purchase. Check https://www.fandomcircle.com/shop-1#PROFILES for more info`)
+                    if(files[number] == undefined) return m.author.send(`The background code ${number} doesnt exist or is no longer available for purchase. Check https://fandomcircle.com/backgrounds for more info`)
+                    if(unavailable.includes(number)) return m.author.send(`The background code ${number} is no longer available for purchase. Check https://fandomcircle.com/backgrounds for more info`)
                     
                     let bgs = (await db.all(`SELECT item from inventory WHERE id=${message.author.id} AND type="bgs"`)).map(e=>e.item);
                     if(bgs.includes(number)) return m.author.send("You already have this background. Set it using >background <code>")                                                    
@@ -108,7 +108,7 @@ module.exports = {
                 break;
 
             case "badges":
-                message.author.send("Write the code of the desired badge (You can see them here https://www.fandomcircle.com/shop-1#PROFILES)").then(proposal => {
+                message.author.send("Write the code of the desired badge (You can see them here https://fandomcircle.com/badges)").then(proposal => {
                     var filter = m => m.author.id == message.author.id;
                     proposal.channel.awaitMessages(filter, { max: 1 })
                     .then(async collected => {
@@ -125,8 +125,8 @@ module.exports = {
                         
                         let badges = (await db.all(`SELECT item from inventory WHERE id=${message.author.id} AND type="badges"`)).map(e=>e.item);
 
-                        if(files[number] == undefined) return m.author.send(`The badge ${number} doesnt exist or is no longer available for purchase. Check https://www.fandomcircle.com/shop-1#PROFILES for more info`)
-                        if(unavailable.includes(number)) return m.author.send(`The badge ${number} is no longer available for purchase. Check https://www.fandomcircle.com/shop-1#PROFILES for more info`)
+                        if(files[number] == undefined) return m.author.send(`The badge ${number} doesnt exist or is no longer available for purchase. Check https://fandomcircle.com/badges for more info`)
+                        if(unavailable.includes(number)) return m.author.send(`The badge ${number} is no longer available for purchase. Check https://fandomcircle.com/badges for more info`)
                         if(badges.includes(number)) return m.author.send("You already have this badge. Set it using >equip <position> <badge>")
                                                     
                         if(user.money < files[number]) return m.author.send("You cant afford this badge");
