@@ -142,7 +142,7 @@ module.exports = {
 
 								if(!(msg.member.nickname.endsWith("🔰") || msg.member.nickname.endsWith("🍬") || msg.member.nickname.endsWith("🔧") || msg.member.nickname.endsWith("✨") || msg.member.nickname.endsWith("🧣") || msg.member.nickname.endsWith("🎬") || msg.member.nickname.endsWith("💎"))){
 									var nick = msg.member.nickname.split(' ');
-									nick[nick.length - 1] = newRoles[0].name.split(' ')[0];
+									nick[nick.length - 1] = client.guilds.first().roles.find("name", newRoles[0]).name.split(' ')[0];
 									msg.member.setNickname(nick.join(' '), 'Changed nickname emoji');
 								}
 
