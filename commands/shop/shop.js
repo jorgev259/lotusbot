@@ -150,16 +150,17 @@ module.exports = {
                                     (await proposal.react(client.emojis.find("name","red"))).emoji.id];
                     
                     const filter = (reaction, user) => user.id === message.author.id;
-                    let reactions = await message.awaitReactions(true, { max: 1 });
+                    const collector = message.createReactionCollector(filter, {max:1});
+                    collector.on('end', collected => {
+                        let newColor = colors[reacts.indexOf(collected.first().emoji.id)]
+                        const { rank, color } = await db.get(`SELECT rank,color FROM exp WHERE id = ${message.author.id}`);
 
-                    let newColor = colors[reacts.indexOf(reactions.first().emoji.id)]
-                    const { rank, color } = await db.get(`SELECT rank,color FROM exp WHERE id = ${message.author.id}`);
-
-                    await message.member.roles.remove([client.data.colorRoles[color][rank], client.data.groupRoles[color]]);
-                    await message.member.roles.add([client.data.colorRoles[newColor][rank], client.data.groupRoles[newColor]]);
-                    await db.run(`UPDATE exp SET money = money - ${itemPrice}, color = ${color} WHERE id = ${message.author.id}`);
-                    await proposal.channel.send("Color change successful!");
-                    proposal.delete();
+                        await message.member.roles.remove([client.data.colorRoles[color][rank], client.data.groupRoles[color]]);
+                        await message.member.roles.add([client.data.colorRoles[newColor][rank], client.data.groupRoles[newColor]]);
+                        await db.run(`UPDATE exp SET money = money - ${itemPrice}, color = ${color} WHERE id = ${message.author.id}`);
+                        await proposal.channel.send("Color change successful!");
+                        proposal.delete();                
+                    });                    
                 })
                 break;
         }    
