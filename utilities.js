@@ -53,15 +53,15 @@ module.exports = {
 		if(member.user.bot) return;
 
 		await db.run("INSERT OR IGNORE INTO exp (id,color,rank,lvl,exp,money,lastDaily,bg) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [member.id, colors[await random(0,colors.length-1)], 0, 1, 0, 0, "Not Collected", "DEFAULT"])		
-		const userInfo = await db.get(`SELECT * FROM exp WHERE id = ${member.id}`);
+		const userInfo = await db.get(`SELECT lvl,color,rank FROM exp WHERE id = ${member.id}`);
 		
 		let allRoles = [client.guilds.first().roles.find("name","――――― Levels ――――――").id, client.guilds.first().roles.find("name","―――― Bought Items ――――").id, client.guilds.first().roles.find("name","――――― Grouping ――――").id];
 		var rankRoles = member.roles.filter(role => role.name.startsWith('['));
 		if (rankRoles.size>1) await member.roles.remove(rankRoles);
 			
-		/*allRoles.push(client.guilds.first().roles.find("name",`[${userInfo.lvl}]`).id, client.data.colorRoles[userInfo.color][userInfo.rank], client.data.groupRoles[userInfo.color]);
+		allRoles.push(client.guilds.first().roles.find("name",`[${userInfo.lvl}]`).id, client.data.colorRoles[userInfo.color][userInfo.rank], client.data.groupRoles[userInfo.color]);
 		let roles = allRoles.filter(id => !member.roles.has(id))
-		await member.roles.add(roles,"User join");*/
+		await member.roles.add(roles,"User join");
 	},
 
 	react:function(msg){
