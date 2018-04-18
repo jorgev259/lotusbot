@@ -59,9 +59,9 @@ module.exports = {
 		var rankRoles = member.roles.filter(role => role.name.startsWith('['));
 		if (rankRoles.size>1) await member.roles.remove(rankRoles);
 			
-		allRoles.push(client.guilds.first().roles.find("name",`[${userInfo.lvl}]`).id, client.data.colorRoles[userInfo.color][userInfo.rank], client.data.groupRoles[userInfo.color]);
+		/*allRoles.push(client.guilds.first().roles.find("name",`[${userInfo.lvl}]`).id, client.data.colorRoles[userInfo.color][userInfo.rank], client.data.groupRoles[userInfo.color]);
 		let roles = allRoles.filter(id => !member.roles.has(id))
-		await member.roles.add(roles,"User join");
+		await member.roles.add(roles,"User join");*/
 	},
 
 	react:function(msg){
