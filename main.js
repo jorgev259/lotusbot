@@ -57,7 +57,7 @@ client.on('ready', async () => {
 	let roles2 = guild.roles.filter(role  => role.position < guild.roles.find('name','//Groups').position && role.position > guild.roles.find('name','//End Groups').position && !role.name.startsWith('🔮') && role.name != "--------").sort(function (a, b) {return a.position- b.position})
 	let section = [];
 	roles.forEach(role => {	
-		if(role.name == "--------"){
+		if(role.name == "- - - - - - - - - -"){
 			colorRoles[colors[Object.keys(colorRoles).length]] = section;
 			section = [];
 		}else{
