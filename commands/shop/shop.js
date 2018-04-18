@@ -142,12 +142,12 @@ module.exports = {
             case "color change":
                 //var colors = ["pink","d-blue","purple","l-blue","green","red"];
                 message.author.send("React with the desired color").then(async proposal => {
-                    const reacts = [(await proposal.react(client.emojis.emojis.get("435809856012681226"))).emoji.id, 
-                                    (await proposal.react(client.emojis.emojis.get("435809856012681226"))).emoji.id, 
-                                    (await proposal.react(client.emojis.emojis.get("435809856012681226"))).emoji.id, 
-                                    (await proposal.react(client.emojis.emojis.get("435809856012681226"))).emoji.id, 
-                                    (await proposal.react(client.emojis.emojis.get("435809856012681226"))).emoji.id, 
-                                    (await proposal.react(client.emojis.emojis.get("435809856012681226"))).emoji.id];
+                    const reacts = [(await proposal.react(client.emojis.get("435809856012681226"))).emoji.id, 
+                                    (await proposal.react(client.emojis.get("435809856012681226"))).emoji.id, 
+                                    (await proposal.react(client.emojis.get("435809856012681226"))).emoji.id, 
+                                    (await proposal.react(client.emojis.get("435809856012681226"))).emoji.id, 
+                                    (await proposal.react(client.emojis.get("435809856012681226"))).emoji.id, 
+                                    (await proposal.react(client.emojis.get("435809856012681226"))).emoji.id];
                     
                     const filter = (reaction, user) => user.id === message.author.id;
                     let reactions = await message.awaitReactions(filter, { max: 1 });
