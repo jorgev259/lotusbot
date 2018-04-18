@@ -12,7 +12,7 @@ const sql = require('sqlite');
 
 module.exports = {
 	async permCheck(message, commandName, client){
-		if(!message.member) message.member = await client.guilds.first().members.fetch(message.author.id)
+		if(!message.member) message.member = await client.guilds.get("289758148175200257").members.fetch(message.author.id)
 
 		if(client.data.perms[commandName] == undefined || message.member.roles.exists("name","🍬 Admin") ||  message.member.roles.exists("name","🍬 Master Developer"))return true;
 		var allowedChannel = true;
@@ -49,17 +49,17 @@ module.exports = {
 	},
 
 	async userCheck(id,client,db){
-		let member = await client.guilds.first().members.fetch(id);
+		let member = await client.guilds.get("289758148175200257").members.fetch(id);
 		if(member.user.bot) return;
 
 		await db.run("INSERT OR IGNORE INTO exp (id,color,rank,lvl,exp,money,lastDaily,bg) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [member.id, colors[await random(0,colors.length-1)], 0, 1, 0, 0, "Not Collected", "DEFAULT"])		
 		const userInfo = await db.get(`SELECT lvl,color,rank FROM exp WHERE id = ${member.id}`);
 		
-		let allRoles = [client.guilds.first().roles.find("name","――――― Levels ――――――").id, client.guilds.first().roles.find("name","―――― Bought Items ――――").id, client.guilds.first().roles.find("name","――――― Grouping ――――").id];
+		let allRoles = [client.guilds.get("289758148175200257").roles.find("name","――――― Levels ――――――").id, client.guilds.get("289758148175200257").roles.find("name","―――― Bought Items ――――").id, client.guilds.get("289758148175200257").roles.find("name","――――― Grouping ――――").id];
 		var rankRoles = member.roles.filter(role => role.name.startsWith('['));
 		if (rankRoles.size>1) await member.roles.remove(rankRoles);
 			
-		allRoles.push(client.guilds.first().roles.find("name",`[${userInfo.lvl}]`).id, client.data.colorRoles[userInfo.color][userInfo.rank], client.data.groupRoles[userInfo.color]);
+		allRoles.push(client.guilds.get("289758148175200257").roles.find("name",`[${userInfo.lvl}]`).id, client.data.colorRoles[userInfo.color][userInfo.rank], client.data.groupRoles[userInfo.color]);
 		let roles = allRoles.filter(id => !member.roles.has(id))
 		await member.roles.add(roles,"User join");
 	},
@@ -137,7 +137,7 @@ module.exports = {
 
 								if(!(msg.member.nickname.endsWith("🔰") || msg.member.nickname.endsWith("🍬") || msg.member.nickname.endsWith("🔧") || msg.member.nickname.endsWith("✨") || msg.member.nickname.endsWith("🧣") || msg.member.nickname.endsWith("🎬") || msg.member.nickname.endsWith("💎"))){
 									var nick = msg.member.nickname.split(' ');
-									nick[nick.length - 1] = client.guilds.first().roles.get(newRoles[0]).name.split(' ')[0];
+									nick[nick.length - 1] = client.guilds.get("289758148175200257").roles.get(newRoles[0]).name.split(' ')[0];
 									msg.member.setNickname(nick.join(' '), 'Changed nickname emoji');
 								}
 
@@ -173,7 +173,7 @@ module.exports = {
 				module.exports.log(client, `${day}.${month}.zip created`)
 		});
 
-		client.guilds.first().setIcon(`./images/serverpics/${day}.${month}.png`)
+		client.guilds.get("289758148175200257").setIcon(`./images/serverpics/${day}.${month}.png`)
 		.then(updated => {
 			client.data.info.lastPFP = moment().format('YYYY-MM-DD');
 			module.exports.save(client.data.info, 'info');
