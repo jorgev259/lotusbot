@@ -1,5 +1,5 @@
 module.exports = {
-    execute(client, message, param){
+    execute(client, message, param, db){
         console.log("example");
     }
 }

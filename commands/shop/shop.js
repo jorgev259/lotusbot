@@ -151,7 +151,7 @@ module.exports = {
                     
                     const filter = (reaction, user) => user.id === message.author.id;
                     const collector = message.createReactionCollector(filter, {max:1});
-                    collector.on('end', collected => {
+                    collector.on('end', async collected => {
                         let newColor = colors[reacts.indexOf(collected.first().emoji.id)]
                         const { rank, color } = await db.get(`SELECT rank,color FROM exp WHERE id = ${message.author.id}`);
 
