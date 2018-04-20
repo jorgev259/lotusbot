@@ -55,7 +55,7 @@ module.exports = {
 		await db.run("INSERT OR IGNORE INTO exp (id,color,rank,lvl,exp,money,lastDaily,bg) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [member.id, colors[await random(0,colors.length-1)], 0, 1, 0, 0, "Not Collected", "DEFAULT"])		
 		const userInfo = await db.get(`SELECT lvl,color,rank FROM exp WHERE id = ${member.id}`);
 		
-		let allRoles = [client.guilds.get("289758148175200257").roles.find("name","――――― Levels ――――――").id, client.guilds.get("289758148175200257").roles.find("name","―――― Bought Items ――――").id, client.guilds.get("289758148175200257").roles.find("name","――――― Grouping ――――").id];
+		let allRoles = ["436911207727759360", "436911218771492889", "436911235024420874", "436911244532777039", "436912027357806607",  "436912037147181076"];
 		var rankRoles = member.roles.filter(role => role.name.startsWith('['));
 		if (rankRoles.size>1) await member.roles.remove(rankRoles);
 			
