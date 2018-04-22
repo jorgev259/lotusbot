@@ -11,7 +11,8 @@ module.exports = {
         let hook;
         if(hooks.size == 0) hook = await message.channel.createWebhook("simple", { avatar: message.author.displayAvatarURL()});  
         else{
-            hook = await hook.edit({'avatar': message.author.displayAvatarURL()})
+            hook = hooks.first();
+            await hook.edit({'avatar': message.author.displayAvatarURL()})
         } 
         message.delete();     
         hook.sendSlackMessage({
