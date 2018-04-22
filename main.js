@@ -158,5 +158,5 @@ client.on('message', async message => {
 		}
 });
 
-process.on('unhandledRejection', err => {util.log(client,err.message)});
+process.on('unhandledRejection', err => {if(err.message != "Unknown User") util.log(client,err.stack)});
 client.login(client.data.tokens.akira);
