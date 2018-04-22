@@ -55,13 +55,13 @@ module.exports = {
 		await db.run("INSERT OR IGNORE INTO exp (id,color,rank,lvl,exp,money,lastDaily,bg) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [member.id, colors[await random(0,colors.length-1)], 0, 1, 0, 0, "Not Collected", "DEFAULT"])		
 		const userInfo = await db.get(`SELECT lvl,color,rank FROM exp WHERE id = ${member.id}`);
 		
-		/*let allRoles = ["436911207727759360", "436911218771492889", "436911235024420874", "436911244532777039", "436912027357806607",  "436912037147181076"];
+		let allRoles = ['436590073568559104', '436590905378471937', '436590072939282432', '435805052259794944'];
 		var rankRoles = member.roles.filter(role => role.name.startsWith('['));
 		if (rankRoles.size>1) await member.roles.remove(rankRoles);
 			
 		allRoles.push(client.guilds.get("289758148175200257").roles.find("name",`[${userInfo.lvl}]`).id, client.data.colorRoles[userInfo.color][userInfo.rank], client.data.groupRoles[userInfo.color]);
 		let roles = allRoles.filter(id => !member.roles.has(id))
-		await member.roles.add(roles,"User join");*/
+		await member.roles.add(roles,"User join");
 	},
 
 	react:function(msg){
