@@ -3,7 +3,14 @@ module.exports = {
     async execute(client, message, param, db){
             param = param.slice(1)
             const code = param.join(" ");
-            let evaled = eval(code);
+            let evaled = "";
+            try {
+                evaled = eval(code);
+            }
+            catch(err) {
+                evaled = err.message;
+            }
+            
 
             if (typeof evaled !== "string")
                 evaled = require("util").inspect(evaled);
