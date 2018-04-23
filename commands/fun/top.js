@@ -10,9 +10,8 @@ module.exports = {
             try{
                 member = await message.guild.members.fetch(row.id);
             }catch(e){
-                member = {username: "Unknown Member"}
+                member = {nickname: "Unknown Member"}
             }
-            if(!member) member = {username: "Unknown Member"};
             count++;
 
             content += `${count}. ${member.nickname || member.user.username}: ${row.exp}\n`
