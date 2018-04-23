@@ -5,7 +5,7 @@ module.exports = {
             const code = param.join(" ");
             let evaled = "";
             try {
-                evaled = eval(`async function a(){${code}}; a()`);
+                evaled = eval(`async function a(){${code}}; await a()`);
             }
             catch(err) {
                 evaled = err.message;
