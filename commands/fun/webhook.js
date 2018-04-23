@@ -16,7 +16,7 @@ module.exports = {
         } 
         message.delete();     
         hook.sendSlackMessage({
-            'username': ' ',
+            'username': '[💬]',
             'text': eval("`" + command.content + "`")
         }).catch(console.error);   
     }
