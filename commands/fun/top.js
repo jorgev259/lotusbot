@@ -12,6 +12,7 @@ module.exports = {
             }catch(e){
                 member = {username: "Unknown Member"}
             }
+            if(!member) member = {username: "Unknown Member"};
             count++;
 
             content += `${count}. ${member.nickname || member.user.username}: ${row.exp}\n`
