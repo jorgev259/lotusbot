@@ -11,6 +11,7 @@ module.exports = {
                 member = await message.guild.members.fetch(row.id);
             }catch(e){
                 member = {nickname: "Unknown Member"}
+
             }
             count++;
 
@@ -18,7 +19,7 @@ module.exports = {
         })
 
         let embed = new MessageEmbed();
-        embed.setTitle("Fandom Circle Ranking").setDescription(content);
+        embed.addField("Fandom Circle Ranking", content);
         message.channel.send(embed);
     }
 }
