@@ -6,6 +6,13 @@ module.exports = {
             let content="";
             let count = 0;
             list.forEach(async row => {
+                let member;
+                try{
+                    member = await message.guild.members.fetch(row.id);
+                }catch(e){
+                    member = {nickname: "Unknown Member"}
+
+                }
                 count++;
                 content += `${count}. ${member.nickname || member.user.username}: ${row.exp}\n`
             })
