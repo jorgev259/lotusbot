@@ -15,7 +15,7 @@ module.exports = {
             }
             count++;
 
-            content += `${count}. ${member.nickname || member.user.username}: ${row.exp}\n`
+            content += `${count}. ${member.nickname}: ${row.exp}\n`
         })
 
         let embed = new MessageEmbed();
