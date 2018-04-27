@@ -61,7 +61,7 @@ module.exports = {
                 percent = ((exp.exp) / (levels[0].exp))                
             }    
             pfCtx.fillStyle = 'white';
-            pfCtx.fillRect(746 + (435*percent),600,(435*percent),26);           
+            pfCtx.fillRect(746 + (435*percent), 600, (435*percent), 26);           
 
             img.src=fs.readFileSync(`images/numbers/${exp.lvl}.png`);
             pfCtx.drawImage(img,80,500);
