@@ -57,15 +57,12 @@ module.exports = {
             var percent;
             if(exp.lvl > 1) {
                 percent = ((exp.exp - levels[exp.lvl -1].exp) / (levels[exp.lvl].exp - levels[exp.lvl -1].exp))
-                //pfCtx.drawImage(img, 746 - (435*percent*2), 601, (435*percent), 26);
                 pfCtx.fillStyle = 'white';
                 pfCtx.fillRect(746 - (435*percent*2),600,(435*percent),26);
             }else{
                 percent = ((exp.exp) / (levels[0].exp))
                 pfCtx.fillStyle = 'white';
                 pfCtx.fillRect(746 - (435*percent),600,(435*percent),26);
-                //pfCtx.drawImage(img, 312, 601, (435*percent), 26);
-                //746 - (435*percent), 601, (435*percent), 26
             }                
 
             img.src=fs.readFileSync(`images/numbers/${exp.lvl}.png`);

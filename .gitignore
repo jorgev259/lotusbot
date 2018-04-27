@@ -6,3 +6,4 @@ package-lock.json
 !/data/levels.json
 !/data/items.json
 **.sqlite
+**.grive**
