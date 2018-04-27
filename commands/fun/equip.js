@@ -25,5 +25,3 @@ module.exports = {
         message.channel.send("New badge applied!");
     }
 }
-
-db.all("SELECT item from badges WHERE id=343139575704715265").then(rows => message.channel.send(rows.map(e=>e.item)))
