@@ -7,3 +7,4 @@ package-lock.json
 !/data/items.json
 **.sqlite
 **.grive**
+.trash/**
