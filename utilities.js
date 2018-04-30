@@ -179,7 +179,7 @@ module.exports = {
 			module.exports.save(client.data.info, 'info');
 
 			var nextDay = moment().add(1, 'day').format('YYYY-MM-DD');
-			setTimeout(module.exports.swapPFP, moment(nextDay).diff(moment()))
+			setTimeout(module.exports.swapPFP, moment(nextDay).diff(moment()), client)
 			module.exports.log(client, `Next profile pic change and backup scheduled to happen ${moment().to(nextDay)}`)
 		})
 	},
