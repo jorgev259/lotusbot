@@ -149,10 +149,10 @@ module.exports = {
                                     (await proposal.react(client.emojis.find("name","green"))).emoji.id, 
                                     (await proposal.react(client.emojis.find("name","red"))).emoji.id];
                     
-                    const filter = (reaction, user) => user.id === message.author.id;
+                    const filter = (reaction, user) => reacts.includes(reaction.emoji.id);
                     const collector = message.createReactionCollector(filter, {max:1});
-                    collector.on('end', async collected => {
-                        let newColor = colors[reacts.indexOf(collected.first().emoji.id)]
+                    collector.on('collect', async (reaction,user) => {
+                        let newColor = colors[reacts.indexOf(reaction.emoji.id)]
                         const { rank, color } = await db.get(`SELECT rank,color FROM exp WHERE id = ${message.author.id}`);
 
                         await message.member.roles.remove([client.data.colorRoles[color][rank], client.data.groupRoles[color]]);
