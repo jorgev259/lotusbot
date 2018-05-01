@@ -149,7 +149,7 @@ module.exports = {
                                     (await proposal.react(client.emojis.find("name","green"))).emoji.id, 
                                     (await proposal.react(client.emojis.find("name","red"))).emoji.id];
                     
-                    const filter = (reaction, user) => reacts.includes(reaction.emoji.id);
+                    const filter = (reaction, user) => user.id === message.author.id;
                     const collector = message.createReactionCollector(filter, {max:1});
                     collector.on('collect', async (reaction,user) => {
                         let newColor = colors[reacts.indexOf(reaction.emoji.id)]
