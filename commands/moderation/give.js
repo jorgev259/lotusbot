@@ -22,7 +22,7 @@ module.exports = {
         }else{
             await db.run("INSERT INTO inventory (id,type,item) VALUES (?,?,?)", [message.mentions.users.first().id, names[types.indexOf(param[2].toLowerCase())], param[3].toUpperCase()])
             message.channel.send("Added item!");
-            util.log(client, `${message.author} added the ${param[2].toLowerCase()} ${param[3].toUpperCase()} to ${essage.mentions.members.first()}`)
+            util.log(client, `${message.author} added the ${param[2].toLowerCase()} ${param[3].toUpperCase()} to ${message.mentions.members.first()}`)
         }
     }
 }
