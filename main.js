@@ -103,59 +103,66 @@ client.on("guildMemberUpdate", async (oldMember,newMember) => {
 })
 
 client.on('message', async message => {
-		await util.userCheck(message.author.id,client,db);
-		await util.exp(message,client, db);
-		var prefix = ">";
+	await util.userCheck(message.author.id,client,db);
+	util.exp(message,client, db);
+	var prefix = ">";
 
-		if(message.content.startsWith(prefix) || message.content.startsWith("<@!" + client.user.id + ">")){			
-			var param = message.content.split(" ");
+	if(message.content.startsWith(prefix) || message.content.startsWith("<@!" + client.user.id + ">")){			
+		var param = message.content.split(" ");
 
-			if(message.content.startsWith(prefix)){
-				param[0] = param[0].split(prefix)[1];
-			}else{
-				param.splice(0,1);
-			}
-
+		if(message.content.startsWith(prefix)){
+			param[0] = param[0].split(prefix)[1];
+		}else{
+			param.splice(0,1);
+		}
 			
-			const commandName = param[0].toLowerCase();
-			var command = client.data.commands[commandName];
-			if(await util.permCheck(message,commandName, client)){				
-				if(command == undefined){command = {}; command.type = param[0].toLowerCase()};
-				if (!client.commands.has(command.type)) return;				
-				client.commands.get(command.type).execute(client, message, param, db);
-			}
+		const commandName = param[0].toLowerCase();
+		
+		if(await util.permCheck(message,commandName, client)){				
+			if(command == undefined){command = {}; command.type = param[0].toLowerCase()};
+			if (!client.commands.has(commandName)) return;				
+			client.commands.get(commandName).execute(client, message, param, db);
 		}
+	}else if(message.content.startsWith("/")){
+		var param = message.content.split(" ");
+		param[0] = param[0].split("/")[1];
 
-		switch(message.channel.name){
-			case "nickname-change":
-				if(!message.author.bot){
-					var emoji = message.member.nickname.split(" ").pop();
+		const commandName = param[0].toLowerCase();
+		var command = client.data.commands[commandName];
 
-					var namechange = message.content + " " + emoji;
-					if(namechange.length < 32){
-						client.data.nicks[message.member.id] = namechange;
+		if(command != undefined && await util.permCheck(message,commandName, client)){
+			client.commands.get(command.type).execute(client, message, param, db);
+		}		
+	}
 
-						message.member.setNickname(namechange,"Name Change sponsored by Monokuma").then(()=>{
-							util.save(client.data.nicks,"nicks").then(()=>{
-								message.delete(namechange);
-								message.member.roles.remove([message.guild.roles.find("name","⭕")],"Nickname change")
-							})							
-						})
-					}else{
-						message.delete();
-						message.author.send("That nickname is too long");
-					}
+	switch(message.channel.name){
+		case "nickname-change":
+			if(!message.author.bot){
+				var emoji = message.member.nickname.split(" ").pop();
+
+				var namechange = message.content + " " + emoji;
+				if(namechange.length < 32){
+					client.data.nicks[message.member.id] = namechange;
+
+					await message.member.setNickname(namechange,"Name Change sponsored by Monokuma")
+					await util.save(client.data.nicks,"nicks")
+					message.delete(namechange);
+					message.member.roles.remove([message.guild.roles.find("name","⭕")],"Nickname change")
+				}else{
+					message.delete();
+					message.author.send("That nickname is too long");
 				}
-				break;
+			}
+			break;
 
-			case "shop":
-				message.delete();
-				break;
+		case "shop":
+			message.delete();
+			break;
 						
-			case "akira":
-				util.talk(client,message);
-				break;
-		}
+		case "akira":
+			util.talk(client,message);
+			break;
+	}
 });
 
 process.on('unhandledRejection', err => {if(err.message != "Unknown User") util.log(client,err.stack)});
