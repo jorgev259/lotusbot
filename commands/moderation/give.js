@@ -3,7 +3,7 @@ const names = ["badges", "bgs"]
 
 module.exports = {
     async execute(client, message, param, db){
-        if(message.mentions.members.size < 1 || !message.mentions.everyone)  return message.channel.send("You forgot to mention an user!");
+        if(message.mentions.members.size < 1 && !message.mentions.everyone)  return message.channel.send("You forgot to mention an user!");
         if(param.length < 4) return message.channel.send("Not enough parameters provided. Example: >give @person <type of thing> <id>");
         if(!types.includes(param[2].toLowerCase())) return message.channel.send("Invalid item type");
 
