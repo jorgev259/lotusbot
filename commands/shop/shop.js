@@ -158,7 +158,8 @@ module.exports = {
 
                         await message.member.roles.remove([client.data.colorRoles[color][rank], client.data.groupRoles[color]]);
                         await message.member.roles.add([client.data.colorRoles[newColor][rank], client.data.groupRoles[newColor]]);
-                        await db.run(`UPDATE exp SET money = money - ${itemPrice}, color = ${color} WHERE id = ${message.author.id}`);
+                        await db.run(`UPDATE exp SET money = money - ${itemPrice} WHERE id = ${message.author.id}`);
+                        await db.run(`UPDATE exp SET color = ${color} WHERE id = ${message.author.id}`);
                         await proposal.channel.send("Color change successful!");
                         proposal.delete();                
                     });                    
