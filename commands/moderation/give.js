@@ -16,9 +16,9 @@ module.exports = {
             members.forEach(async member => {
                 await db.run("INSERT INTO inventory (id,type,item) VALUES (?,?,?)",[member.id, names[types.indexOf(param[2].toLowerCase())], param[3].toUpperCase()])
                 counter++;
-                message.edit(`Progress ${counter} out of ${members.size} added`);
+                progress.edit(`Progress ${counter} out of ${members.size} added`);
             })
-            message.edit("Done!");
+            progress.edit("Done!");
             log(message, `${message.author} added the ${param[2].toLowerCase()} ${param[3].toUpperCase()} to everyone on the server. Huzzah!`)
         }else{
             await db.run("INSERT INTO inventory (id,type,item) VALUES (?,?,?)", [message.mentions.users.first().id, names[types.indexOf(param[2].toLowerCase())], param[3].toUpperCase()])
