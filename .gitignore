@@ -5,6 +5,7 @@ package-lock.json
 /images/**
 !/data/levels.json
 !/data/items.json
+!/data/unavailable.json
 **.sqlite
 **.grive**
 .trash/**
