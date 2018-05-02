@@ -149,17 +149,18 @@ module.exports = {
                                     (await proposal.react(client.emojis.find("name","green"))).emoji.id, 
                                     (await proposal.react(client.emojis.find("name","red"))).emoji.id];
                     
+                    await proposal.edit("React with the desired color");
                     const filter = (reaction, user) => user.id === message.author.id;
                     const collector = proposal.createReactionCollector(filter, {max:1});
                     
-                    collector.on('collect', async reaction => {
+                    collector.on('collect', async (reaction, user) => {
                         let newColor = colors[reacts.indexOf(reaction.emoji.id)]
-                        const { rank, color } = await db.get(`SELECT rank,color FROM exp WHERE id = ${message.author.id}`);
+                        const { rank, color } = await db.get(`SELECT rank,color FROM exp WHERE id = ${user.id}`);
 
                         await message.member.roles.remove([client.data.colorRoles[color][rank], client.data.groupRoles[color]]);
                         await message.member.roles.add([client.data.colorRoles[newColor][rank], client.data.groupRoles[newColor]]);
-                        await db.run(`UPDATE exp SET money = money - ${itemPrice} WHERE id = ${message.author.id}`);
-                        await db.run(`UPDATE exp SET color = ${color} WHERE id = ${message.author.id}`);
+                        await db.run(`UPDATE exp SET money = money - ${itemPrice} WHERE id = ${user.id}`);
+                        await db.run(`UPDATE exp SET color = ${color} WHERE id = ${user.id}`);
                         await proposal.channel.send("Color change successful!");
                         proposal.delete();                
                     });                    
