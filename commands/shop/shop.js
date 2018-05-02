@@ -141,7 +141,7 @@ module.exports = {
 
             case "color change":
                 //var colors = ["pink","d-blue","purple","l-blue","green","red"];
-                message.author.send("React with the desired color").then(async proposal => {
+                message.author.send("Please Wait...").then(async proposal => {
                     const reacts = [(await proposal.react(client.emojis.find("name","pink"))).emoji.id, 
                                     (await proposal.react(client.emojis.find("name","darkblue"))).emoji.id, 
                                     (await proposal.react(client.emojis.find("name","purple"))).emoji.id, 
