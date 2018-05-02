@@ -11,14 +11,14 @@ module.exports = {
             let members = await message.guild.members.fetch()
             let progress = await message.channels.send(`Progress 0 out of ${members.size} added`)
             let counter = 0;
-            members.forEach(member => {
+            members.forEach(async member => {
                 await db.run("INSERT INTO inventory (id,type,item) VALUES (?,?,?)",[member.id, names[types.indexOf(param[2].toLowerCase())], param[3].toUpperCase()])
                 counter++;
                 message.edit(`Progress ${counter} out of ${members.size} added`);
             })
             message.edit("Done!")
         }else{
-            await db.run("INSERT INTO inventory (id,type,item) VALUES (?,?,?)",[message.mentions.users.first().id, names[types.indexOf(param[2].toLowerCase())], param[3].toUpperCase()])
+            await db.run("INSERT INTO inventory (id,type,item) VALUES (?,?,?)", [message.mentions.users.first().id, names[types.indexOf(param[2].toLowerCase())], param[3].toUpperCase()])
             message.channel.send("Added item!");
         }
     }
