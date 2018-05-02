@@ -14,7 +14,7 @@ module.exports = {
 	async permCheck(message, commandName, client){
 		if(!message.member) message.member = await client.guilds.get("289758148175200257").members.fetch(message.author.id)
 
-		if(client.data.perms[commandName] == undefined || message.member.roles.exists("name","🍬 Admin") ||  message.member.roles.exists("name","🍬 Master Developer"))return true;
+		if(client.data.perms[commandName] == undefined || message.member.roles.exists("name","🍬") ||  message.member.roles.exists("name","🍬 Master Developer"))return true;
 		var allowedChannel = true;
 		var allowed = false;
 
