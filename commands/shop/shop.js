@@ -150,7 +150,8 @@ module.exports = {
                                     (await proposal.react(client.emojis.find("name","red"))).emoji.id];
                     
                     const filter = (reaction, user) => user.id === message.author.id;
-                    const collector = message.createReactionCollector(filter, {max:1});
+                    const collector = proposal.createReactionCollector(filter, {max:1});
+                    
                     collector.on('collect', async reaction => {
                         let newColor = colors[reacts.indexOf(reaction.emoji.id)]
                         const { rank, color } = await db.get(`SELECT rank,color FROM exp WHERE id = ${message.author.id}`);
