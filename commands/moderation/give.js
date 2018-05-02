@@ -1,6 +1,7 @@
+var {MessageEmbed} = require("discord.js");
+
 const types = ["badge", "background"];
 const names = ["badges", "bgs"];
-var util = require("../../utilities.js");
 
 module.exports = {
     async execute(client, message, param, db){
@@ -18,11 +19,20 @@ module.exports = {
                 message.edit(`Progress ${counter} out of ${members.size} added`);
             })
             message.edit("Done!");
-            util.log(client, `${message.author} added the ${param[2].toLowerCase()} ${param[3].toUpperCase()} to everyone on the server. Huzzah!`)
+            log(message, `${message.author} added the ${param[2].toLowerCase()} ${param[3].toUpperCase()} to everyone on the server. Huzzah!`)
         }else{
             await db.run("INSERT INTO inventory (id,type,item) VALUES (?,?,?)", [message.mentions.users.first().id, names[types.indexOf(param[2].toLowerCase())], param[3].toUpperCase()])
             message.channel.send("Added item!");
-            util.log(client, `${message.author} added the ${param[2].toLowerCase()} ${param[3].toUpperCase()} to ${message.mentions.members.first()}`)
+            log(message, `${message.author} added the ${param[2].toLowerCase()} ${param[3].toUpperCase()} to ${message.mentions.members.first()}`)
         }
     }
+}
+
+function log(message, out){
+    var embed = new MessageEmbed()
+    .setColor(message.guild.me.displayColor)
+    .setDescription(out)
+    .setTimestamp();
+
+    await message.guild.channels.find('name','staff-log').send(embed)
 }
