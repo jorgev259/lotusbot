@@ -82,6 +82,9 @@ client.on('ready', async () => {
 		util.log(client, `Starting profile change`)
 		util.swapPFP(client);
 	}
+
+
+	await guild.channels.find("name","shop").messages.fetch();
 });
 
 client.on("guildMemberAdd", async member => {
@@ -164,6 +167,12 @@ client.on('message', async message => {
 			break;
 	}
 });
+
+client.on("messageReactionAdd", async (reaction,user) => {
+	if(reaction.message.channel.name == "shop"){
+		
+	}
+})
 
 process.on('unhandledRejection', err => {if(err.message != "Unknown User") util.log(client,err.stack)});
 client.login(client.data.tokens.akira);
