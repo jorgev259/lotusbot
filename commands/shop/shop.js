@@ -131,7 +131,7 @@ module.exports = {
                                                     
                         if(user.money < files[number]) return m.author.send("You cant afford this badge");
 
-                        await db.run("INSERT INTO inventory (id,type,item) VALUES (?,?,?)", [message.author.id, "bgs", number]);
+                        await db.run("INSERT INTO inventory (id,type,item) VALUES (?,?,?)", [message.author.id, "badges", number]);
                         await db.run(`UPDATE exp SET money = money - ${files[number]} WHERE id = ${message.author.id}`);
 
                         message.channel.send("Thanks for buying this badge ^.^. Set it using >equip <badge> <position>");
