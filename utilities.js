@@ -11,7 +11,7 @@ var zipdir = require('zip-dir');
 const sql = require('sqlite');
 
 module.exports = {
-	async permCheck(message, commandName, client){
+	async permCheck(message, commandName, client, db){
 		let dbPerms = await db.all(`SELECT item,type FROM perms WHERE command='${commandName}'`)
 		let perms = {channel: [], role:[], user:[]};
 		dbPerms.forEach(item => {
