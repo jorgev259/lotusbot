@@ -18,7 +18,7 @@ var util = require('./utilities.js');
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 
-let commandFiles = glob.sync(`commands/**/*`);
+let modules = glob.sync(`modules/**/*`);
 let dataFiles = glob.sync(`data/*`);
 
 client.data = {};
@@ -31,19 +31,34 @@ for (const file of dataFiles) {
 	client.data[name] = data
 }
 
-for (const file of commandFiles) {
-	if(!file.endsWith(".js")) continue;	
-	const command = require(`./${file}`);
+for (const file of modules) {
+	try{
+		if(!file.endsWith(".js")) continue;
+		let path_array = file.split("/");
+		let name = path_array[path_array.length - 1].split(".js")[0];
 
-	let path_array = file.split("/");
-	let name = path_array[path_array.length - 1].split(".js")[0];
-	client.commands.set(name, command);
-	client.commands.get(name).type = path_array[path_array.length-2];
-	if(command.alias){
-		command.alias.forEach(alias => {
-			client.commands.set(alias, command)
-			client.data.perms[alias] = client.data.perms[name];
-		})		
+		const jsObject = require(`./${file}`);
+		switch(name){
+			case "commands":
+				let commands = jsObject.commands;
+				Object.keys(commands).forEach(async commandName => {
+					client.commands.set(commandName, commands[commandName]);
+					client.commands.get(commandName).type = path_array[path_array.length-2];
+					if(command.alias){
+						command.alias.forEach(alias => {
+							client.commands.set(alias, commands[commandName])
+							client.data.perms[alias] = client.data.perms[commandName];
+						})		
+					}	
+				})
+				break;
+
+			case "events":
+				let events = jsObject.events;
+				break;
+		}
+	}catch(e){
+
 	}	
 }
 
