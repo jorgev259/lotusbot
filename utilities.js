@@ -14,8 +14,8 @@ module.exports = {
 	async permCheck(message, commandName, client, db){
 		let dbPerms = await db.all(`SELECT item,type FROM perms WHERE command='${commandName}'`)
 		let perms = {channel: [], role:[], user:[]};
-		dbPerms.forEach(item => {
-			perms[item.type].push(item.item);
+		dbPerms.forEach(element => {
+			perms[element.type].push(element.item);
 		})
 		if(dbPerms.length == 0 || message.member.roles.exists("name","🍬") ||  message.member.roles.exists("name","🍬 Master Developer")) return true;
 		var allowedChannel = true;
