@@ -11,6 +11,7 @@ async function startDB(){
 	await db.run(`CREATE TABLE IF NOT EXISTS nicks (id TEXT, nick TEXT, UNIQUE(id));`);
 	await db.run(`CREATE TABLE IF NOT EXISTS inventory (id TEXT, type TEXT, item TEXT);`);
 	await db.run(`CREATE TABLE IF NOT EXISTS badges (id TEXT, number INTEGER, item TEXT);`);
+	await db.run(`CREATE TABLE IF NOT EXISTS perms (type TEXT, item TEXT);`);
 }
 var colors = ["pink","d-blue","purple","l-blue","green","red"];
 var util = require('./utilities.js');
@@ -103,6 +104,7 @@ client.on("guildMemberUpdate", async (oldMember,newMember) => {
 })
 
 client.on('message', async message => {
+	if(!message.member) return;
 	await util.userCheck(message.author.id,client,db);
 	util.exp(message,client, db);
 	var prefix = ">";
