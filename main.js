@@ -11,7 +11,7 @@ async function startDB(){
 	await db.run(`CREATE TABLE IF NOT EXISTS nicks (id TEXT, nick TEXT, UNIQUE(id));`);
 	await db.run(`CREATE TABLE IF NOT EXISTS inventory (id TEXT, type TEXT, item TEXT);`);
 	await db.run(`CREATE TABLE IF NOT EXISTS badges (id TEXT, number INTEGER, item TEXT);`);
-	await db.run(`CREATE TABLE IF NOT EXISTS perms (type TEXT, item TEXT);`);
+	await db.run(`CREATE TABLE IF NOT EXISTS perms (type TEXT, item TEXT, command TEXT);`);
 }
 var colors = ["pink","d-blue","purple","l-blue","green","red"];
 var util = require('./utilities.js');
