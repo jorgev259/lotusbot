@@ -119,22 +119,12 @@ client.on('message', async message => {
 		}
 			
 		const commandName = param[0].toLowerCase();
-		
-		if(await util.permCheck(message,commandName, client, db)){				
-			if(command == undefined){command = {}; command.type = param[0].toLowerCase()};
-			if (!client.commands.has(commandName)) return;				
-			client.commands.get(commandName).execute(client, message, param, db);
-		}
-	}else if(message.content.startsWith("/")){
-		var param = message.content.split(" ");
-		param[0] = param[0].split("/")[1];
-
-		const commandName = param[0].toLowerCase();
 		var command = client.data.commands[commandName];
-
-		if(command != undefined && await util.permCheck(message,commandName, client, db)){
+		if(await util.permCheck(message,commandName, client)){				
+			if(command == undefined){command = {}; command.type = param[0].toLowerCase()};
+			if (!client.commands.has(command.type)) return;				
 			client.commands.get(command.type).execute(client, message, param, db);
-		}		
+		}
 	}
 
 	switch(message.channel.name){
