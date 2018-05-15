@@ -120,7 +120,7 @@ client.on('message', async message => {
 			
 		const commandName = param[0].toLowerCase();
 		var command = client.data.commands[commandName];
-		if(await util.permCheck(message,commandName, client)){				
+		if(await util.permCheck(message, commandName, client, db)){				
 			if(command == undefined){command = {}; command.type = param[0].toLowerCase()};
 			if (!client.commands.has(command.type)) return;				
 			client.commands.get(command.type).execute(client, message, param, db);
