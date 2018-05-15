@@ -112,20 +112,6 @@ client.on('message', async message => {
 			client.commands.get(command.type).execute(client, message, param, db);
 		}
 	}
-
-	switch(message.channel.name){
-		case "nickname-change":
-			
-			break;
-
-		case "shop":
-			message.delete();
-			break;
-						
-		case "akira":
-			util.talk(client,message);
-			break;
-	}
 });
 
 process.on('unhandledRejection', err => {if(err.message != "Unknown User") util.log(client,err.stack)});
