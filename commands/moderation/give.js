@@ -36,4 +36,3 @@ function log(message, out){
 
     message.guild.channels.find('name','staff-log').send(embed)
 }
-//test
