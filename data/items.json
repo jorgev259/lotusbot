@@ -1,7 +1,7 @@
 {
-    "embed pack": {    
-        "id":"name",    
-        "name": "Embed Packs",
+    "embed pack": {
+        "id:"name",
+        "name": "Embed Pack",
         "desc": "Lots of embeds or something",
         "price":"35000",
         "packs":{

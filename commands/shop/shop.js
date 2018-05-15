@@ -61,11 +61,11 @@ module.exports = {
                     var item = client.data.items["embed pack"].packs[m.content.toLowerCase()];                               
                     if(user.money < item.price) return m.author.send("You cant afford this embed pack");
 
-                    if(message.member.roles.exists("name",item.role)) message.author.send('**You already have this embed pack!**');
+                    if(message.member.roles.exists("name",item.role)) m.author.send('**You already have this embed pack!**');
                         
                     await db.run(`UPDATE exp SET money = money - ${item.price} WHERE id = ${message.author.id}`);
                     message.member.roles.add(message.guild.roles.find("name", item.role));
-                    message.author.send('**You bought ' + itemName + '!**');
+                    m.author.send('**You bought ' + itemName + '!**');
                     //message.guild.channels.find("name",item.channel).send(`<@${message.author.id}>`).then(m=>m.delete({"reason":"New channel ping"}))
                 })                              
                 break;
@@ -103,7 +103,7 @@ module.exports = {
 
                     await db.run("INSERT INTO inventory (id,type,item) VALUES (?,?,?)", [message.author.id, "bgs", number])
                     await db.run(`UPDATE exp SET money = money - ${files[number]} WHERE id = ${message.author.id}`);
-                    message.channel.send("Thanks for buying this background ^.^. Set it using >background <code>");
+                    m.author.send("Thanks for buying this background ^.^. Set it using >background <code>");
                 })                                                                                          
                 break;
 
@@ -134,7 +134,7 @@ module.exports = {
                         await db.run("INSERT INTO inventory (id,type,item) VALUES (?,?,?)", [message.author.id, "badges", number]);
                         await db.run(`UPDATE exp SET money = money - ${files[number]} WHERE id = ${message.author.id}`);
 
-                        message.channel.send("Thanks for buying this badge ^.^. Set it using >equip <badge> <position>");
+                        m.author.send("Thanks for buying this badge ^.^. Set it using >equip <badge> <position>");
                     })
                 })
                 break;

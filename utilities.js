@@ -11,35 +11,38 @@ var zipdir = require('zip-dir');
 const sql = require('sqlite');
 
 module.exports = {
-	async permCheck(message, commandName, client){
-		if(!message.member) message.member = await client.guilds.get("289758148175200257").members.fetch(message.author.id)
-
-		if(client.data.perms[commandName] == undefined || message.member.roles.exists("name","🍬") ||  message.member.roles.exists("name","🍬 Master Developer"))return true;
+	async permCheck(message, commandName, client, db){
+		let dbPerms = await db.all(`SELECT item,type FROM perms WHERE command='${commandName}'`)
+		let perms = {channel: [], role:[], user:[]};
+		dbPerms.forEach(element => {
+			perms[element.type].push(element.item);
+		})
+		if(dbPerms.length == 0 || message.member.roles.exists("name","🍬") ||  message.member.roles.exists("name","🍬 Master Developer")) return true;
 		var allowedChannel = true;
 		var allowed = false;
 
-		if(client.data.perms[commandName].channel.length>0){
+		if(perms.channel.length>0){
 			allowedChannel = false;
-			if(client.data.perms[commandName].channel.includes(message.channel.name)) allowedChannel = true;
+			if(perms.channel.includes(message.channel.name)) allowedChannel = true;
 		}
 		if(allowedChannel){
-			if(client.data.perms[commandName].role.length==0 && client.data.perms[commandName].user.length==0){return true};
+			if(perms.role.length==0 && perms.user.length==0){return true};
 
-			if(client.data.perms[commandName].role.length>0){
-				for(var i=0;i<client.data.perms[commandName].role.length;i++){
-					var role = message.member.guild.roles.find("name", client.data.perms[commandName].role[i]);
+			if(perms.role.length>0){
+				for(var i=0;i<perms.role.length;i++){
+					var role = message.member.guild.roles.find("name", perms.role[i]);
 					if(role != null && message.member.roles.has(role.id)){
 						return true;
-						i=client.data.perms[commandName].role.length;
+						i=perms.role.length;
 					}
 				}
 			}
 
-			if(!allowed && client.data.perms[commandName].user.length>0){
-				for(var i=0;i<client.data.perms[commandName].user.length;i++){
-					if(client.data.perms[commandName].user[i] == message.author.id){
+			if(!allowed && perms.user.length>0){
+				for(var i=0;i<perms.user.length;i++){
+					if(perms.user[i] == message.author.id){
 						return true;
-						i=client.data.perms[commandName].user.length;
+						i=perms.user.length;
 					}
 				}
 			}
@@ -55,7 +58,7 @@ module.exports = {
 		await db.run("INSERT OR IGNORE INTO exp (id,color,rank,lvl,exp,money,lastDaily,bg) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [member.id, colors[await random(0,colors.length-1)], 0, 1, 0, 0, "Not Collected", "DEFAULT"])		
 		const userInfo = await db.get(`SELECT lvl,color,rank FROM exp WHERE id = ${member.id}`);
 		
-		let allRoles = ['436590073568559104', '436590905378471937', '436590072939282432', '435805052259794944', '435801059361947648', '435805052259794944', '435803522659778562' ];
+		let allRoles = ['436590073568559104', '441580169258598401', '436590072939282432', '435805052259794944', '435801059361947648', '435805052259794944', '435803522659778562' ];
 		var rankRoles = member.roles.filter(role => role.name.startsWith('['));
 		if (rankRoles.size>1) await member.roles.remove(rankRoles);
 			

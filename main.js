@@ -11,6 +11,7 @@ async function startDB(){
 	await db.run(`CREATE TABLE IF NOT EXISTS nicks (id TEXT, nick TEXT, UNIQUE(id));`);
 	await db.run(`CREATE TABLE IF NOT EXISTS inventory (id TEXT, type TEXT, item TEXT);`);
 	await db.run(`CREATE TABLE IF NOT EXISTS badges (id TEXT, number INTEGER, item TEXT);`);
+	await db.run(`CREATE TABLE IF NOT EXISTS perms (type TEXT, item TEXT, command TEXT);`);
 }
 var colors = ["pink","d-blue","purple","l-blue","green","red"];
 var util = require('./utilities.js');
@@ -89,6 +90,7 @@ Object.keys(eventModules).forEach(eventName => {
 });*/
 
 client.on('message', async message => {
+	if(!message.member) return;
 	await util.userCheck(message.author.id,client,db);
 	util.exp(message,client, db);
 	var prefix = ">";
@@ -103,22 +105,12 @@ client.on('message', async message => {
 		}
 			
 		const commandName = param[0].toLowerCase();
-		
-		if(await util.permCheck(message,commandName, client)){				
-			if(command == undefined){command = {}; command.type = param[0].toLowerCase()};
-			if (!client.commands.has(commandName)) return;				
-			client.commands.get(commandName).execute(client, message, param, db);
-		}
-	}else if(message.content.startsWith("/")){
-		var param = message.content.split(" ");
-		param[0] = param[0].split("/")[1];
-
-		const commandName = param[0].toLowerCase();
 		var command = client.data.commands[commandName];
-
-		if(command != undefined && await util.permCheck(message,commandName, client)){
+		if(await util.permCheck(message, commandName, client, db)){				
+			if(command == undefined){command = {}; command.type = param[0].toLowerCase()};
+			if (!client.commands.has(command.type)) return;				
 			client.commands.get(command.type).execute(client, message, param, db);
-		}		
+		}
 	}
 
 	switch(message.channel.name){
