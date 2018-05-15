@@ -32,7 +32,6 @@ for (const file of dataFiles) {
 	client.data[name] = data
 }
 
-<<<<<<< HEAD
 for (const file of commandFiles) {
 	if(!file.endsWith(".js")) continue;	
 	const command = require(`./${file}`);
@@ -78,68 +77,6 @@ client.on('ready', async () => {
 	if(moment().isSame(client.data.info.lastPFP,'day')){
 		var nextDay = moment(client.data.info.lastPFP).add(1, 'day').format('YYYY-MM-DD');
 
-=======
-for (const file of modules) {
-	try{
-		if(!file.endsWith(".js")) continue;
-		let path_array = file.split("/");
-		let name = path_array[path_array.length - 1].split(".js")[0];
-
-		const jsObject = require(`./${file}`);
-		switch(name){
-			case "commands":
-				let commands = jsObject.commands;
-				Object.keys(commands).forEach(async commandName => {
-					client.commands.set(commandName, commands[commandName]);
-					client.commands.get(commandName).type = path_array[path_array.length-2];
-					if(command.alias){
-						command.alias.forEach(alias => {
-							client.commands.set(alias, commands[commandName])
-							client.data.perms[alias] = client.data.perms[commandName];
-						})		
-					}	
-				})
-				break;
-
-			case "events":
-				let events = jsObject.events;
-				break;
-		}
-	}catch(e){
-
-	}	
-}
-
-client.on('ready', async () => {
-	await util.log(client,'I am ready!');
-	let colorRoles = {}; //colorRoles[color][rank]
-	let groupRoles = {}; //groupRoles[color]
-
-	let guild = client.guilds.get("289758148175200257");
-	let roles = guild.roles.filter(role  => role.position < guild.roles.find('name','//Colors').position && role.position > guild.roles.find('name','//End Colors').position).sort(function (a, b) {return a.position- b.position})
-	let roles2 = guild.roles.filter(role  => role.position < guild.roles.find('name','//Groups').position && role.position > guild.roles.find('name','//End Groups').position && role.name != "- - - - - - - - - -").sort(function (a, b) {return a.position- b.position})
-	let section = [];
-	roles.forEach(role => {	
-		if(role.name == "- - - - - - - - - -"){
-			colorRoles[colors[Object.keys(colorRoles).length]] = section;
-			section = [];
-		}else{
-			section.push(role.id);
-		}
-	})
-	colorRoles[colors[Object.keys(colorRoles).length]] = section;
-
-	roles2.forEach(role => {	
-		groupRoles[colors[Object.keys(groupRoles).length]] = role.id;
-	})
-
-	client.data.colorRoles = colorRoles;
-	client.data.groupRoles = groupRoles;
-
-	if(moment().isSame(client.data.info.lastPFP,'day')){
-		var nextDay = moment(client.data.info.lastPFP).add(1, 'day').format('YYYY-MM-DD');
-
->>>>>>> parent of 8c19112... finished module handler and implemented some modules
 		util.log(client, `Next profile pic change and backups scheduled to happen ${moment().to(nextDay)}`)
 		setTimeout(util.swapPFP, moment(nextDay).diff(moment()), client)
 	}else{
