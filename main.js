@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const fs = require("fs");
 const glob = require('glob');
-const moment = require('moment')
+
 const sqlite = require("sqlite");
 let db;
 startDB();
@@ -19,7 +19,7 @@ var util = require('./utilities.js');
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 
-let commandFiles = glob.sync(`commands/**/*`);
+let modules = glob.sync(`modules/**/*`);
 let dataFiles = glob.sync(`data/*`);
 
 client.data = {};
@@ -32,76 +32,62 @@ for (const file of dataFiles) {
 	client.data[name] = data
 }
 
-for (const file of commandFiles) {
-	if(!file.endsWith(".js")) continue;	
-	const command = require(`./${file}`);
-
+let eventModules = {};
+for (const file of modules) {	
+	if(!file.endsWith(".js")) continue;
 	let path_array = file.split("/");
 	let name = path_array[path_array.length - 1].split(".js")[0];
-	client.commands.set(name, command);
-	client.commands.get(name).type = path_array[path_array.length-2];
-	if(command.alias){
-		command.alias.forEach(alias => {
-			client.commands.set(alias, command)
-			client.data.perms[alias] = client.data.perms[name];
-		})		
+
+	const jsObject;
+	try{
+		jsObject = require(`./${file}`);
+		if(jsObject.reqs){
+			async function req(){
+				await jsObject.reqs(client, db);
+			}
+			req();
+		}
+	}catch(e){
+		console.log(`Failed to load ${file}`);
+		console.log(e.stack);
+		continue;
+	}
+
+	switch(name){
+		case "commands":
+			let commands = jsObject.commands;
+			Object.keys(commands).forEach(async commandName => {
+				client.commands.set(commandName, commands[commandName]);
+				client.commands.get(commandName).type = path_array[path_array.length-2];
+				if(command.alias){
+					command.alias.forEach(alias => {
+						client.commands.set(alias, commands[commandName])
+					})		
+				}	
+			})
+			break;
+
+		case "events":
+			let events = jsObject.events;
+			Object.keys(events).forEach(eventName => {
+				if(!eventModules[eventName]) eventModules[eventName] = [];
+				eventModules[eventName].push(events[eventName])
+			})
+			break;
 	}	
 }
 
-client.on('ready', async () => {
-	await util.log(client,'I am ready!');
-	let colorRoles = {}; //colorRoles[color][rank]
-	let groupRoles = {}; //groupRoles[color]
-
-	let guild = client.guilds.get("289758148175200257");
-	let roles = guild.roles.filter(role  => role.position < guild.roles.find('name','//Colors').position && role.position > guild.roles.find('name','//End Colors').position).sort(function (a, b) {return a.position- b.position})
-	let roles2 = guild.roles.filter(role  => role.position < guild.roles.find('name','//Groups').position && role.position > guild.roles.find('name','//End Groups').position && role.name != "- - - - - - - - - -").sort(function (a, b) {return a.position- b.position})
-	let section = [];
-	roles.forEach(role => {	
-		if(role.name == "- - - - - - - - - -"){
-			colorRoles[colors[Object.keys(colorRoles).length]] = section;
-			section = [];
-		}else{
-			section.push(role.id);
-		}
+Object.keys(eventModules).forEach(eventName => {
+	client.on(eventName, (...args) => {
+		eventModules[eventName].forEach(func => {
+			func(client, db, ...args);
+		})
 	})
-	colorRoles[colors[Object.keys(colorRoles).length]] = section;
-
-	roles2.forEach(role => {	
-		groupRoles[colors[Object.keys(groupRoles).length]] = role.id;
-	})
-
-	client.data.colorRoles = colorRoles;
-	client.data.groupRoles = groupRoles;
-
-	if(moment().isSame(client.data.info.lastPFP,'day')){
-		var nextDay = moment(client.data.info.lastPFP).add(1, 'day').format('YYYY-MM-DD');
-
-		util.log(client, `Next profile pic change and backups scheduled to happen ${moment().to(nextDay)}`)
-		setTimeout(util.swapPFP, moment(nextDay).diff(moment()), client)
-	}else{
-		util.log(client, `Starting profile change`)
-		util.swapPFP(client);
-	}
-});
-
-client.on("guildMemberAdd", async member => {
-	await util.userCheck(member.id,client,db)
-	var name = member.user.username;
-	if(client.data.nicks[member.id] == undefined) {
-		member.setNickname(name + " ☕");
-		await db.run("INSERT OR REPLACE INTO nicks (id,nick) VALUES (?,?)", [member.id, name + " ☕"]);
-	}else{
-		member.setNickname(client.data.nicks[member.id],"Locked nickname");
-	}
-	member.guild.channels.find("name","main-lounge").send(`Welcome to Fandom Circle, ${member}! Have Fun`);
-});
-
-client.on("guildMemberUpdate", async (oldMember,newMember) => {
-	if(oldMember.nickname != newMember.nickname){
-		await db.run("INSERT OR REPLACE INTO nicks (id,nick) VALUES (?,?)", [newMember.id, newMember.nickname]);
-	}
 })
+
+/*client.on('ready', async () => {
+	await util.log(client,'I am ready!');	
+});*/
 
 client.on('message', async message => {
 	if(!message.member) return;

@@ -1,5 +1,6 @@
 {
     "embed pack": {
+        "id:"name",
         "name": "Embed Pack",
         "desc": "Lots of embeds or something",
         "price":"35000",
@@ -21,6 +22,7 @@
         }
     },
 	"nickname change":{
+        "id":"name",
 		"name":"Nickname Change",
 		"price":"1000",
 		"desc":"Allows you to change your nickname",
@@ -28,16 +30,19 @@
 		"role":"⭕"
     },
     "color change":{
+        "id":"name",
 		"name":"Color Change",
 		"price":"3000",
 		"desc":"Allows you to change the color of your name"
 	},
 	"background":{
+        "id":"name",
 		"name":"Background",
 		"price":"Depends on the background",
 		"desc":"Various backgrounds for your custom profile"
     },
     "badges":{
+        "id":"name",
 		"name":"Badges",
 		"price":"Depends on the badge",
 		"desc":"Variosu badges to decorate your custom profile"
