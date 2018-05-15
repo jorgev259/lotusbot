@@ -29,6 +29,17 @@ module.exports = {
 
             client.data.colorRoles = colorRoles;
             client.data.groupRoles = groupRoles;
+        },
+
+        async guildMemberAdd(client,db,member){
+            await util.userCheck(member.id,client,db)
+            var name = member.user.username;
+            if(client.data.nicks[member.id] == undefined) {
+                member.setNickname(name + " ☕");
+                await db.run("INSERT OR REPLACE INTO nicks (id,nick) VALUES (?,?)", [member.id, name + " ☕"]);
+            }else{
+                member.setNickname(client.data.nicks[member.id],"Locked nickname");
+            }
         }
     }
 }

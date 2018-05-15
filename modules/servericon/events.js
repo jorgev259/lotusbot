@@ -14,18 +14,27 @@ module.exports = {
                 util.swapPFP(client);
             }
         },
-
-        async guildMemberAdd(client,db,member){
-            await util.userCheck(member.id,client,db)
-            var name = member.user.username;
-            if(client.data.nicks[member.id] == undefined) {
-                member.setNickname(name + " ☕");
-                await db.run("INSERT OR REPLACE INTO nicks (id,nick) VALUES (?,?)", [member.id, name + " ☕"]);
-            }else{
-                member.setNickname(client.data.nicks[member.id],"Locked nickname");
-            }
-            member.guild.channels.find("name","main-lounge").send(`Welcome to Fandom Circle, ${member}! Have Fun`);
-        }
     }
 }
 
+async function swapPFP(client){		  
+    let day = moment().date();
+    let month = moment().month() + 1;
+
+    zipdir('../data', { saveTo: `./data/${day}.${month}.zip` }, async(err, buffer) => {
+        if(err)
+            util.log(client, `Failed backup: ${err}`)
+        else
+            util.log(client, `${day}.${month}.zip created`)
+    });
+
+    client.guilds.get("289758148175200257").setIcon(`../../images/serverpics/${day}.${month}.png`)
+    .then(updated => {
+        client.data.info.lastPFP = moment().format('YYYY-MM-DD');
+        util.save(client.data.info, 'info');
+
+        var nextDay = moment().add(1, 'day').format('YYYY-MM-DD');
+        setTimeout(util.swapPFP, moment(nextDay).diff(moment()), client)
+        util.log(client, `Next profile pic change and backup scheduled to happen ${moment().to(nextDay)}`)
+    })
+}

@@ -159,34 +159,6 @@ module.exports = {
 		}
 	},
 
-	talk:function(client,msg){
-		if(msg.mentions.channels.size>0){
-			client.channels.resolve(msg.mentions.channels.first()).send(msg.content.split(msg.mentions.channels.first()).join(""));
-		}
-	},
-
-	async swapPFP(client){		  
-		let day = moment().date();
-		let month = moment().month() + 1;
-
-		zipdir('../data', { saveTo: `./data/${day}.${month}.zip` }, async(err, buffer) => {
-			if(err)
-				module.exports.log(client, `Failed backup: ${err}`)
-			else
-				module.exports.log(client, `${day}.${month}.zip created`)
-		});
-
-		client.guilds.get("289758148175200257").setIcon(`./images/serverpics/${day}.${month}.png`)
-		.then(updated => {
-			client.data.info.lastPFP = moment().format('YYYY-MM-DD');
-			module.exports.save(client.data.info, 'info');
-
-			var nextDay = moment().add(1, 'day').format('YYYY-MM-DD');
-			setTimeout(module.exports.swapPFP, moment(nextDay).diff(moment()), client)
-			module.exports.log(client, `Next profile pic change and backup scheduled to happen ${moment().to(nextDay)}`)
-		})
-	},
-
 	async save(data,name){
 		await fs.writeFile("data/" + name + ".json", JSON.stringify(data, null, 4));
 	},

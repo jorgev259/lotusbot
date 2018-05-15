@@ -115,22 +115,7 @@ client.on('message', async message => {
 
 	switch(message.channel.name){
 		case "nickname-change":
-			if(!message.author.bot){
-				var emoji = message.member.nickname.split(" ").pop();
-
-				var namechange = message.content + " " + emoji;
-				if(namechange.length < 32){
-					client.data.nicks[message.member.id] = namechange;
-
-					await message.member.setNickname(namechange,"Name Change sponsored by Monokuma")
-					await util.save(client.data.nicks,"nicks")
-					message.delete(namechange);
-					message.member.roles.remove([message.guild.roles.find("name","⭕")],"Nickname change")
-				}else{
-					message.delete();
-					message.author.send("That nickname is too long");
-				}
-			}
+			
 			break;
 
 		case "shop":
