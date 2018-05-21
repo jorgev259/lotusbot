@@ -7,13 +7,8 @@ let db;
 startDB();
 async function startDB(){
 	db = await sqlite.open('data/database.sqlite');
-	await db.run(`CREATE TABLE IF NOT EXISTS exp (id TEXT, color TEXT, exp, lastDaily TEXT, lvl INT, money INT, rank INT, bg TEXT, UNIQUE(id));`);
-	await db.run(`CREATE TABLE IF NOT EXISTS nicks (id TEXT, nick TEXT, UNIQUE(id));`);
-	await db.run(`CREATE TABLE IF NOT EXISTS inventory (id TEXT, type TEXT, item TEXT);`);
-	await db.run(`CREATE TABLE IF NOT EXISTS badges (id TEXT, number INTEGER, item TEXT);`);
 	await db.run(`CREATE TABLE IF NOT EXISTS perms (type TEXT, item TEXT, command TEXT);`);
 }
-var colors = ["pink","d-blue","purple","l-blue","green","red"];
 var util = require('./utilities.js');
 
 const client = new Discord.Client();
@@ -38,7 +33,7 @@ for (const file of modules) {
 	let path_array = file.split("/");
 	let name = path_array[path_array.length - 1].split(".js")[0];
 
-	const jsObject;
+	const jsObject = {};
 	try{
 		jsObject = require(`./${file}`);
 		if(jsObject.reqs){
@@ -91,11 +86,9 @@ Object.keys(eventModules).forEach(eventName => {
 
 client.on('message', async message => {
 	if(!message.member) return;
-	await util.userCheck(message.author.id,client,db);
-	util.exp(message,client, db);
 	var prefix = ">";
 
-	if(message.content.startsWith(prefix) || message.content.startsWith("<@!" + client.user.id + ">")){			
+	if(message.content.startsWith(prefix) || message.content.startsWith("<@" + client.user.id + ">")){			
 		var param = message.content.split(" ");
 
 		if(message.content.startsWith(prefix)){
