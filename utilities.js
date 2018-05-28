@@ -7,7 +7,6 @@ const Discord = require('discord.js');
 var moment = require("moment");
 var random = require("random-number-csprng");
 var fs = require("fs");
-var zipdir = require('zip-dir');
 
 module.exports = {
 	async permCheck(message, commandName, client, db){
@@ -51,7 +50,9 @@ module.exports = {
 	},
 
 	async userCheck(id,client,db){
-		let member = await client.guilds.get("289758148175200257").members.fetch(id);
+		let guild = client.guilds.get("289758148175200257");
+		if(!guild) return;
+		let member = await guild.members.fetch(id);
 		if(member.user.bot) return;
 
 		await db.run("INSERT OR IGNORE INTO exp (id,color,rank,lvl,exp,money,lastDaily,bg) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [member.id, colors[await random(0,colors.length-1)], 0, 1, 0, 0, "Not Collected", "DEFAULT"])		
@@ -88,7 +89,7 @@ module.exports = {
 	log:function(client,log){
 		console.log(log);
 		if(client != null && client.channels.size>0 && client.readyAt != null){			
-			client.channels.find("name","bot-logs").send({embed:new Discord.MessageEmbed().setTimestamp().setDescription(log)});
+			client.channels.find(val => val.name === "bot-logs").send({embed:new Discord.MessageEmbed().setTimestamp().setDescription(log)});
 		}
 	}
 }

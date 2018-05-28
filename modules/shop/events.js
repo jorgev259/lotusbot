@@ -40,7 +40,7 @@ module.exports = {
 }
 
 async function exp(msg,client,db){
-	await util.userCheck(message.author.id, client, db);
+	await util.userCheck(msg.author.id, client, db);
 	if(cooldown[msg.author.id] == undefined && !msg.author.bot && msg.member){ //checks if the user is not on cooldown and filters bots out
 		var userInfo = await db.get(`SELECT id,lvl,rank,money,exp,color FROM exp WHERE id = ${msg.author.id}`);
 

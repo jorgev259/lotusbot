@@ -1,111 +1,87 @@
-const Discord = require('discord.js');
-const fs = require("fs");
-const glob = require('glob');
+async function startBot(){
+	const Discord = require('discord.js');
+	const fs = require("fs");
+	const glob = require('glob');
 
-const sqlite = require("sqlite");
-let db;
-startDB();
-async function startDB(){
-	db = await sqlite.open('data/database.sqlite');
+	const sqlite = require("sqlite");
+	let db = await sqlite.open('data/database.sqlite');
 	await db.run(`CREATE TABLE IF NOT EXISTS perms (type TEXT, item TEXT, command TEXT);`);
-}
-var util = require('./utilities.js');
 
-const client = new Discord.Client();
-client.commands = new Discord.Collection();
+	var util = require('./utilities.js');
 
-let modules = glob.sync(`modules/**/*`);
-let dataFiles = glob.sync(`data/*`);
+	const client = new Discord.Client();
+	client.commands = new Discord.Collection();
 
-client.data = {};
-for (const file of dataFiles) {	
-	if(!file.endsWith(".json")) continue;	
-	const data = require(`./${file}`);
+	let modules = glob.sync(`modules/**/*`);
+	let dataFiles = glob.sync(`data/*`);
 
-	let path_array = file.split("/");
-	let name = path_array[path_array.length - 1].split(".json")[0];
-	client.data[name] = data
-}
+	client.data = {};
+	
+	let eventModules = {};
+	for (const file of modules) {	
+		if(!file.endsWith(".js")) continue;
+		let path_array = file.split("/");
+		let name = path_array[path_array.length - 1].split(".js")[0];
 
-let eventModules = {};
-for (const file of modules) {	
-	if(!file.endsWith(".js")) continue;
-	let path_array = file.split("/");
-	let name = path_array[path_array.length - 1].split(".js")[0];
-
-	const jsObject = {};
-	try{
-		jsObject = require(`./${file}`);
-		if(jsObject.reqs){
-			async function req(){
+		try{
+			let jsObject = require(`./${file}`);
+			if(jsObject.reqs){
 				await jsObject.reqs(client, db);
 			}
-			req();
-		}
-	}catch(e){
-		console.log(`Failed to load ${file}`);
-		console.log(e.stack);
-		continue;
+
+			switch(name){
+				case "commands":
+					let commands = jsObject.commands;
+					Object.keys(commands).forEach(async commandName => {
+						client.commands.set(commandName, commands[commandName]);
+						client.commands.get(commandName).type = path_array[path_array.length-2];
+						if(command.alias){
+							command.alias.forEach(alias => {
+								client.commands.set(alias, commands[commandName])
+							})		
+						}	
+					})
+					break;
+		
+				case "events":
+					let events = jsObject.events;
+					
+					Object.keys(events).forEach(eventName => {
+						if(!eventModules[eventName]) eventModules[eventName] = [];
+						eventModules[eventName].push(events[eventName])
+					})
+					break;
+			}	
+		}catch(e){
+			console.log(`Failed to load ${file}`);
+			console.log(e.stack);
+			continue;
+		}		
 	}
 
-	switch(name){
-		case "commands":
-			let commands = jsObject.commands;
-			Object.keys(commands).forEach(async commandName => {
-				client.commands.set(commandName, commands[commandName]);
-				client.commands.get(commandName).type = path_array[path_array.length-2];
-				if(command.alias){
-					command.alias.forEach(alias => {
-						client.commands.set(alias, commands[commandName])
-					})		
-				}	
-			})
-			break;
+	for (const file of dataFiles) {	
+		if(!file.endsWith(".json")) continue;	
+		const data = require(`./${file}`);
 
-		case "events":
-			let events = jsObject.events;
-			Object.keys(events).forEach(eventName => {
-				if(!eventModules[eventName]) eventModules[eventName] = [];
-				eventModules[eventName].push(events[eventName])
-			})
-			break;
-	}	
-}
+		let path_array = file.split("/");
+		let name = path_array[path_array.length - 1].split(".json")[0];
+		client.data[name] = data
+	}
 
-Object.keys(eventModules).forEach(eventName => {
-	client.on(eventName, (...args) => {
-		eventModules[eventName].forEach(func => {
-			func(client, db, ...args);
+	Object.keys(eventModules).forEach(eventName => {
+		client.on(eventName, (...args) => {
+			eventModules[eventName].forEach(func => {
+				func(client, db, ...args);
+			})
 		})
 	})
-})
 
-/*client.on('ready', async () => {
-	await util.log(client,'I am ready!');	
-});*/
+	/*client.on('ready', async () => {
+		await util.log(client,'I am ready!');	
+	});*/
 
-client.on('message', async message => {
-	if(!message.member) return;
-	var prefix = ">";
+	process.on('unhandledRejection', err => {if(err.message != "Unknown User") util.log(client,err.stack)});
+	client.login(client.data.tokens.akira);
+}
 
-	if(message.content.startsWith(prefix) || message.content.startsWith("<@" + client.user.id + ">")){			
-		var param = message.content.split(" ");
-
-		if(message.content.startsWith(prefix)){
-			param[0] = param[0].split(prefix)[1];
-		}else{
-			param.splice(0,1);
-		}
-			
-		const commandName = param[0].toLowerCase();
-		var command = client.data.commands[commandName];
-		if(await util.permCheck(message, commandName, client, db)){				
-			if(command == undefined){command = {}; command.type = param[0].toLowerCase()};
-			if (!client.commands.has(command.type)) return;				
-			client.commands.get(command.type).execute(client, message, param, db);
-		}
-	}
-});
-
-process.on('unhandledRejection', err => {if(err.message != "Unknown User") util.log(client,err.stack)});
-client.login(client.data.tokens.akira);
+startBot();

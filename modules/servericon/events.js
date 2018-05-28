@@ -1,17 +1,32 @@
 const moment = require('moment');
 var util = require('../../utilities.js');
+const fs = require("fs");
+var zipdir = require('zip-dir');
 
 module.exports = {
+    async reqs(client,db){
+        fs.stat('data/info.json', function(err, stat) {
+            if(err == null) {
+                console.log('File exists');
+            }else if(err.code == 'ENOENT') {
+                // file does not exist
+                client.data.info = {"lastPFP": "Not Changed"}
+                fs.writeFileSync('data/info.json', JSON.stringify(client.data.info, null, 4));
+            }
+        });
+    },
+
     events: {
         async ready (client,db){
-            if(moment().isSame(client.data.info.lastPFP,'day')){
-                var nextDay = moment(client.data.info.lastPFP).add(1, 'day').format('YYYY-MM-DD');
+            let lastPFP = client.data.info.lastPFP;
+            if(lastPFP != "Not Changed" && moment().isSame(lastPFP,'day')){
+                var nextDay = moment(lastPFP).add(1, 'day').format('YYYY-MM-DD');
         
                 util.log(client, `Next profile pic change and backups scheduled to happen ${moment().to(nextDay)}`)
-                setTimeout(util.swapPFP, moment(nextDay).diff(moment()), client)
+                setTimeout(swapPFP, moment(nextDay).diff(moment()), client)
             }else{
                 util.log(client, `Starting profile change`)
-                util.swapPFP(client);
+                swapPFP(client);
             }
         },
     }
@@ -28,13 +43,13 @@ async function swapPFP(client){
             util.log(client, `${day}.${month}.zip created`)
     });
 
-    client.guilds.get("289758148175200257").setIcon(`../../images/serverpics/${day}.${month}.png`)
-    .then(updated => {
-        client.data.info.lastPFP = moment().format('YYYY-MM-DD');
-        util.save(client.data.info, 'info');
+    let guild = client.guilds.get("289758148175200257");
+    if(guild) guild.setIcon(`../../images/serverpics/${day}.${month}.png`);
 
-        var nextDay = moment().add(1, 'day').format('YYYY-MM-DD');
-        setTimeout(util.swapPFP, moment(nextDay).diff(moment()), client)
-        util.log(client, `Next profile pic change and backup scheduled to happen ${moment().to(nextDay)}`)
-    })
+    client.data.info.lastPFP = moment().format('YYYY-MM-DD');
+    util.save(client.data.info, 'info');
+
+    var nextDay = moment().add(1, 'day').format('YYYY-MM-DD');
+    setTimeout(swapPFP, moment(nextDay).diff(moment()), client)
+    util.log(client, `Next profile pic change and backup scheduled to happen ${moment().to(nextDay)}`)
 }
