@@ -34,5 +34,6 @@ function log(message, out){
     .setDescription(out)
     .setTimestamp();
 
-    message.guild.channels.find('name','staff-log').send(embed)
+    message.guild.channels.find(channel => channel.name == 'staff-log').send(embed)
 }
+//test
