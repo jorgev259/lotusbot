@@ -3,9 +3,7 @@ const fs = require("fs");
 module.exports = {
     async reqs(client,db){
         fs.stat('data/commands.json', function(err, stat) {
-            if(err == null) {
-                console.log('File exists');
-            }else if(err.code == 'ENOENT') {
+            if(err != null && err.code == 'ENOENT') {
                 // file does not exist
                 client.data.commands = {}
                 fs.writeFileSync('data/commands.json', JSON.stringify(client.data.commands, null, 4));

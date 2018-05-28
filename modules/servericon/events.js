@@ -6,9 +6,7 @@ var zipdir = require('zip-dir');
 module.exports = {
     async reqs(client,db){
         fs.stat('data/info.json', function(err, stat) {
-            if(err == null) {
-                console.log('File exists');
-            }else if(err.code == 'ENOENT') {
+            if(err != null && err.code == 'ENOENT') {
                 // file does not exist
                 client.data.info = {"lastPFP": "Not Changed"}
                 fs.writeFileSync('data/info.json', JSON.stringify(client.data.info, null, 4));

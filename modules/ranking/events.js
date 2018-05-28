@@ -1,3 +1,5 @@
+var util = require('../../utilities.js');
+
 module.exports = {
     async reqs(client,db){
         await db.run(`CREATE TABLE IF NOT EXISTS exp (id TEXT, color TEXT, exp, lastDaily TEXT, lvl INT, money INT, rank INT, bg TEXT, UNIQUE(id));`);
