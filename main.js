@@ -32,9 +32,11 @@ async function startBot(){
 			switch(name){
 				case "commands":
 					let commands = jsObject.commands;
-					Object.keys(commands).forEach(async commandName => {
+					Object.keys(commands).forEach(async commandName => {					
 						client.commands.set(commandName, commands[commandName]);
 						client.commands.get(commandName).type = path_array[path_array.length-2];
+
+						let command = commands[commandName];
 						if(command.alias){
 							command.alias.forEach(alias => {
 								client.commands.set(alias, commands[commandName])

@@ -6,7 +6,7 @@ const Discord = require('discord.js');
 
 var moment = require("moment");
 var random = require("random-number-csprng");
-var fs = require("fs");
+var fs = require("fs-extra");
 
 module.exports = {
 	async permCheck(message, commandName, client, db){
@@ -28,7 +28,7 @@ module.exports = {
 
 			if(perms.role.length>0){
 				for(var i=0;i<perms.role.length;i++){
-					var role = message.member.guild.roles.find("name", perms.role[i]);
+					var role = message.member.guild.roles.find(role=> role.name == perms.role[i]);
 					if(role != null && message.member.roles.has(role.id)){
 						return true;
 						i=perms.role.length;
@@ -62,7 +62,7 @@ module.exports = {
 		var rankRoles = member.roles.filter(role => role.name.startsWith('['));
 		if (rankRoles.size>1) await member.roles.remove(rankRoles);
 			
-		allRoles.push(client.guilds.get("289758148175200257").roles.find("name",`[${userInfo.lvl}]`).id, client.data.colorRoles[userInfo.color][userInfo.rank], client.data.groupRoles[userInfo.color]);
+		allRoles.push(client.guilds.get("289758148175200257").roles.find(role=> role.name == `[${userInfo.lvl}]`).id, client.data.colorRoles[userInfo.color][userInfo.rank], client.data.groupRoles[userInfo.color]);
 		let roles = allRoles.filter(id => !member.roles.has(id))
 		await member.roles.add(roles,"User join");
 	},
@@ -80,6 +80,13 @@ module.exports = {
             }
         }
     },*/
+	async checkData(client, name, info){
+        if(!(await fs.pathExists(`data/${name}.json`))) {
+            // file does not exist
+            client.data[name] = info;
+            fs.writeFileSync(`data/${name}.json`, JSON.stringify(client.data[name], null, 4));
+        }
+	},
 
 	async save(data,name){
 		await fs.writeFile("data/" + name + ".json", JSON.stringify(data, null, 4));

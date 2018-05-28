@@ -1,14 +1,9 @@
 const fs = require("fs");
+var util = require('../../utilities.js');
 
 module.exports = {
     async reqs(client,db){
-        fs.stat('data/commands.json', function(err, stat) {
-            if(err != null && err.code == 'ENOENT') {
-                // file does not exist
-                client.data.commands = {}
-                fs.writeFileSync('data/commands.json', JSON.stringify(client.data.commands, null, 4));
-            }
-        });
+        util.checkData(client, "commands",{});
     },
 
     events: {

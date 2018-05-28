@@ -29,7 +29,7 @@ module.exports = {
 					await message.member.setNickname(namechange,"Name Change sponsored by Monokuma")
 					await util.save(client.data.nicks,"nicks")
 					message.delete(namechange);
-					message.member.roles.remove([message.guild.roles.find("name","⭕")],"Nickname change")
+					message.member.roles.remove([message.guild.roles.find(role => role.name == "⭕")],"Nickname change")
 				}else{
 					message.delete();
 					message.author.send("That nickname is too long");
@@ -56,7 +56,7 @@ async function exp(msg,client,db){
 			userInfo.lvl += 1;
 			await db.run(`UPDATE exp SET lvl = ${userInfo.lvl} WHERE id = ${msg.author.id}`);
 
-			await msg.member.roles.add([msg.guild.roles.find("name",`[${userInfo.lvl}]`)]);
+			await msg.member.roles.add([msg.guild.roles.find(role => role.name == `[${userInfo.lvl}]`)]);
 
 			userInfo.money += 2000
 			await db.run(`UPDATE exp SET money = ${userInfo.money} WHERE id = ${msg.author.id}`);
@@ -71,8 +71,8 @@ async function exp(msg,client,db){
 								"remove":"☕ - Customers"
 							}*/
 							if(!(msg.member.nickname.endsWith("🔰") || msg.member.nickname.endsWith("🍬") || msg.member.nickname.endsWith("🔧") || msg.member.nickname.endsWith("✨") || msg.member.nickname.endsWith("🔖"))){
-								await msg.member.roles.add(msg.guild.roles.find("name",reward.name),"Added reward role"); //adds the rewarded role
-								await msg.member.roles.remove(msg.guild.roles.find("name",reward.remove),"Removed old rank")
+								await msg.member.roles.add(msg.guild.roles.find(role=> role.name == reward.name),"Added reward role"); //adds the rewarded role
+								await msg.member.roles.remove(msg.guild.roles.find(role=> role.name == reward.remove),"Removed old rank")
 
 								var nick = msg.member.nickname;
 								if(msg.member.nickname.endsWith(reward.remove.split(" ")[0])){

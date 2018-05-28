@@ -11,8 +11,8 @@ module.exports = {
 
             let guild = client.guilds.get("289758148175200257");
             if(!guild) return;
-            let roles = guild.roles.filter(role  => role.position < guild.roles.find('name','//Colors').position && role.position > guild.roles.find('name','//End Colors').position).sort(function (a, b) {return a.position- b.position})
-            let roles2 = guild.roles.filter(role  => role.position < guild.roles.find('name','//Groups').position && role.position > guild.roles.find('name','//End Groups').position && role.name != "- - - - - - - - - -").sort(function (a, b) {return a.position- b.position})
+            let roles = guild.roles.filter(role  => role.position < guild.roles.find(role => role.name == '//Colors').position && role.position > guild.roles.find(role => role.name == '//End Colors').position).sort(function (a, b) {return a.position- b.position})
+            let roles2 = guild.roles.filter(role  => role.position < guild.roles.find(role => role.name == '//Groups').position && role.position > guild.roles.find(role => role.name == '//End Groups').position && role.name != "- - - - - - - - - -").sort(function (a, b) {return a.position- b.position})
             let section = [];
             roles.forEach(role => {	
                 if(role.name == "- - - - - - - - - -"){
