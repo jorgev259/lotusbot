@@ -6,6 +6,12 @@ let fs = require("fs");
 module.exports = {
     events: {
         async ready(client, db){
+            app.use(function(req, res, next) {
+                res.header("Access-Control-Allow-Origin", "*");
+                res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+                next();
+              });
+
             app.get('/members/:guild', function(req, res) {
                 let guild = client.guilds.get(req.params.guild);
                 if(guild) 
