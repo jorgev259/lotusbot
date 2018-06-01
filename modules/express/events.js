@@ -23,7 +23,7 @@ module.exports = {
             passport.use(new Strategy({
                 clientID: discordApp.id,
                 clientSecret: client.data.tokens.secret,
-                callbackURL: 'http://localhost:8080/callback',
+                callbackURL: '/callback',
                 scope: scopes
             }, function(accessToken, refreshToken, profile, done) {
                 process.nextTick(function() {
