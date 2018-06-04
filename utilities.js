@@ -15,7 +15,7 @@ module.exports = {
 		dbPerms.forEach(element => {
 			perms[element.type].push(element.item);
 		})
-		if(dbPerms.length == 0 || message.member.roles.exists("name","🍬") ||  message.member.roles.exists("name","🍬 Master Developer")) return true;
+		if(dbPerms.length == 0 || message.member.roles.some(r=>r.name=="🍬") ||  message.member.roles.some(r=>r.name=="🍬 Master Developer")) return true;
 		var allowedChannel = true;
 		var allowed = false;
 

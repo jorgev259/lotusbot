@@ -124,7 +124,7 @@ module.exports = {
 
                 var packs = "";
                 Object.keys(client.data.items).forEach(element => {
-                    if(client.data.items[element].role && element.includes("Pack") && message.member.roles.exists("name", client.data.items[element].role)){
+                    if(client.data.items[element].role && element.includes("Pack") && message.member.roles.some(r=>r.name== client.data.items[element].role)){
                         packs += `${element.split("Pack")[0]}\n`
                     }
                 })
@@ -141,7 +141,7 @@ module.exports = {
                 let items = client.data.items;
 
                 if (!param[1]){               
-                    const embed = new Discord.MessageEmbed()
+                    const embed = new MessageEmbed()
                     .setColor(0xD4AF37)
 
                     var tempDesc = '';
@@ -190,7 +190,7 @@ module.exports = {
                             var item = client.data.items["embed pack"].packs[m.content.toLowerCase()];                               
                             if(user.money < item.price) return m.author.send("You cant afford this embed pack");
 
-                            if(message.member.roles.exists("name",item.role)) m.author.send('**You already have this embed pack!**');
+                            if(message.member.roles.some(r=>r.name==item.role)) m.author.send('**You already have this embed pack!**');
                                 
                             await db.run(`UPDATE exp SET money = money - ${item.price} WHERE id = ${message.author.id}`);
                             message.member.roles.add(message.guild.roles.find("name", item.role));
@@ -200,7 +200,7 @@ module.exports = {
                         break;
 
                     case "nickname change":
-                        if(message.member.roles.exists("name",item.role)) message.author.send('**You already have a ' + itemName + ' active!**');
+                        if(message.member.roles.some(r=>r.name==item.role)) message.author.send('**You already have a ' + itemName + ' active!**');
                             await message.member.roles.add([message.guild.roles.find("name", item.role)],"Purchase from the shop");
                             await db.run(`UPDATE exp SET money = money - ${itemPrice} WHERE id = ${message.author.id}`);
                             await message.author.send('**You bought ' + itemName + '!**');

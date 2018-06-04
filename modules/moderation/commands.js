@@ -58,7 +58,7 @@ module.exports ={
             desc:"This is a description",
             async execute(client, message, param, db){
                 var issued = message.member;
-                if(message.mentions.users.size && message.member.roles.exists("name","Staff Team")) issued = message.mentions.members.first()        
+                if(message.mentions.users.size && message.member.roles.some(r=> r.name=="Staff Team")) issued = message.mentions.members.first()        
                 if(!client.data.warns[issued.id]) client.data.warns[issued.id] = []
 
                 var warnsMsg = ``;
@@ -94,7 +94,7 @@ module.exports ={
                     message.channel.send(`${member.nickname || member.user.username} has been muted.`)
                     if(time>0){
                         setTimeout(function(memb,msg){
-                            if(memb.roles.exists("name","Muted")){
+                            if(memb.roles.some(r=>r.name=="Muted")){
                                 memb.roles.remove(msg.guild.roles.find("name","Muted"));
                             }
                         },time*60000,member,message)
@@ -110,7 +110,7 @@ module.exports ={
                     message.channel.send("User to unmute not mentioned");
                     return;
                 }
-                if(message.mentions.members.first().roles.exists("name","Muted")){
+                if(message.mentions.members.first().roles.some(r=>r.name=="Muted")){
                     message.mentions.members.first().roles.remove([message.guild.roles.find("name","Muted")]);
                     message.channel.send(`${message.mentions.members.first().nickname || message.mentions.users.first().username} has been unmuted`)
                 }else{
