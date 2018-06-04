@@ -15,6 +15,8 @@ function checkAuth(req, res, next) {
     res.send('not logged in :(');
 }
 
+let args = process.argv.slice(2)
+
 module.exports = {
     events: {
         async ready(client, db){
@@ -23,7 +25,7 @@ module.exports = {
             passport.use(new Strategy({
                 clientID: discordApp.id,
                 clientSecret: client.data.tokens.secret,
-                callbackURL: 'https://akobot.tk/callback',
+                callbackURL: args[0] || 'https://akobot.tk/callback',
                 scope: scopes
             }, function(accessToken, refreshToken, profile, done) {
                 process.nextTick(function() {
