@@ -3,7 +3,7 @@ var cooldown = {};
 
 module.exports = {
 	async reqs(client,db){
-		await db.run(`CREATE TABLE IF NOT EXISTS exp (id TEXT, color TEXT, exp, lastDaily TEXT, lvl INT, money INT, rank INT, bg TEXT, UNIQUE(id));`);
+		await db.run(`CREATE TABLE IF NOT EXISTS exp (id TEXT, color TEXT, exp, lastDaily TEXT, lvl INT, money INT, rank INT, bg TEXT, prestige INTEGER, UNIQUE(id));`);
 		await db.run(`CREATE TABLE IF NOT EXISTS nicks (id TEXT, nick TEXT, UNIQUE(id));`);
 		await db.run(`CREATE TABLE IF NOT EXISTS inventory (id TEXT, type TEXT, item TEXT);`);
 		await db.run(`CREATE TABLE IF NOT EXISTS badges (id TEXT, number INTEGER, item TEXT);`);
@@ -18,23 +18,6 @@ module.exports = {
 
         async message(client,db,message){
 			exp(message, client, db);
-
-            if(message.channel.name == "nickname-change" && !message.author.bot){
-				var emoji = message.member.nickname.split(" ").pop();
-
-				var namechange = message.content + " " + emoji;
-				if(namechange.length < 32){
-					client.data.nicks[message.member.id] = namechange;
-
-					await message.member.setNickname(namechange,"Name Change sponsored by Monokuma")
-					await util.save(client.data.nicks,"nicks")
-					message.delete(namechange);
-					message.member.roles.remove([message.guild.roles.find(role => role.name == "⭕")],"Nickname change")
-				}else{
-					message.delete();
-					message.author.send("That nickname is too long");
-				}
-			}
         }
     }
 }
