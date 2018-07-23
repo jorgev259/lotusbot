@@ -210,7 +210,7 @@ module.exports = {
                 if (namechange.length < 32) {
                   await message.member.setNickname(namechange, 'Name Change sponsored by Monokuma')
 
-                  await db.run('INSERT OR REPLACE INTO nicks (id,nick) VALUES (?,?)', [m.member.id, namechange])
+                  await db.run('INSERT OR REPLACE INTO nicks (id,nick) VALUES (?,?)', [message.member.id, namechange])
                   await db.run(`UPDATE exp SET money = money - ${item.price} WHERE id = ${message.author.id}`)
                   message.author.send('Nickname changed!')
                 } else {
