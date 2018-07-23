@@ -48,7 +48,7 @@ module.exports = {
     const userInfo = await db.get(`SELECT lvl,color,rank FROM exp WHERE id = ${member.id}`)
 
     let allRoles = ['436590073568559104', '441580169258598401', '436590072939282432', '435805052259794944', '435801059361947648', '435805052259794944', '435803522659778562']
-    var rankRoles = member.roles.filter(role => role.name.startsWith('['))
+    var rankRoles = member.roles.filter(role => role.name.startsWith('[') && role.name.endsWith(']'))
     if (rankRoles.size > 1) await member.roles.remove(rankRoles)
 
     allRoles.push(client.guilds.get('289758148175200257').roles.find(role => role.name === `[${userInfo.lvl}]`).id, client.data.colorRoles[userInfo.color][userInfo.rank], client.data.groupRoles[userInfo.color])
