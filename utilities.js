@@ -12,33 +12,26 @@ module.exports = {
     dbPerms.forEach(element => {
       perms[element.type].push(element.item)
     })
-    if (dbPerms.length === 0 || message.member.roles.some(r => r.name === '🍬') || message.member.roles.some(r => r.name === '🍬 Master Developer')) return true
-    var allowedChannel = true
+    if (dbPerms.length === 0 || message.member.roles.some(r => r.name === '🐼')) return true
     var allowed = false
 
-    if (perms.channel.length > 0) {
-      allowedChannel = false
-      if (perms.channel.includes(message.channel.name)) allowedChannel = true
-    }
-    if (allowedChannel) {
-      if (perms.role.length === 0 && perms.user.length === 0) { return true };
+    if (perms.role.length === 0 && perms.user.length === 0) { return true };
 
-      if (perms.role.length > 0) {
-        for (var i = 0; i < perms.role.length; i++) {
-          var role = message.member.guild.roles.find(role => role.name === perms.role[i])
-          if (role != null && message.member.roles.has(role.id)) {
-            i = perms.role.length
-            return true
-          }
+    if (perms.role.length > 0) {
+      for (var i = 0; i < perms.role.length; i++) {
+        var role = message.member.guild.roles.find(role => role.name === perms.role[i])
+        if (role != null && message.member.roles.has(role.id)) {
+          i = perms.role.length
+          return true
         }
       }
+    }
 
-      if (!allowed && perms.user.length > 0) {
-        for (i = 0; i < perms.user.length; i++) {
-          if (perms.user[i] === message.author.id) {
-            i = perms.user.length
-            return true
-          }
+    if (!allowed && perms.user.length > 0) {
+      for (i = 0; i < perms.user.length; i++) {
+        if (perms.user[i] === message.author.id) {
+          i = perms.user.length
+          return true
         }
       }
     }

@@ -142,6 +142,29 @@ module.exports ={
             execute(client, message, param){
                 message.channel.bulkDelete(parseInt(param[1]) + 1);
             }
+        },
+        
+        eval: {
+            desc:"Runs the written code (Use with precaution). >eval <code>",
+            async execute(client, message, param, db){
+                param = param.slice(1)
+                const code = param.join(" ");
+                let evaled = "";
+                try {
+                    evaled = eval(code);
+                }
+                catch(err) {
+                    evaled = err.message;
+                }                    
+
+                if (typeof evaled !== "string")
+                    evaled = require("util").inspect(evaled);
+
+                if (typeof(evaled) === "string")
+                    evaled = evaled.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
+
+                message.channel.send(evaled, {code:"xl",split:true});
+            }
         }
     }
 }
