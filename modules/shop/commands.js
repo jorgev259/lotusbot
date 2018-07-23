@@ -1,4 +1,3 @@
-var util = require('../../utilities.js')
 const moment = require('moment')
 var glob = require('glob')
 var colors = ['pink', 'd-blue', 'purple', 'l-blue', 'green', 'red']
@@ -197,15 +196,15 @@ module.exports = {
             break
 
           case 'nickname change':
-            if (user.money < item.price) return message.author.send('You cant afford this embed pack')
+            if (user.money < item.price) return message.author.send('You cant afford a nickname change')
 
-            var proposal = await message.author.send('Write the name of the desired pack (You can see them here https://fandomcircle.com/shop')
+            var proposal = await message.author.send('Write your desired nickname')
             var filter = m => m.author.id === message.author.id
             proposal.channel.awaitMessages(filter, { max: 1 })
               .then(async collected => {
                 var m = collected.first()
 
-                var emoji = m.member.nickname.split(' ').pop()
+                var emoji = message.member.nickname.split(' ').pop()
 
                 var namechange = m.content + ' ' + emoji
                 if (namechange.length < 32) {
