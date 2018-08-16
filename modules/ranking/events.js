@@ -1,5 +1,5 @@
 var util = require('../../utilities.js')
-var colors = ['pink', 'd-blue', 'purple', 'l-blue', 'green', 'red']
+var colors = ['pink', 'd-blue', 'purple', 'l-blue', 'green', 'red', 'yellow']
 
 module.exports = {
   async reqs (client, db) {

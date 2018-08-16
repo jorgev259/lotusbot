@@ -1,6 +1,6 @@
 const moment = require('moment')
 var glob = require('glob')
-var colors = ['pink', 'd-blue', 'purple', 'l-blue', 'green', 'red']
+var colors = ['pink', 'd-blue', 'purple', 'l-blue', 'green', 'red', 'yellow']
 let {MessageEmbed} = require('discord.js')
 
 module.exports = {

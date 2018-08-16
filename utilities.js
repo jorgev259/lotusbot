@@ -1,5 +1,5 @@
 var reactions = ['390223211662540800', '390223209930424321', '390223211637243905', '390223211616534577', '390223211456888835', '390223210240540683']
-var colors = ['pink', 'd-blue', 'purple', 'l-blue', 'green', 'red']
+var colors = ['pink', 'd-blue', 'purple', 'l-blue', 'green', 'red', 'yellow']
 const Discord = require('discord.js')
 
 var random = require('random-number-csprng')
