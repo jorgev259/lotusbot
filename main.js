@@ -11,52 +11,60 @@ async function startBot () {
   const client = new Discord.Client()
   client.commands = new Discord.Collection()
 
-  let modules = glob.sync(`modules/**/*`)
   let dataFiles = glob.sync(`data/*`)
+
+  let modules = glob.sync(`modules/*/`)
 
   client.data = {}
 
   let eventModules = {}
-  for (const file of modules) {
-    if (!file.endsWith('.js')) continue
-    let pathArray = file.split('/')
-    let name = pathArray[pathArray.length - 1].split('.js')[0]
-    console.log(pathArray)
+  let error = true
+  for (const module of modules) {
+    let files = glob.sync(`${module}/*`)
+
+    let outModule = { commands: {}, events: {} }
+    let moduleName = module.split('/')[1]
 
     try {
-      let jsObject = require(`./${file}`)
-      if (jsObject.reqs) {
-        await jsObject.reqs(client, db)
+      for (const file of files) {
+        let pathArray = file.split('/')
+        let type = pathArray[pathArray.length - 1].split('.js')[0]
+
+        let jsObject = require(`./${file}`)
+        if (jsObject.reqs) {
+          await jsObject.reqs(client, db)
+        }
+
+        outModule[type] = jsObject[type]
       }
 
-      switch (name) {
-        case 'commands':
-          let commands = jsObject.commands
-          Object.keys(commands).forEach(async commandName => {
-            client.commands.set(commandName, commands[commandName])
-            client.commands.get(commandName).type = pathArray[pathArray.length - 2]
+      let commandKeys = Object.keys(outModule.commands)
+      let eventKeys = Object.keys(outModule.events)
 
-            let command = commands[commandName]
-            if (command.alias) {
-              command.alias.forEach(alias => {
-                client.commands.set(alias, commands[commandName])
-              })
-            }
+      commandKeys.forEach(commandName => {
+        client.commands.set(commandName, outModule.commands[commandName])
+        client.commands.get(commandName).type = moduleName
+
+        let command = outModule.commands[commandName]
+        if (command.alias) {
+          command.alias.forEach(alias => {
+            client.commands.set(alias, outModule.commands[commandName])
           })
-          break
+        }
+      })
 
-        case 'events':
-          let events = jsObject.events
+      eventKeys.forEach(eventName => {
+        if (!eventModules[eventName]) eventModules[eventName] = []
+        eventModules[eventName].push(outModule.events[eventName])
+      })
 
-          Object.keys(events).forEach(eventName => {
-            if (!eventModules[eventName]) eventModules[eventName] = []
-            eventModules[eventName].push(events[eventName])
-          })
-          break
-      }
+      console.log(`Loaded module ${moduleName} with ${commandKeys.length} commands and ${eventKeys.length} events`)
+      error = false
     } catch (e) {
-      console.log(`Failed to load ${file}`)
-      console.log(e.stack)
+      if (error) console.log(`Failed to load ${moduleName}\n${e.stack}\n`)
+      else console.log(`\nFailed to load ${moduleName}\n${e.stack}\n`)
+
+      error = true
       continue
     }
   }
