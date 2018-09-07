@@ -1,12 +1,12 @@
 var util = require('../../utilities.js')
+
 var express = require('express')
 var app = express()
-let fs = require('fs')
+var session = require('express-session')
 
-var express = require('express'),
-  session = require('express-session'),
-  passport = require('passport'),
-  Strategy = require('passport-discord').Strategy
+var passport = require('passport')
+
+var Strategy = require('passport-discord').Strategy
 
 var scopes = ['identify', 'guilds']
 
