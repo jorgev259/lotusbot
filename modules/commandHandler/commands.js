@@ -38,6 +38,14 @@ module.exports = {
       }
     },
 
+    commands: {
+      desc: 'Displays all custom commands for this server',
+      async execute (client, message, param, db) {
+        let commands = db.prepare('SELECT name FROM customs WHERE guild=?').all(message.guild.id)
+        message.channel.send(`Available commands: ${commands.map(e => e.name).join(', ')}`)
+      }
+    },
+
     simple: {
       execute (client, message, param, db) {
         let command = db.prepare('SELECT command FROM customs WHERE guild=? AND name=?').get(message.guild.id, param[0].toLowerCase())
