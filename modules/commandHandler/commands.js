@@ -25,14 +25,14 @@ module.exports = {
             message.channel.send(client.commands.get(param[1].toLowerCase()).desc)
           }
         } else {
-          let embed = {fields: []}
+          let embed = { fields: [] }
           await Array.from(client.commands.keys()).forEach(async idName => {
             if (await util.permCheck(message, idName, client, db)) {
               let command = client.commands.get(idName)
-              embed.fields.push({name: idName, value: command.desc + ' ' + command.usage})
+              embed.fields.push({ name: idName, value: command.desc + ' ' + command.usage })
             }
           })
-          message.author.send({embed})
+          message.author.send({ embed })
         }
       }
     },
@@ -50,10 +50,10 @@ module.exports = {
         let hooks = (await message.channel.fetchWebhooks()).filter(h => h.name === 'simple')
 
         let hook
-        if (hooks.size === 0) hook = await message.channel.createWebhook('simple', {avatar: message.author.displayAvatarURL()})
+        if (hooks.size === 0) hook = await message.channel.createWebhook('simple', { avatar: message.author.displayAvatarURL() })
         else {
           hook = hooks.first()
-          await hook.edit({'avatar': message.author.displayAvatarURL()})
+          await hook.edit({ 'avatar': message.author.displayAvatarURL() })
         }
         message.delete()
         hook.sendSlackMessage({
@@ -66,7 +66,7 @@ module.exports = {
     embed: {
       execute (client, message, param, db) {
         let command = db.prepare('SELECT content FROM embeds WHERE guild=? AND name=? ORDER BY RANDOM() LIMIT 1').get(message.guild.id, param[0].toLowerCase())
-       
+
         message.channel.send(new Discord.MessageAttachment(command.content)).catch(function (error) {
           util.log(client, param[0] + ' failed with ' + error + '\n ' + command.content)
           if (error === 'Error: 403 Forbidden') {
@@ -133,22 +133,22 @@ module.exports = {
         switch (type) {
           case 'add':
             if (message.mentions.users.size > 0) {
-              await db.run('INSERT INTO perms (command,type,item) VALUES (?,?,?)', [name, 'user', message.mentions.users.first().id])
+              await db.prepare('INSERT INTO perms (command,type,item) VALUES (?,?,?)').run(name, 'user', message.mentions.users.first().id)
             } else if (message.mentions.channels.size > 0) {
-              await db.run('INSERT INTO perms (command,type,item) VALUES (?,?,?)', [name, 'channel', message.mentions.channels.first().name])
+              await db.prepare('INSERT INTO perms (command,type,item) VALUES (?,?,?)').run(name, 'channel', message.mentions.channels.first().name)
             } else {
-              await db.run('INSERT INTO perms (command,type,item) VALUES (?,?,?)', [name, 'role', param.join(' ')])
+              await db.prepare('INSERT INTO perms (command,type,item) VALUES (?,?,?)').run(name, 'role', param.join(' '))
             }
             message.reply(param.join(' ') + ' is now allowed to use ' + name)
             break
 
           case 'remove':
             if (message.mentions.users.size > 0) {
-              await db.run("DELETE FROM perms WHERE command='?' AND type='user' AND item='?'", [name, message.mentions.users.first().id])
+              await db.prepare("DELETE FROM perms WHERE command='?' AND type='user' AND item='?'").run(name, message.mentions.users.first().id)
             } else if (message.mentions.channels.size > 0) {
-              await db.run("DELETE FROM perms WHERE command='?' AND type='channel' AND item='?'", [name, message.mentions.channels.first().name])
+              await db.prepare("DELETE FROM perms WHERE command='?' AND type='channel' AND item='?'").run(name, message.mentions.channels.first().name)
             } else {
-              await db.run("DELETE FROM perms WHERE command='?' AND type='role' AND item='?'", [name, param.join(' ')])
+              await db.prepare("DELETE FROM perms WHERE command='?' AND type='role' AND item='?'").run(name, param.join(' '))
             }
             message.reply('Removed ' + param.join(' ') + ' from the command ' + name)
             break
