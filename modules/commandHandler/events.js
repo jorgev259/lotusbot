@@ -1,10 +1,6 @@
 var util = require('../../utilities.js')
 
 module.exports = {
-  async reqs (client, db) {
-    util.checkData(client, 'commands', {})
-  },
-
   events: {
     async message (client, db, message) {
       if (!message.member) return
@@ -20,7 +16,7 @@ module.exports = {
         }
 
         const commandName = param[0].toLowerCase()
-        var command = client.data.commands[commandName]
+        var command = db.prepare('SELECT * FROM customs WHERE guild=? AND name=?').get(message.guild.id, commandName)
         if (await util.permCheck(message, commandName, client, db)) {
           if (command === undefined) { command = {}; command.type = param[0].toLowerCase() };
           if (!client.commands.has(command.type)) return

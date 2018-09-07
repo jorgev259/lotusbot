@@ -7,34 +7,19 @@ var fs = require('fs-extra')
 
 module.exports = {
   async permCheck (message, commandName, client, db) {
-    let dbPerms = await db.all(`SELECT item,type FROM perms WHERE command='${commandName}'`)
-    let perms = {channel: [], role: [], user: []}
+    let dbPerms = db.prepare('SELECT type,perm FROM perms WHERE command=? AND guild=?').all(commandName, message.guild.id)
+    if (dbPerms.length === 0) return true
+    let perms = {role: [], user: [], channel: []}
     dbPerms.forEach(element => {
-      perms[element.type].push(element.item)
+      perms[element.type].push(element.perm)
     })
-    if (dbPerms.length === 0 || message.member.roles.some(r => r.name === '🐼')) return true
-    var allowed = false
 
-    if (perms.role.length === 0 && perms.user.length === 0) { return true };
+    if (perms.channel.length === 0 || perms.channel.includes(message.channel.name)) {
+      if (perms.role.length > 0 && message.member.roles.some(r => perms.role.includes(r.name))) return true
 
-    if (perms.role.length > 0) {
-      for (var i = 0; i < perms.role.length; i++) {
-        var role = message.member.guild.roles.find(role => role.name === perms.role[i])
-        if (role != null && message.member.roles.has(role.id)) {
-          i = perms.role.length
-          return true
-        }
-      }
+      if (perms.user.length > 0 && perms.user.includes(message.author.id)) return true
     }
 
-    if (!allowed && perms.user.length > 0) {
-      for (i = 0; i < perms.user.length; i++) {
-        if (perms.user[i] === message.author.id) {
-          i = perms.user.length
-          return true
-        }
-      }
-    }
     return false
   },
 
@@ -56,19 +41,6 @@ module.exports = {
     await member.roles.add(roles, 'User join')
   },
 
-  react: function (msg) {
-    reactions.forEach(reaction => {
-      msg.react(reaction)
-    })
-  },
-
-  /* findEmoji:function(emoji){
-        for(var i=0;i<10;i++){
-            if(reactions[i]==emoji){
-                return i+1;
-            }
-        }
-    }, */
   async checkData (client, name, info) {
     if (!(await fs.pathExists(`data/${name}.json`))) {
       // file does not exist
@@ -84,7 +56,7 @@ module.exports = {
   log: function (client, log) {
     console.log(log)
     if (client != null && client.channels.size > 0 && client.readyAt != null) {
-      client.channels.find(val => val.name === 'bot-logs').send({embed: new Discord.MessageEmbed().setTimestamp().setDescription(log)})
+      client.channels.get('486742594030796800').send({embed: new Discord.MessageEmbed().setTimestamp().setDescription(log)})
     }
   }
 }
