@@ -21,15 +21,16 @@ module.exports = {
       desc: 'This command displays information about a command.',
       async execute (client, message, param, db) {
         if (param[1]) {
-          if (client.commands.has(param[1].toLowerCase())) {
+          let name = param[1].toLowerCase()
+          if (client.commands.has(name) && (client.commands.get(name).usage || client.commands.get(name).desc)) {
             message.channel.send(client.commands.get(param[1].toLowerCase()).desc)
           }
         } else {
           let embed = { fields: [] }
           await Array.from(client.commands.keys()).forEach(async idName => {
-            if (await util.permCheck(message, idName, client, db)) {
-              let command = client.commands.get(idName)
-              embed.fields.push({ name: idName, value: command.desc + ' ' + command.usage })
+            let command = client.commands.get(idName)
+            if (await util.permCheck(message, idName, client, db) && command.desc) {
+              embed.fields.push({ name: idName, value: `${command.desc}${command.usage ? ` ${command.usage}` : ''}` })
             }
           })
           message.author.send({ embed })
@@ -133,22 +134,22 @@ module.exports = {
         switch (type) {
           case 'add':
             if (message.mentions.users.size > 0) {
-              await db.prepare('INSERT INTO perms (command,type,item) VALUES (?,?,?)').run(name, 'user', message.mentions.users.first().id)
+              await db.prepare('INSERT INTO perms (guild,command,type,perm) VALUES (?,?,?,?)').run(message.guild.id, name, 'user', message.mentions.users.first().id)
             } else if (message.mentions.channels.size > 0) {
-              await db.prepare('INSERT INTO perms (command,type,item) VALUES (?,?,?)').run(name, 'channel', message.mentions.channels.first().name)
+              await db.prepare('INSERT INTO perms (guild,command,type,perm) VALUES (?,?,?,?)').run(message.guild.id, name, 'channel', message.mentions.channels.first().name)
             } else {
-              await db.prepare('INSERT INTO perms (command,type,item) VALUES (?,?,?)').run(name, 'role', param.join(' '))
+              await db.prepare('INSERT INTO perms (guild,command,type,perm) VALUES (?,?,?,?)').run(message.guild.id, name, 'role', param.join(' '))
             }
             message.reply(param.join(' ') + ' is now allowed to use ' + name)
             break
 
           case 'remove':
             if (message.mentions.users.size > 0) {
-              await db.prepare("DELETE FROM perms WHERE command='?' AND type='user' AND item='?'").run(name, message.mentions.users.first().id)
+              await db.prepare("DELETE FROM perms WHERE guild='?' command='?' AND type='user' AND item='?'").run(message.guild.id, name, message.mentions.users.first().id)
             } else if (message.mentions.channels.size > 0) {
-              await db.prepare("DELETE FROM perms WHERE command='?' AND type='channel' AND item='?'").run(name, message.mentions.channels.first().name)
+              await db.prepare("DELETE FROM perms WHERE guild='?' command='?' AND type='channel' AND item='?'").run(message.guild.id, name, message.mentions.channels.first().name)
             } else {
-              await db.prepare("DELETE FROM perms WHERE command='?' AND type='role' AND item='?'").run(name, param.join(' '))
+              await db.prepare("DELETE FROM perms WHERE guild='?' command='?' AND type='role' AND item='?'").run(message.guild.id, name, param.join(' '))
             }
             message.reply('Removed ' + param.join(' ') + ' from the command ' + name)
             break
