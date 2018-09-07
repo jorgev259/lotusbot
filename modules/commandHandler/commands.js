@@ -65,7 +65,7 @@ module.exports = {
 
     embed: {
       execute (client, message, param, db) {
-        let command = db.prepare('SELECT content FROM embeds WHERE guild=? AND name=? ORDER BY RANDOM() LIMIT 1').get(message.guild.id, param[0].toLowerCase()).map(e => e.content)
+        let command = db.prepare('SELECT content FROM embeds WHERE guild=? AND name=? ORDER BY RANDOM() LIMIT 1').all(message.guild.id, param[0].toLowerCase()).map(e => e.content)
 
         message.channel.send(new Discord.MessageAttachment(command.content)).catch(function (error) {
           util.log(client, param[0] + ' failed with ' + error + '\n ' + command.content)
