@@ -8,7 +8,7 @@ async function logSend (db, message, send) {
 
 module.exports = {
   async reqs (client, db) {
-    db.prepare('CREATE TABLE IF NOT EXISTS warns (id INT AUTOINCREMENT, guild TEXT, user TEXT, reason TEXT, issuer TEXT, PRIMARY KEY(id))').run()
+    db.prepare('CREATE TABLE IF NOT EXISTS warns (id INT PRIMARY KEY AUTOINCREMENT, guild TEXT, user TEXT, reason TEXT, issuer TEXT)').run()
   },
 
   commands: {
