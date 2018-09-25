@@ -74,9 +74,9 @@ module.exports = {
         res.send('Rawr :3')
       })
 
-      app.listen(8080, function () {
+      /*app.listen(8080, function () {
         util.log(client, 'Request API up and running, sir!')
-      })
+      })*/
     }
   }
 }
